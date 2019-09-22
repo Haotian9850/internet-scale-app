@@ -21,7 +21,11 @@ from main import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     url('api/v1/user/create', views.create_user),
-    url('api/v1/user/(\d+)/get_user_by_id', views.get_user_by_id),
-    url('api/v1/user/(\d+)/update_user', views.update_user),
-    url('api/v1/user/(\d+)/delete_user', views.delete_user)
+    url('api/v1/user/(\d+)/get_by_id', views.get_user_by_id),
+    url('api/v1/user/(\d+)/update', views.update_user),
+    url('api/v1/user/(\d+)/delete', views.delete_user),
+    url('api/v1/pet/create', views.create_pet),
+    url('api/v1/pet/(\d+)/get_by_id', views.get_pet_by_id),
+    url('api/v1/pet/(\d+)/update', views.update_pet),
+    url('api/v1/pet/(\d+)/delete', views.delete_pet)
 ]
