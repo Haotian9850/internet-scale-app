@@ -1,14 +1,15 @@
-from django.shortcuts import render
 import datetime
-from django.http import JsonResponse
 from django import db
 from main import models 
-#from portia import settings 
 
-# Create your views here.
+from utils.err_msg_assembler import assemble_err_msg
+from utils.res_handler import res_err, res_success
+
+
+
 def create_user(request):
     if request.method != 'POST':
-        return throw_err(request, "Wrong request method")
+        return res_err(assemble_err_msg(-1, "WROUNG_REQUEST_METHOD", "POST"))
     
     new_user = models.User(
         username = request.POST['username'], 
@@ -24,18 +25,20 @@ def create_user(request):
     try:
         new_user.save()
     except db.Error:
-        return throw_err(request, str(db.Error))
-    return success_res(request, {'user_id': new_user.pk})
+        return res_err(str(db.Error))
+    return res_success(new_user.pk)
+
+
+
 
 def get_user_by_id(request, user_id):
     if request.method != 'GET':
-        return throw_err(request, "Wrong request method")
+        return res_err(assemble_err_msg(-1, "WROUNG_REQUEST_METHOD", "GET"))
     try:
         user = models.User.objects.get(pk=user_id)
     except models.User.DoesNotExist:
-        return throw_err(request, "User not found in databases")
-
-    return success_res(request, {
+        return res_err(assemble_err_msg(user_id, "NOT_FOUND", "User"))
+    return res_success({
         'username': user.username,
         'first_name': user.first_name,
         'last_name': user.last_name,
@@ -47,13 +50,16 @@ def get_user_by_id(request, user_id):
         'password': user.password
     })
 
+
+
+
 def update_user(request, user_id):
     if request.method != 'GET':
-        return throw_err(request, "Wrong request method")
+        return res_err(assemble_err_msg(-1, "WROUNG_REQUEST_METHOD", "GET"))
     try:
         user = models.User.objects.get(pk=user_id)
     except models.User.DoesNotExist:
-        return throw_err(request, "User not found in database")
+        return res_err(assemble_err_msg(user_id, "NOT_FOUND", "User"))
     new_attributes_updated = False 
     if request.POST["first_name"]:
         user.first_name = request.POST["first_name"]
@@ -71,47 +77,53 @@ def update_user(request, user_id):
         user.password = request.POST["password"]
         new_attributes_updated = True 
     if not new_attributes_updated:
-        return success_res(request, "No field is updated")
+        return res_success("No field is updated.")
     else:
-        return success_res(request, "User update successful")
+        return res_success("User with user_id" + user_id + " is successfully updated.")
     
+
+
+
 def delete_user(request, user_id):
     if request.method != "GET":
-        return throw_err(request, "Wrong request method")
+        return res_err(assemble_err_msg(-1, "WROUNG_REQUEST_METHOD", "GET"))
     try:
         user = models.User.objects.get(pk=user_id)
     except models.User.DoesNotExist:
-        return throw_err(request, "User not found in database")
-    
+        return res_err(assemble_err_msg(user_id, "NOT_FOUND", "User"))
     user.delete()
+    return res_success("User with user_id " + user_id + " is successfully deleted.")
 
-    return success_res(request, "User successfully deleted")
+
+
 
 def create_pet(request):
     if request.method != 'POST':
-        return throw_err(request, "Wrong request method")
-    
+        return res_err(assemble_err_msg(-1, "WROUNG_REQUEST_METHOD", "POST"))
     new_pet = models.Pet(
         name = request.POST['name'], 
         pet_type = request.POST['pet_type'], 
-        description = request.POST['description']
+        description = request.POST['description'],
         price = request.POST['price'],
         date_joined = datetime.datetime.now(), location=request.POST['location']
     )
     try:
         new_pet.save()
     except db.Error:
-        return throw_err(request, str(db.Error))
-    return success_res(request, {'pet_id': new_pet.pk})
+        return res_err(str(db.Error))
+    return res_success(new_pet.pk)
+
+
+
 
 def get_pet_by_id(request, pet_id):
     if request.method != 'GET':
-        return throw_err(request, "Wrong request method")
+        return res_err(assemble_err_msg(-1, "WROUNG_REQUEST_METHOD", "GET"))
     try:
         pet = models.Pet.objects.get(pk=pet_id)
     except models.Pet.DoesNotExist:
-        return throw_err(request, "Pet not found in databases")
-    return success_res(request, {
+        return res_err(assemble_err_msg(pet_id, "NOT_FOUND", "Pet"))
+    return res_success({
         'name': pet.name,
         'pet_type': pet.pet_type,
         'description': pet.description,
@@ -119,13 +131,16 @@ def get_pet_by_id(request, pet_id):
         'date_joined': pet.date_joined,
     })
 
+
+
+
 def update_pet(request, pet_id):
     if request.method != 'POST':
-        return throw_err(request, "Wrong request method")
+        return res_err(assemble_err_msg(-1, "WROUNG_REQUEST_METHOD", "POST"))
     try:
         pet = models.Pet.objects.get(pk=pet_id)
     except models.Pet.DoesNotExist:
-        return throw_err(request, "Pet not found in database")
+        return res_err(assemble_err_msg(pet_id, "NOT_FOUND", "Pet"))
     new_attributes_updated = False 
     if request.POST["name"]:
         pet.name = request.POST["name"]
@@ -143,36 +158,25 @@ def update_pet(request, pet_id):
         pet.date_joined = request.POST["date_joined"]
         new_attributes_updated = True 
     if not new_attributes_updated:
-        return success_res(request, "No field is updated")
+        return res_success("No field is updated.")
     else:
-        return success_res(request, "pet update successful")
+        return res_success("Pet with pet_id" + pet_id + " is successfully updated.")
     
+
+
+
 def delete_pet(request, pet_id):
     if request.method != "GET":
-        return throw_err(request, "Wrong request method")
+        return res_err(assemble_err_msg(-1, "WROUNG_REQUEST_METHOD", "GET"))
     try:
         pet = models.Pet.objects.get(pk=pet_id)
     except models.Pet.DoesNotExist:
-        return throw_err(request, "Pet not found in database")
+        return res_err(assemble_err_msg(pet_id, "NOT_FOUND", "Pet"))
     pet.delete()
-    return success_res(request, "Pet successfully deleted")
+    return res_success("Pet with pet_id" + pet_id + " is successfully deleted.")
+
+ 
 
 
 
 
-def throw_err(req, err_msg):
-    return JsonResponse({
-        'ok': False,
-        'error': err_msg
-    })
-
-def success_res(req, res):
-    if res:
-        return JsonResponse({
-            'ok': True,
-            'res': res
-        })
-    else:
-        return JsonResponse({
-            'ok': True
-        })
