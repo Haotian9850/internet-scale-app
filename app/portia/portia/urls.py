@@ -21,5 +21,7 @@ from main import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     url('api/v1/user/create', views.create_user),
-    url('api/v1/user/(\d+)/get_user_by_id', views.get_user_by_id)
+    url('api/v1/user/(\d+)/get_user_by_id', views.get_user_by_id),
+    url('api/v1/user/(\d+)/update_user', views.update_user),
+    url('api/v1/user/(\d+)/delete_user', views.delete_user)
 ]
