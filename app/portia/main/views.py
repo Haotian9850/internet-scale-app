@@ -28,6 +28,26 @@ def create_user(request):
     return _success_response(request, {'user_id': new_user.pk})
 
 
+def get_user_by_id(request, user_id):
+    if request.method != 'GET':
+        return _error_response(request, "Wrong request method")
+
+    try:
+        user = models.User.objects.get(pk=user_id)
+    except models.User.DoesNotExist:
+        return _error_response(request, "User not found in databases")
+
+    return _success_response(request, {
+        'username': user.username,
+        'first_name': user.first_name,
+        'last_name': user.last_name,
+        'age': user.age,
+        'gender': user.gender,
+        'email_address': user.email_address,
+        'date_joined': user.date_joined,
+        'zipcode': user.zipcode,
+        'password': user.password
+    })
 
 
 
