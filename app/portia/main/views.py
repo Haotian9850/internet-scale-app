@@ -49,6 +49,36 @@ def get_user_by_id(request, user_id):
         'password': user.password
     })
 
+def update_user(request, user_id):
+    if request.method != 'POST':
+        return throw_err(request, "Wrong request method")
+    try:
+        user = models.User.objects.get(pk=user_id)
+    except models.User.DoesNotExist:
+        return throw_err(request, "User not found in database")
+    new_attributes_updated = False 
+    if request.POST["first_name"]:
+        user.first_name = request.POST["first_name"]
+        new_attributes_updated = True
+    if request.POST["last_name"]:
+        user.last_name = request.POST["last_name"]
+        new_attributes_updated = True
+    if request.POST["email_address"]:
+        user.email_address = request.POST["email_address"]
+        new_attributes_updated = True
+    if request.POST["zipcode"]:
+        user.zipcode = request.POST["zipcode"]
+        new_attributes_updated = True
+    if request.POST["password"]:
+        user.password = request.POST["password"]
+        new_attributes_updated = True 
+    if not new_attributes_updated:
+        return success_res(request, "No field is updated")
+    else:
+        return success_res(request, "User update successful")
+    
+
+
 
 def throw_err(req, err_msg):
     return JsonResponse({
