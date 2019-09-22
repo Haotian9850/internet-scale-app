@@ -10,7 +10,7 @@ def create_user(request):
     if request.method != 'POST':
         return throw_err(request, "Wrong request method")
     
-    new_user = models.Profile(
+    new_user = models.User(
         username = request.POST['username'], 
         first_name = request.POST['first_name'], 
         last_name = request.POST['last_name'], email_address = request.POST['email'], 
@@ -27,11 +27,9 @@ def create_user(request):
         return throw_err(request, str(db.Error))
     return success_res(request, {'user_id': new_user.pk})
 
-
 def get_user_by_id(request, user_id):
     if request.method != 'GET':
         return throw_err(request, "Wrong request method")
-
     try:
         user = models.User.objects.get(pk=user_id)
     except models.User.DoesNotExist:
@@ -89,44 +87,30 @@ def delete_user(request, user_id):
 
     return success_res(request, "User successfully deleted")
 
-
-
-
-
-
-
-
-
-
-
 def create_pet(request):
     if request.method != 'POST':
         return throw_err(request, "Wrong request method")
     
-    new_pet = models.Profile(
+    new_pet = models.Pet(
         name = request.POST['name'], 
         pet_type = request.POST['pet_type'], 
         description = request.POST['description']
         price = request.POST['price'],
-        date_joined = datetime.datetime.now(), location=request.POST['location'],
+        date_joined = datetime.datetime.now(), location=request.POST['location']
     )
-
     try:
         new_pet.save()
     except db.Error:
         return throw_err(request, str(db.Error))
     return success_res(request, {'pet_id': new_pet.pk})
 
-
 def get_pet_by_id(request, pet_id):
     if request.method != 'GET':
         return throw_err(request, "Wrong request method")
-
     try:
         pet = models.Pet.objects.get(pk=pet_id)
     except models.Pet.DoesNotExist:
         return throw_err(request, "Pet not found in databases")
-
     return success_res(request, {
         'name': pet.name,
         'pet_type': pet.pet_type,
@@ -170,10 +154,9 @@ def delete_pet(request, pet_id):
         pet = models.User.objects.get(pk=pet_id)
     except models.User.DoesNotExist:
         return throw_err(request, "Pet not found in database")
-    
     pet.delete()
-
     return success_res(request, "Pet successfully deleted")
+
 
 
 
