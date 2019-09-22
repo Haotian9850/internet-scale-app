@@ -1,0 +1,16 @@
+version: "3"
+services:
+  models:
+    image: tp33/django
+    external_links:
+      - mysql:db
+    volumes:
+      - /mnt/documents-local/CS4260/internet-scale-app/app:/app
+    networks:
+      - backend
+    ports:
+      - "8001:8000"
+    command: bash -c "/app/init.sh"
+  
+networks:
+  backend:
