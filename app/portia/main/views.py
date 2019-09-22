@@ -3,12 +3,12 @@ import datetime
 from django.http import JsonResponse
 from django import db
 from main import models 
-from portia import settings 
+#from portia import settings 
 
 # Create your views here.
 def create_user(request):
     if request.method != 'POST':
-        return _error_response(request, "Wrong request method")
+        return throw_err(request, "Wrong request method")
     
     new_user = models.Profile(
         username = request.POST['username'], 
@@ -24,20 +24,20 @@ def create_user(request):
     try:
         new_user.save()
     except db.Error:
-        return _error_response(request, str(db.Error))
-    return _success_response(request, {'user_id': new_user.pk})
+        return throw_err(request, str(db.Error))
+    return success_res(request, {'user_id': new_user.pk})
 
 
 def get_user_by_id(request, user_id):
     if request.method != 'GET':
-        return _error_response(request, "Wrong request method")
+        return throw_err(request, "Wrong request method")
 
     try:
         user = models.User.objects.get(pk=user_id)
     except models.User.DoesNotExist:
-        return _error_response(request, "User not found in databases")
+        return throw_err(request, "User not found in databases")
 
-    return _success_response(request, {
+    return success_res(request, {
         'username': user.username,
         'first_name': user.first_name,
         'last_name': user.last_name,
@@ -50,4 +50,19 @@ def get_user_by_id(request, user_id):
     })
 
 
+def throw_err(req, err_msg):
+    return JsonResponse({
+        'ok': False,
+        'error': err_msg
+    })
 
+def success_res(req, res):
+    if res:
+        return JsonResponse({
+            'ok': True,
+            'res': res
+        })
+    else:
+        return JsonResponse({
+            'ok': True
+        })

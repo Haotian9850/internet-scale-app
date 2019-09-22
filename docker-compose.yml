@@ -1,17 +1,16 @@
 version: "3"
 services:
-
   models:
     image: tp33/django
     external_links:
       - mysql:db
     volumes:
       - /mnt/documents-local/CS4260/internet-scale-app/app:/app
-    ports:
-      - "8001:8000"
     networks:
       - backend
-    command: bash -c "mod_wsgi-express start-server --working-directory /mnt/documents-local/CS4260/internet-scale-app/app --reload-on-changes /app/portia/portia/wsgi.py"
-
+    ports:
+      - "8001:8000"
+    command: bash -c "/app/init.sh"
+  
 networks:
   backend:
