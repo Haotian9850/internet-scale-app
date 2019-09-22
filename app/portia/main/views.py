@@ -50,7 +50,7 @@ def get_user_by_id(request, user_id):
     })
 
 def update_user(request, user_id):
-    if request.method != 'POST':
+    if request.method != 'GET':
         return throw_err(request, "Wrong request method")
     try:
         user = models.User.objects.get(pk=user_id)
@@ -77,7 +77,17 @@ def update_user(request, user_id):
     else:
         return success_res(request, "User update successful")
     
+def delete_user(request, user_id):
+    if request.method != "GET":
+        return throw_err(request, "Wrong request method")
+    try:
+        user = models.User.objects.get(pk=user_id)
+    except models.User.DoesNotExist:
+        return throw_err(request, "User not found in database")
+    
+    user.delete()
 
+    return success_res(request, "User successfully deleted")
 
 
 def throw_err(req, err_msg):
