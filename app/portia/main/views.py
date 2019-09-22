@@ -151,8 +151,8 @@ def delete_pet(request, pet_id):
     if request.method != "GET":
         return throw_err(request, "Wrong request method")
     try:
-        pet = models.User.objects.get(pk=pet_id)
-    except models.User.DoesNotExist:
+        pet = models.Pet.objects.get(pk=pet_id)
+    except models.Pet.DoesNotExist:
         return throw_err(request, "Pet not found in database")
     pet.delete()
     return success_res(request, "Pet successfully deleted")
