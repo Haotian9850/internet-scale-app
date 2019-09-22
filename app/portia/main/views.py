@@ -90,6 +90,93 @@ def delete_user(request, user_id):
     return success_res(request, "User successfully deleted")
 
 
+
+
+
+
+
+
+
+
+
+def create_pet(request):
+    if request.method != 'POST':
+        return throw_err(request, "Wrong request method")
+    
+    new_pet = models.Profile(
+        name = request.POST['name'], 
+        pet_type = request.POST['pet_type'], 
+        description = request.POST['description']
+        price = request.POST['price'],
+        date_joined = datetime.datetime.now(), location=request.POST['location'],
+    )
+
+    try:
+        new_pet.save()
+    except db.Error:
+        return throw_err(request, str(db.Error))
+    return success_res(request, {'pet_id': new_pet.pk})
+
+
+def get_pet_by_id(request, pet_id):
+    if request.method != 'GET':
+        return throw_err(request, "Wrong request method")
+
+    try:
+        pet = models.Pet.objects.get(pk=pet_id)
+    except models.Pet.DoesNotExist:
+        return throw_err(request, "Pet not found in databases")
+
+    return success_res(request, {
+        'name': pet.name,
+        'pet_type': pet.pet_type,
+        'description': pet.description,
+        'price': pet.price,
+        'date_joined': pet.date_joined,
+    })
+
+def update_pet(request, pet_id):
+    if request.method != 'POST':
+        return throw_err(request, "Wrong request method")
+    try:
+        pet = models.Pet.objects.get(pk=pet_id)
+    except models.Pet.DoesNotExist:
+        return throw_err(request, "Pet not found in database")
+    new_attributes_updated = False 
+    if request.POST["name"]:
+        pet.name = request.POST["name"]
+        new_attributes_updated = True
+    if request.POST["pet_type"]:
+        pet.pet_type = request.POST["pet_type"]
+        new_attributes_updated = True
+    if request.POST["description"]:
+        pet.description = request.POST["description"]
+        new_attributes_updated = True
+    if request.POST["price"]:
+        pet.price = request.POST["price"]
+        new_attributes_updated = True
+    if request.POST["date_joined"]:
+        pet.date_joined = request.POST["date_joined"]
+        new_attributes_updated = True 
+    if not new_attributes_updated:
+        return success_res(request, "No field is updated")
+    else:
+        return success_res(request, "pet update successful")
+    
+def delete_pet(request, pet_id):
+    if request.method != "GET":
+        return throw_err(request, "Wrong request method")
+    try:
+        pet = models.User.objects.get(pk=pet_id)
+    except models.User.DoesNotExist:
+        return throw_err(request, "Pet not found in database")
+    
+    pet.delete()
+
+    return success_res(request, "Pet successfully deleted")
+
+
+
 def throw_err(req, err_msg):
     return JsonResponse({
         'ok': False,
