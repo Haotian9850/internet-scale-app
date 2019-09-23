@@ -105,7 +105,7 @@ def create_pet(request):
         pet_type = request.POST['pet_type'], 
         description = request.POST['description'],
         price = request.POST['price'],
-        date_joined = datetime.datetime.now(), location=request.POST['location']
+        date_posted = datetime.datetime.now(), location=request.POST['location']
     )
     try:
         new_pet.save()
@@ -128,7 +128,7 @@ def get_pet_by_id(request, pet_id):
         'pet_type': pet.pet_type,
         'description': pet.description,
         'price': pet.price,
-        'date_joined': pet.date_joined,
+        'date_posted': pet.date_posted,
     })
 
 
@@ -154,9 +154,6 @@ def update_pet(request, pet_id):
     if request.POST["price"]:
         pet.price = request.POST["price"]
         new_attributes_updated = True
-    if request.POST["date_joined"]:
-        pet.date_joined = request.POST["date_joined"]
-        new_attributes_updated = True 
     if not new_attributes_updated:
         return res_success("No field is updated.")
     else:

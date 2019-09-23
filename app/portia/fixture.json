@@ -365,5 +365,17 @@
             "zipcode":22904,
             "password":"123456"
         }
+    },
+
+    {
+         "model":"main.pet",
+         "pk": 1,
+         "fields":{
+             "name": "tiger",
+             "pet_type": "dog",
+             "description": "this is a dog named Tiger",
+             "price": 19.999,
+             "date_posted": "2016-10-26T06:21:34.398Z"
+	      }
     }
  ]
