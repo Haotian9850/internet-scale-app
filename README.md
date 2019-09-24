@@ -1,5 +1,3 @@
-# internet-scale-app
-A Django web application based on microservices
 # Project 2 Documentation
 ## Models
 ### User
@@ -45,24 +43,24 @@ A Django web application based on microservices
   }
 ## Read
 ### User
- - link: api/v1/users/(\d+)/get_by_id
+ - link: api/v1/users/user_id/get_by_id
  - example:
    - GET api/v1/users/1/get_by_id    
 ### Pet
- - link: api/v1/pets/(\d+)/get_by_id
+ - link: api/v1/pets/user_id/get_by_id
  - example:
    - GET api/v1/users/1/get_by_id  
     
 ## Update
 ### User
- - link: api/v1/users/(\d+)/update
+ - link: api/v1/users/user_id/update
  - example:
    - POST api/v1/users/1/update
   {
     username: "dw98"
   }
 ### Pet
- - link: api/v1/pets/(\d+)/update
+ - link: api/v1/pets/pet_id/update
  - example:
    - POST api/v1/pets/1/update
   {
@@ -70,10 +68,10 @@ A Django web application based on microservices
   }
 ## Delete
 ### User
- - link: api/v1/users/(\d+)/delete
+ - link: api/v1/users/user_id/delete
  - example:
    - GET api/v1/users/1/delete
 ### Pet
- - link: api/v1/pets/(\d+)/delete
+ - link: api/v1/pets/pet_id/delete
  - example:
    - GET api/v1/pets/1/delete
