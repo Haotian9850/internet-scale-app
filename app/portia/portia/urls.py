@@ -1,4 +1,5 @@
-"""portia URL Configuration
+"""
+portia URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
@@ -20,12 +21,12 @@ from main import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url('api/v1/user/create', views.create_user),
-    url('api/v1/user/(\d+)/get_by_id', views.get_user_by_id),
-    url('api/v1/user/(\d+)/update', views.update_user),
-    url('api/v1/user/(\d+)/delete', views.delete_user),
-    url('api/v1/pet/create', views.create_pet),
-    url('api/v1/pet/(\d+)/get_by_id', views.get_pet_by_id),
-    url('api/v1/pet/(\d+)/update', views.update_pet),
-    url('api/v1/pet/(\d+)/delete', views.delete_pet)
+    url('api/v1/users/create', views.create_user),
+    url('api/v1/users/(\d+)/get_by_id', views.get_user_by_id),
+    url('api/v1/users/(\d+)/update', views.update_user),
+    url('api/v1/users/(\d+)/delete', views.delete_user),
+    url('api/v1/pets/create', views.create_pet),
+    url('api/v1/pets/(\d+)/get_by_id', views.get_pet_by_id),
+    url('api/v1/pets/(\d+)/update', views.update_pet),
+    url('api/v1/pets/(\d+)/delete', views.delete_pet)
 ]
