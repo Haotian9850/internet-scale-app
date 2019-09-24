@@ -8,7 +8,7 @@ class User(models.Model):
     last_name = models.CharField(max_length = 50)
     age = models.IntegerField()
     gender = models.CharField(max_length = 50)
-    email_address = models.EmailField(max_length = 254, unique = True, validators = [validate_email, ])
+    email_address = models.EmailField(max_length = 254, unique = True, validators = [validate_email])
     date_joined = models.DateTimeField()
     zipcode = models.IntegerField()
     password = models.CharField(max_length = 96)

@@ -1,0 +1,2 @@
+#!/bin/bash  
+curl -d '{\"username\":"Tiger1","first_name":"Tiger","last_name":"Wu","email_address":"tiger.wu@virginia.edu","age":21,"gender":"Male","zipcode":22904,"password":"123456"}' -XPOST localhost:8001/api/v1/user/create

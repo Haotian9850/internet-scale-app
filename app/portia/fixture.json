@@ -350,32 +350,5 @@
           "content_type":7,
           "codename":"view_user"
        }
-    },
-    {
-        "model":"main.user",
-        "pk":1,
-        "fields":{
-            "username":"haotian9850",
-            "first_name":"haotian",
-            "last_name":"liu",
-            "age":21,
-            "gender":"M",
-            "email_address":"hl7gr@virginia.edu",
-            "date_joined":"2016-10-26T06:21:34.398Z",
-            "zipcode":22904,
-            "password":"123456"
-        }
-    },
-
-    {
-         "model":"main.pet",
-         "pk": 1,
-         "fields":{
-             "name": "tiger",
-             "pet_type": "dog",
-             "description": "this is a dog named Tiger",
-             "price": 19.999,
-             "date_posted": "2016-10-26T06:21:34.398Z"
-	      }
     }
  ]
