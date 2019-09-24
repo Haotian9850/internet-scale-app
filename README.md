@@ -1,8 +1,6 @@
 # internet-scale-app
 A Django web application based on microservices
-
 # Project 2 Documentation
-
 ## Models
 ### User
   - string: username
@@ -20,10 +18,8 @@ A Django web application based on microservices
   - string: description
   - decimal (3 decimal places): price
   - datetime: date_posted (auto created)
-  
-##Create
-
-###User
+## Create
+### User
  - link: api/v1/users/create
  - example:
     - POST   
@@ -37,7 +33,7 @@ A Django web application based on microservices
     zipcode: 22904
     password: "123456"
   }
-###Pet
+### Pet
  - link: api/v1/pets/create
   - example:
     - POST
@@ -47,21 +43,37 @@ A Django web application based on microservices
     description: "A good dog"
     price: 15.999
   }
-    url('api/v1/users/(\d+)/get_by_id', views.get_user_by_id),
-    url('api/v1/users/(\d+)/update', views.update_user),
-    url('api/v1/users/(\d+)/delete', views.delete_user),
-    url('api/v1/pets/create', views.create_pet),
-    url('api/v1/pets/(\d+)/get_by_id', views.get_pet_by_id),
-    url('api/v1/pets/(\d+)/update', views.update_pet),
-    url('api/v1/pets/(\d+)/delete', views.delete_pet)
-
-##Read
-###User
+## Read
+### User
 - link: api/v1/users/(\d+)/get_by_id
   - example:
-    - GET   
+   - GET api/v1/users/1/get_by_id    
+### Pet
+- link: api/v1/pets/(\d+)/get_by_id
+  - example:
+   - GET api/v1/users/1/get_by_id  
     
-##Update
-
-##Delete
-  
+## Update
+### User
+- link: api/v1/users/(\d+)/update
+  - example:
+   - POST api/v1/users/1/update
+  {
+    username: "dw98"
+  }
+### Pet
+- link: api/v1/pets/(\d+)/update
+  - example:
+   - POST api/v1/pets/1/update
+  {
+    name: "Bella"
+  }
+## Delete
+### User
+- link: api/v1/users/(\d+)/delete
+  - example:
+   - GET api/v1/users/1/delete
+### Pet
+- link: api/v1/pets/(\d+)/delete
+  - example:
+   - GET api/v1/pets/1/delete
