@@ -1,7 +1,7 @@
 # internet-scale-app
 A Django web application based on microservices
 # Project 2 Documentation
-- Important: do docker network connect internet-scale-app_backend mysql with your sql container.
+- Important: do docker network connect internet-scale-app_backend mysql with your sql container, a sql container must be running for docker-compose to work.
 ## Models
 ### User
   - string: username
