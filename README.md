@@ -24,56 +24,56 @@ A Django web application based on microservices
  - example:
     - POST   
   {
-    username: "dw98"
-    first_name: "Daniel"
-    last_name: "Wang"
-    age: 21
-    gender: "M"
-    email_address: "hw4ce@virginia.edu"
-    zipcode: 22904
+    username: "dw98",
+    first_name: "Daniel",
+    last_name: "Wang",
+    age: 21,
+    gender: "M",
+    email_address: "hw4ce@virginia.edu",
+    zipcode: 22904,
     password: "123456"
   }
 ### Pet
  - link: api/v1/pets/create
-  - example:
+ - example:
     - POST
   {
-    name: "Rocky"
-    pet_type: "dog"
-    description: "A good dog"
+    name: "Rocky",
+    pet_type: "dog",
+    description: "A good dog",
     price: 15.999
   }
 ## Read
 ### User
-- link: api/v1/users/(\d+)/get_by_id
-  - example:
+ - link: api/v1/users/(\d+)/get_by_id
+ - example:
    - GET api/v1/users/1/get_by_id    
 ### Pet
-- link: api/v1/pets/(\d+)/get_by_id
-  - example:
+ - link: api/v1/pets/(\d+)/get_by_id
+ - example:
    - GET api/v1/users/1/get_by_id  
     
 ## Update
 ### User
-- link: api/v1/users/(\d+)/update
-  - example:
+ - link: api/v1/users/(\d+)/update
+ - example:
    - POST api/v1/users/1/update
   {
     username: "dw98"
   }
 ### Pet
-- link: api/v1/pets/(\d+)/update
-  - example:
+ - link: api/v1/pets/(\d+)/update
+ - example:
    - POST api/v1/pets/1/update
   {
     name: "Bella"
   }
 ## Delete
 ### User
-- link: api/v1/users/(\d+)/delete
-  - example:
+ - link: api/v1/users/(\d+)/delete
+ - example:
    - GET api/v1/users/1/delete
 ### Pet
-- link: api/v1/pets/(\d+)/delete
-  - example:
+ - link: api/v1/pets/(\d+)/delete
+ - example:
    - GET api/v1/pets/1/delete
