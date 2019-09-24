@@ -1,4 +1,7 @@
+# internet-scale-app
+A Django web application based on microservices
 # Project 2 Documentation
+- Important: do docker network connect internet-scale-app_backend mysql with your sql container.
 ## Models
 ### User
   - string: username
@@ -43,24 +46,24 @@
   }
 ## Read
 ### User
- - link: api/v1/users/user_id/get_by_id
+ - link: api/v1/users/(\d+)/get_by_id
  - example:
    - GET api/v1/users/1/get_by_id    
 ### Pet
- - link: api/v1/pets/user_id/get_by_id
+ - link: api/v1/pets/(\d+)/get_by_id
  - example:
    - GET api/v1/users/1/get_by_id  
     
 ## Update
 ### User
- - link: api/v1/users/user_id/update
+ - link: api/v1/users/(\d+)/update
  - example:
    - POST api/v1/users/1/update
   {
     username: "dw98"
   }
 ### Pet
- - link: api/v1/pets/pet_id/update
+ - link: api/v1/pets/(\d+)/update
  - example:
    - POST api/v1/pets/1/update
   {
@@ -68,10 +71,10 @@
   }
 ## Delete
 ### User
- - link: api/v1/users/user_id/delete
+ - link: api/v1/users/(\d+)/delete
  - example:
    - GET api/v1/users/1/delete
 ### Pet
- - link: api/v1/pets/pet_id/delete
+ - link: api/v1/pets/(\d+)/delete
  - example:
    - GET api/v1/pets/1/delete
