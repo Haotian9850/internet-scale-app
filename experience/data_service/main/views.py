@@ -26,8 +26,9 @@ def get_pet_list(request):
     })
 
 
+
 def search_pets(request):
-    #search in pet name, description and pet_type
+    # search in pet name, description and pet_type
     if request.method != 'POST':
         return JsonResponse({
             'ok': False,
@@ -50,6 +51,33 @@ def search_pets(request):
         'ok': True,
         'res': result
     })
+
+
+def sort_pets(request):
+    # sort pet by specified criteria
+    if request.method != 'POST':
+        return JsonResponse({
+            'ok': False,
+            'res': 'Wrong request method. Request method must be POST.'
+        })
+    res, status = get_all_pets()
+    if status == 0:
+        return JsonResponse({
+            'ok': False,
+            'res': res
+        })
+    sort_by = request.POST.get('sort_by')
+    if sort_by != "price" or sort_by != "date_posted" or sort_by != "name":
+        return JsonResponse({
+            'ok': False,
+            'res': 'Malformed search criteria'
+        })
+    res.sort(key = lambda x : x.sort_by, reversed = True)
+    return JsonResponse({
+        'ok': True,
+        'res': res
+    })
+    
     
 
 
