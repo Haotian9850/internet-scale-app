@@ -9,8 +9,8 @@ This project follows a 4-tire Django project architecture: HTML frontend + exper
  - Container name: data-service
  - Run command (will be integrated into `docker-compose.yml`): `sudo docker run -it --name data-service -v /mnt/documents-local/CS4260/internet-scale-app/data-service:/app tp33/django`
  - API design
-    - CRUD services for entity `Pet` and `User`
-    - ...
+    - Homepage: get_pets(): return a list of all pets in table `pets`
+    - Pet detail page: get_pet_by_id(): return details of a pet by its `pet_id`
 
 ### entity / model APIs
  - Container image: `tp33/django`
