@@ -1,6 +1,7 @@
 # Portia: an exotic pet store
 ## Architecture
 This project follows a 4-tire Django project architecture: HTML frontend + experience service APIs + entity / model APIs + backend database. Every tier lives in a separate Docker container, each of which is orchestrated by `docker-compose.yml`
+
 ### presentation layer
  - Container image: `tp33/django`
  - Container name: `presentation`
