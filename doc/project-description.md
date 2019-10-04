@@ -16,8 +16,18 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
  - Django app name: `main`
  - API design
     - `test/get_all_pets`: `get_pets()`: return a list of all pets in table `pets`. `GET` request only. No request body required
-    - `test/search_pets`: return a list of pets matching search keyword. `POST` request only. Request body: `{"keyword": "dog"}`
-    - `test/sort_pets`: return a list of pets sorted by specified sorting criteria. `POST` request only. Request body: `{"sort_by": "name"}`
+    - `test/search_pets`: return a list of pets matching search keyword. `POST` request only. Request body: 
+        ```
+        {
+            "keyword": "dog"
+        }
+        ```
+    - `test/sort_pets`: return a list of pets sorted by specified sorting criteria. `POST` request only. Request body: 
+        ```
+        {
+            "sort_by": "name"
+        }
+        ```
 
 
 ### entity layer
