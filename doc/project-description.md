@@ -41,3 +41,4 @@ This project follows a 4-tire Django project architecture: HTML frontend + exper
 ## Common gotchas
  ### DB container configuration
  - Container `web` and requires a mysql container with username `'www'@'%'` and password `$cureUS` and a database named `cs4260` set up. Otherwise, docker compose will not bring up any contiainer. 
+ - `requests` module need to be installed via `pip` in container `data_service` by running `pip install requests` (can be automated using a script later)
