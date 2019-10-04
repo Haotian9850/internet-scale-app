@@ -9,7 +9,6 @@ This project follows a 4-tire Django project architecture: HTML frontend + exper
  - Explnanation: the experience layer will invoke entity APIs via HTTP and recieve JSON respones. Similarly, it will provide HTTP / JSON APIs to the HTML templates
  - Container image: `tp33/django`
  - Container name: data-service
- - Run command (will be integrated into `docker-compose.yml`): `sudo docker run -it --name data-service -v /mnt/documents-local/CS4260/internet-scale-app/data-service:/app tp33/django`
  - API design
     - Homepage: `get_pets()`: return a list of all pets in table `pets`
     - Homepage: `search_pet()`: return a list of pets matching search keyword
@@ -19,7 +18,6 @@ This project follows a 4-tire Django project architecture: HTML frontend + exper
 ### entity / model APIs
  - Container image: `tp33/django`
  - Container name: web
- - Run command: brought up by `docker-compose.yml`
  - API design (only exposed to container `data_service`)
     - `api/v1/users/create`: create a new user
     - `api/v1/users/(\d+)/get_by_id`: get user by `user_id`
