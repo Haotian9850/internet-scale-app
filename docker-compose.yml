@@ -1,29 +1,39 @@
 version: "3"
 services:
-  models:
-    container_name: web
+  entity:
+    container_name: entity
     image: tp33/django
     external_links:
       - mysql:db
     volumes:
-      - ./app:/app
+      - ./entity:/app
     networks:
       - backend
     ports:
       - "8001:8000"
     command: bash -c "/app/init.sh"
-  experiences:
-    container_name: data_services
+  experience:
+    container_name: experience
     image: tp33/django
     links:
-      - models
+      - entity
     volumes:
-      - ./data-service:/app
+      - ./experience:/app
     networks:
       - backend
     ports:
       - "8002:8000"
-    command: bash -c "/app/setup.sh"
+    command: bash -c "/app/init.sh"
+  presentation:
+    container_name: presentation
+    image: tp33/django
+    links: 
+      - experience
+    volumes:
+      - ./presentation:/app
+    ports:
+      - "8003:8000"
+    command: bash -c "/app/init.sh"
       
   
 networks:
