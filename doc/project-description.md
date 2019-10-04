@@ -16,7 +16,15 @@ This project follows a 4-tire Django project architecture: HTML frontend + exper
  - Container image: `tp33/django`
  - Container name: web
  - Run command: brought up by `docker-compose.yml`
- - 
+ - API design (only exposed to container `data_service`)
+    - `api/v1/users/create`: create a new user
+    - `api/v1/users/(\d+)/get_by_id`: get user by `user_id`
+    - `api/v1/users/(\d+)/update`: update a user by its `user_id`
+    - `api/v1/users/(\d+)/delete`: delete user by its `user_id`
+    - `api/v1/pets/create`: create a new pet
+    - `api/v1/pets/(\d+)/get_by_id`: get pet by `pet_id`
+    - `api/v1/pets/(\d+)/update`: update pet by its `pet_id`
+    - `api/v1/pets/(\d+)/delete`: delete pet by its `pet_id`
 
 ### backend database
  - Container image: `mysql:latest`
