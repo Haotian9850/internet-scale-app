@@ -25,7 +25,8 @@ def get_pet_list(request):
         'res': get_all_pets()
     })
 
-def search_pets(request, keyword):
+
+def search_pets(request):
     #search in pet name, description and pet_type
     if request.method != 'POST':
         return JsonResponse({
@@ -39,8 +40,9 @@ def search_pets(request, keyword):
             'res': res
         })
     result = []
-    for pet in res[0]:
-        if pet.name.lower().find(keyword.lower()) != -1 or pet.description.lower().find(keyword.lower()) != -1 or pet.pet_type.lower().find(keyword.lower()) != -1:
+    keyword = request.POST.get('keyword')
+    for pet in json.loads(str(res[0])):
+        if pet['name'].lower().find(keyword.lower()) != -1 or pet['description'].lower().find(keyword.lower()) != -1 or pet['pet_type'].lower().find(keyword.lower()) != -1:
             result.append(pet)
     return JsonResponse({
         'ok': True,
