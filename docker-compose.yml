@@ -23,7 +23,7 @@ services:
       - backend
     ports:
       - "8002:8000"
-    command: bash -c "/app/setup.sh"
+    command: bash -c "/app/init.sh"
   presentation:
     container_name: presentation
     image: tp33/django
