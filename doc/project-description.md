@@ -15,10 +15,10 @@ This project follows a 4-tire Django project architecture: HTML frontend + exper
  - Container name: `exprience`
  - Django app name: `main`
  - API design
-    - Homepage: `get_pets()`: return a list of all pets in table `pets`
-    - Homepage: `search_pet()`: return a list of pets matching search keyword
-    - Homepage: `sort()`: return a list of pets sorted by sorting keyword (such as `price` and `date`)
-    - Pet detail page: `get_pet_by_id()`: return details of a pet by its `pet_id`
+    - `test/get_all_pets`: `get_pets()`: return a list of all pets in table `pets`. `GET` request only. No request body required
+    - `test/search_pets`: return a list of pets matching search keyword. `POST` request only. Request body: `{"keyword": "dog"}`
+    - `test/sort_pets`: return a list of pets sorted by specified sorting criteria. `POST` request only. Request body: `{"sort_by": "name"}`
+
 
 ### entity layer
  - Container image: `tp33/django`
