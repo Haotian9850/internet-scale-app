@@ -41,9 +41,11 @@ def search_pets(request):
         })
     result = []
     keyword = request.POST.get('keyword')
-    for pet in json.loads(str(res[0])):
+    
+    for pet in res:
         if pet['name'].lower().find(keyword.lower()) != -1 or pet['description'].lower().find(keyword.lower()) != -1 or pet['pet_type'].lower().find(keyword.lower()) != -1:
             result.append(pet)
+    
     return JsonResponse({
         'ok': True,
         'res': result
