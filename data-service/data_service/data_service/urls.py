@@ -1,5 +1,4 @@
-"""
-portia URL Configuration
+"""data_service URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
@@ -14,20 +13,9 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf.urls import include, url
 from django.contrib import admin
 from django.urls import path
-from main import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url('api/v1/users/create', views.create_user),
-    url('api/v1/users/(\d+)/get_by_id', views.get_user_by_id),
-    url('api/v1/users/(\d+)/update', views.update_user),
-    url('api/v1/users/(\d+)/delete', views.delete_user),
-    url('api/v1/pets/create', views.create_pet),
-    url('api/v1/pets/get_all_pets', views.get_all_pets),
-    url('api/v1/pets/(\d+)/get_by_id', views.get_pet_by_id),
-    url('api/v1/pets/(\d+)/update', views.update_pet),
-    url('api/v1/pets/(\d+)/delete', views.delete_pet)
 ]
