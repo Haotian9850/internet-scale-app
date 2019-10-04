@@ -72,7 +72,6 @@ def sort_pets(request):
             'ok': False,
             'res': 'Malformed search criteria'
         })
-    #res_sorted = sorted(res, key = lambda x : x.sort_by, reverse = True)
     sorted(res, key = lambda i : i[sort_by], reverse = True)
     return JsonResponse({
         'ok': True,
