@@ -9,6 +9,8 @@ services:
       - ./app:/app
     networks:
       - backend
+    ports:
+      - "8001:8000"
     command: bash -c "/app/init.sh"
   experiences:
     container_name: data_services
@@ -20,7 +22,7 @@ services:
     networks:
       - backend
     ports:
-      - "8001:8000"
+      - "8002:8000"
     command: bash -c "/app/setup.sh"
       
   
