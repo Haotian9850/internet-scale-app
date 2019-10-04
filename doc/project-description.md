@@ -2,6 +2,8 @@
 ## Architecture
 This project follows a 4-tire Django project architecture: HTML frontend + experience service APIs + entity / model APIs + backend database. Every tier lives in a separate Docker container, each of which is orchestrated by `docker-compose.yml`
 ### HTML frontend
+ - homepage
+ - pet detail page
 
 ### experience service APIs
  - Explnanation: the experience layer will invoke entity APIs via HTTP and recieve JSON respones. Similarly, it will provide HTTP / JSON APIs to the HTML templates
@@ -9,8 +11,10 @@ This project follows a 4-tire Django project architecture: HTML frontend + exper
  - Container name: data-service
  - Run command (will be integrated into `docker-compose.yml`): `sudo docker run -it --name data-service -v /mnt/documents-local/CS4260/internet-scale-app/data-service:/app tp33/django`
  - API design
-    - Homepage: get_pets(): return a list of all pets in table `pets`
-    - Pet detail page: get_pet_by_id(): return details of a pet by its `pet_id`
+    - Homepage: `get_pets()`: return a list of all pets in table `pets`
+    - Homepage: `search_pet()`: return a list of pets matching search keyword
+    - Homepage: `sort()`: return a list of pets sorted by sorting keyword (such as `price` and `date`)
+    - Pet detail page: `get_pet_by_id()`: return details of a pet by its `pet_id`
 
 ### entity / model APIs
  - Container image: `tp33/django`

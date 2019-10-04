@@ -114,6 +114,15 @@ def create_pet(request):
     return res_success("New Pet with pet_id " + str(new_pet.pk) + " is successfully created!")
 
 
+def get_all_pets(request):
+    all_pets = []
+    if request.method != 'GET':
+        return res_err(assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "GET"))
+    try:
+        all_pets = models.Pet.objects.all()
+    except db.Error:
+        return res_err(str(db.Error))
+    return res_success(all_pets)
 
 
 def get_pet_by_id(request, pet_id):
