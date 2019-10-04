@@ -6,9 +6,10 @@ from django.http import JsonResponse
 from main import models 
 import json
 
-from services.services import get_all_pets
+from services.pet_service import get_all_pets
 
 def get_pet_list(request):
+    
     return JsonResponse({
         'ok': True,
         'res': get_all_pets()
