@@ -24,6 +24,16 @@ services:
     ports:
       - "8002:8000"
     command: bash -c "/app/setup.sh"
+  presentation:
+    container_name: presentation
+    image: tp33/django
+    links: 
+      - experience
+    volumes:
+      - ./presentation:/app
+    ports:
+      - "8003:8000"
+    command: bash -c "/app/init.sh"
       
   
 networks:
