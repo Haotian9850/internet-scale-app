@@ -67,12 +67,13 @@ def sort_pets(request):
             'res': res
         })
     sort_by = request.POST.get('sort_by')
-    if sort_by != "price" or sort_by != "date_posted" or sort_by != "name":
+    if sort_by != "price" and sort_by != "date_posted" and sort_by != "name":
         return JsonResponse({
             'ok': False,
             'res': 'Malformed search criteria'
         })
-    res.sort(key = lambda x : x.sort_by, reversed = True)
+    #res_sorted = sorted(res, key = lambda x : x.sort_by, reverse = True)
+    sorted(res, key = lambda i : i[sort_by], reverse = True)
     return JsonResponse({
         'ok': True,
         'res': res
