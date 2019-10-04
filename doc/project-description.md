@@ -26,6 +26,7 @@ This project follows a 4-tire Django project architecture: HTML frontend + exper
     - `api/v1/users/(\d+)/update`: update a user by its `user_id`
     - `api/v1/users/(\d+)/delete`: delete user by its `user_id`
     - `api/v1/pets/create`: create a new pet
+    - `api/v1/pets/get_all_pets`: get a list of all pets
     - `api/v1/pets/(\d+)/get_by_id`: get pet by `pet_id`
     - `api/v1/pets/(\d+)/update`: update pet by its `pet_id`
     - `api/v1/pets/(\d+)/delete`: delete pet by its `pet_id`

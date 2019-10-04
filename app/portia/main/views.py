@@ -2,6 +2,7 @@ import datetime
 from django import db
 from django.db import IntegrityError
 from main import models 
+import json
 
 from utils.err_msg_assembler import assemble_err_msg
 from utils.res_handler import res_err, res_success
@@ -114,15 +115,28 @@ def create_pet(request):
     return res_success("New Pet with pet_id " + str(new_pet.pk) + " is successfully created!")
 
 
+
+
 def get_all_pets(request):
     all_pets = []
     if request.method != 'GET':
         return res_err(assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "GET"))
     try:
-        all_pets = models.Pet.objects.all()
+        # make result list
+        for pet in models.Pet.objects.all():
+            new_pet = {
+                'name': pet.name,
+                'pet_type': pet.pet_type,
+                'description': pet.description,
+                'price': pet.price,
+                'date_posted': pet.date_posted
+            }
+            all_pets.append(new_pet)
     except db.Error:
         return res_err(str(db.Error))
     return res_success(all_pets)
+
+
 
 
 def get_pet_by_id(request, pet_id):
