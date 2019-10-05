@@ -11,11 +11,11 @@ import os
 import sys
 from django.core.wsgi import get_wsgi_application
 
-path = '/app/templates'
+path = '/app/front_end'
 if path not in sys.path:
     sys.path.append(path)
 
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'templates.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'front_end.settings')
 
 application = get_wsgi_application()
