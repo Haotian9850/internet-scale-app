@@ -1,9 +1,7 @@
 from django.shortcuts import render
 import datetime
-from django import db
 from django.db import IntegrityError
 from django.http import JsonResponse
-from main import models 
 import json
 
 from services.pet_service import get_all_pets

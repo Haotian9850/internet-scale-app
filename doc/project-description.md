@@ -15,7 +15,7 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
  - Container name: `exprience`
  - Django app name: `main`
  - API design
-    - `test/get_all_pets`: `get_pets()`: return a list of all pets in table `pets`. `GET` request only. No request body required
+    - `test/get_all_pets`: return a list of all pets in table `pets`. `GET` request only. No request body required
     - `test/search_pets`: return a list of pets matching search keyword. `POST` request only. Request body: 
         ```
         {
@@ -83,4 +83,4 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
 
 ## Common gotchas
  ### DB container configuration
- - Container `web` and requires a mysql container with username `'www'@'%'` and password `$cureUS` and a database named `cs4260` set up. Otherwise, docker compose will not bring up any contiainer. 
+ - Container `web` and requires a mysql container with username `'www'@'%'` and password `$cureUS` and a database named `cs4260` set up. Otherwise, docker compose will not bring up any containers. 
