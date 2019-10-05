@@ -5,7 +5,7 @@ import constants
 
 def get_all_users():
     try:
-        res = request.get(constants.BASE_URL + "users/get_all_users")
+        res = requests.get(constants.BASE_URL + "users/get_all_users")
     except requests.exceptions.Timeout:
         return "Request timed out", 0
     except requests.exceptions.HTTPError as err:
