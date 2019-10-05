@@ -8,11 +8,12 @@ from django.forms import model_to_dict, ModelForm
 import json
 
 def list_pets(request):
+    res, status = get_all_pets()
+    
     context = {
-        'results' : ['a', 'b', 'c']
+        'results' : res
     }
     
-    #return HttpResponse("helloworld")
     return render(request, 'front_end/homepage.html', context)
 
 ############### design decisions have to be made ###############

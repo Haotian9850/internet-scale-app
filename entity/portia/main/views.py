@@ -1,6 +1,7 @@
 import datetime
 from django import db
-from django.db import IntegrityError
+# from django.db import IntegrityError
+from django.db.utils import DatabaseError
 from main import models 
 import json
 
@@ -110,8 +111,8 @@ def create_pet(request):
     )
     try:
         new_pet.save()
-    except db.Error:
-        return res_err(str(db.Error))
+    except DatabaseError as text_error:
+        return res_err("Creating pet transaction failed with error " + str(text_error))
     return res_success("New Pet with pet_id " + str(new_pet.pk) + " is successfully created!")
 
 
@@ -134,6 +135,8 @@ def get_all_pets(request):
             all_pets.append(new_pet)
     except db.Error:
         return res_err(str(db.Error))
+    if len(all_pets) == 0:
+        return res_success("Currently, no pet is available in our inventory")
     return res_success(all_pets)
 
 
@@ -194,9 +197,3 @@ def delete_pet(request, pet_id):
         return res_err(assemble_err_msg(pet_id, "NOT_FOUND", "Pet"))
     pet.delete()
     return res_success("Pet with pet_id" + pet_id + " is successfully deleted.")
-
- 
-
-
-
-
