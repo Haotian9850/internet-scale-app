@@ -4,9 +4,8 @@ import json
 import logging
 import requests
 
-# User story 1
+# User story 5
 class PetSearchTest(SimpleTestCase):
-# 1
 	def setUp(self):
 		logging.disable(logging.CRITICAL)
 		pass
