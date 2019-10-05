@@ -1,10 +1,10 @@
-from django.test import TestCase, Client
+from django.test import SimpleTestCase, Client
 from main import models
 import json
 import logging
 
 # User story 1
-class PetSearchTest(TestCase):
+class PetSearchTest(SimpleTestCase):
 # 1
 	def setUp(self):
 		logging.disable(logging.CRITICAL)
