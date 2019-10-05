@@ -83,4 +83,4 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
 
 ## Common gotchas
  ### DB container configuration
- - Container `web` and requires a mysql container with username `'www'@'%'` and password `$cureUS` and a database named `cs4260` set up. Otherwise, docker compose will not bring up any contiainer. 
+ - Container `web` and requires a mysql container with username `'www'@'%'` and password `$cureUS` and a database named `cs4260` set up. Otherwise, docker compose will not bring up any containers. 
