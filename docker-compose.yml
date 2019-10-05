@@ -31,6 +31,8 @@ services:
       - experience
     volumes:
       - ./presentation:/app
+    networks: 
+      - backend
     ports:
       - "8003:8000"
     command: bash -c "/app/init.sh"

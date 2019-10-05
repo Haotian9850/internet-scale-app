@@ -16,9 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.conf.urls import include, url
 from django.urls import path
-from main import views
+from homepage import views_homepage
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('homepage/', )
+    url('homepage', views_homepage.list_pets)
 ]
