@@ -1,7 +1,7 @@
 import requests
 import json 
 
-import constants
+from .. import constants
 
 def get_all_pets():
     try:

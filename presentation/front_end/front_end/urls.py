@@ -16,11 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.conf.urls import include, url
 from django.urls import path
-from homepage import views_homepage
-from pet_detail import views_pet_details
+from . import views
+from .services.pet_service import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url('homepage', views_homepage.list_pets),
-    path('pet_details/<str:name>', views_pet_details.show_individual_pet_by_name)
+    url('homepage', views.list_pets),
+    path('pet_details/<str:name>', views.show_individual_pet_by_name)
 ]
