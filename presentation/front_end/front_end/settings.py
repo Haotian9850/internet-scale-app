@@ -51,10 +51,10 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'front_end.urls'
 
-front_end = [
+TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.Djangofront_end',
-        'DIRS': [],
+        'DIRS': [(os.path.join(BASE_DIR, 'templates')),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
