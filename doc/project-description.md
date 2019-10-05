@@ -5,10 +5,12 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
 ### presentation layer
  - Container image: `tp33/django`
  - Container name: `presentation`
- - Django app name: `main`
- - Template design:
-    - Homepage
-    - Pet detail page
+ - Django app name: `homepage`, `pet_details`
+ - Template hierarchy:
+    - base view (header + footer, contains search bar)
+        - Homepage
+            - component to list all pets / list search result
+        - Pet detail page: single component
 
 ### experience (application) layer
  - Container image: `tp33/django`
