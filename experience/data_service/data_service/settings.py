@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'data_service.wsgi.application'
 DATABASES = {
 }
 
-TEST_RUNNER = 'testing.DatabaselessTestRunner'
+#TEST_RUNNER = 'testing.DatabaselessTestRunner'
 
 
 # Password validation
