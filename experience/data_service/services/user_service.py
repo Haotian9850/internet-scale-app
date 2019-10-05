@@ -1,13 +1,13 @@
-import requests
-import json
+import requests 
+import json 
 
 import constants
 
-def get_all_pets():
+def get_all_users():
     try:
-        res = requests.get(constants.BASE_URL + "pets/get_all_pets")
+        res = request.get(constants.BASE_URL + "users/get_all_users")
     except requests.exceptions.Timeout:
         return "Request timed out", 0
     except requests.exceptions.HTTPError as err:
-        return "Request failed with HTTPError " + err.response.text, 0
+        return "Request failed with HttpError " + err.response.text, 0
     return json.loads(res.text)['res'], 1

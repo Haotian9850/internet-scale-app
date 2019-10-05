@@ -1,0 +1,1 @@
+BASE_URL = "http://entity:8000/api/v1/"
