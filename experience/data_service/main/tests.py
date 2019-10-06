@@ -4,7 +4,7 @@ import json
 import logging
 import requests
 
-# User story 5
+# User story 5: As the customer, I want to type and search about the pet I want
 class PetSearchTest(SimpleTestCase):
 	def setUp(self):
 		logging.disable(logging.CRITICAL)
