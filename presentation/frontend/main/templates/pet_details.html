@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="main-block">
+    <div class="row main-title">
+        <h1 class="display-6">
+            {{ result.name }}
+        </h1>
+    </div>
+    <hr/>
+    <div class="row pet-detail-table">
+            <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Value in our database</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">Pet Type</th>
+                        <td>{{ result.pet_type }}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Date Posted for sale</th>
+                        <td>{{ result.date_posted }}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Pet Description</th>
+                        <td>{{ result.description }}</td>
+                      </tr>
+                      <tr>
+                            <th scope="row">Pet Price</th>
+                            <td>{{ result.price }}</td>
+                          </tr>
+                    </tbody>
+            </table>
+    </div>
+    <div class="row homepage-button">
+            <a href="{% url 'homepage' %}" class="btn btn-primary">Back to Homepage</a>
+    </div>
+</div>
+{% endblock %}
