@@ -21,6 +21,7 @@ from main import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('homepage', views.list_pets, name = 'homepage'),
-    path('pet_details/<str:name>', views.show_individual_pet_by_name, name = 'pet_details')
+    path('pet_details/<str:name>', views.show_individual_pet_by_name, name = 'pet_details'),
+    path('search', views.search_pets_by_keyword, name = 'search'),
 ]
 

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="main-block">
+    <div class="row main-title">
+        <h1 class="display-6">
+            Search results matching "{{ keyword }}"
+        </h1>
+    </div>
+    <hr/>
+    <div class="row">
+        <h2 class="row">
+            Behold, these pets might be what you are looking for:
+        </h2>
+
+        {% if errMsg %}
+        <div class="alert alert-warning" role="alert">
+                <strong>{{ errMsg }}</strong>
+        </div>
+        {% endif %}
+
+        <div class="row">
+                {% for pet in result %}
+                <div class="card pet-card">
+                        <h5 class="card-header">
+                            {{ pet.name }}
+                            <br/>
+                            <small>{{ pet.pet_type }}</small>
+                        </h5>
+                        <div class="card-body">
+                          <p class="card-text">{{ pet.description }}</p>
+                          <p class="card-text">$ {{ pet.price }}</p>
+                          <a href="{% url 'pet_details' pet.name %}" class="btn btn-primary">Check it out!</a>
+                        </div>
+                </div>
+                {% endfor %}
+        </div>
+    </div>
+    <div class="row homepage-button">
+            <a href="{% url 'homepage' %}" class="btn btn-primary">Back to Homepage</a>
+    </div>
+</div>
+
+
+{% endblock %}
