@@ -42,7 +42,7 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
             "username": "Tiger2016",
             "first_name": "Tiger",
             "last_name": "Wu",
-            "email_address": "tiger2016@gmail.com",     # must be well-cormed email address
+            "email_address": "tiger2016@gmail.com",     # must be well-formed email address
             "age": 21,
             "gender": "Male",
             "zipcode": 22904,
