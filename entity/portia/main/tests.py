@@ -6,9 +6,8 @@ from main import models
 import json
 import logging
 
-# User story 1
+# User story 1 : As the seller, I want to inform the customer what type of animal does the pet belongs to
 class PetCreateTest(TestCase):
-# 1
 	def setUp(self):
 		logging.disable(logging.CRITICAL)
 		pass
@@ -30,7 +29,8 @@ class PetCreateTest(TestCase):
 	def tearDown(self):
 		pass
 
-# User story 2
+
+# User story 2 As the seller, I want to update the information of the pet to let the customer know the most up-to-date condition of the pet
 class PetUpdateTest(TestCase):
 # 3
 	def setUp(self):
@@ -60,9 +60,8 @@ class PetUpdateTest(TestCase):
 	def tearDown(self):
 		pass
 
-#User story 3
+#User story 3 As the seller, I want to request to cancel sales when the pet is no longer available
 class PetDeleteTest(TestCase):
-# 2
 	def setUp(self):
 		logging.disable(logging.CRITICAL)
 		pass
@@ -88,9 +87,8 @@ class PetDeleteTest(TestCase):
 	def tearDown(self):
 		pass
 
-#User story 4
+#User story 4 As the customer, I want to see all the pets listed by all the sellers
 class PetGetAllTest(TestCase):
-# 2
 	def setUp(self):
 		logging.disable(logging.CRITICAL)
 		pass
@@ -113,5 +111,59 @@ class PetGetAllTest(TestCase):
 		print (json_response)
 		self.assertEquals(json_response, 0	) 
 		
+	def tearDown(self):
+		pass
+
+# User story 6 As the customer, I want to change and update my profile to give my most up-to-date information to the seller
+class UserUpdateTest(TestCase):
+	def setUp(self):
+		logging.disable(logging.CRITICAL)
+		pass
+		
+	def test_success_response(self):
+		u = {"username":"jupaoqq", 
+			"first_name":"daniel",
+			"last_name":"wang",
+			"age":21,
+			"gender":"M",
+			"email_address":"hw4ce@virginia.edu",
+			"zipcode":22904,
+			"password":"gshbdh"}
+		c = Client()
+		response = c.post('/api/v1/users/create', u)
+		#print (json.loads((response.content).decode("utf-8")))
+		update = {'last_name': 'yang'}
+		response = c.post('/api/v1/users/' + str(2) + '/update', update)
+		json_response = json.loads((response.content).decode("utf-8"))
+		#print (json_response)
+		self.assertEquals(json_response["ok"], True) 
+
+	def tearDown(self):
+		pass
+
+# User story 7 As the customer, I want to change and update my profile to give my most up-to-date information to the seller
+class UserDeleteTest(TestCase):
+	def setUp(self):
+		logging.disable(logging.CRITICAL)
+		pass
+		
+	def test_success_response(self):
+		u = {"username":"jupaoqq", 
+			"first_name":"daniel",
+			"last_name":"wang",
+			"age":21,
+			"gender":"M",
+			"email_address":"hw4ce@virginia.edu",
+			"zipcode":22904,
+			"password":"gshbdh"}
+		c = Client()
+		response = c.post('/api/v1/users/create', u)
+		#print (json.loads((response.content).decode("utf-8")))
+		update = {'last_name': 'yang'}
+		response = c.get('/api/v1/users/' + str(1) + '/delete')
+		json_response = json.loads((response.content).decode("utf-8"))
+		#print (json_response)
+		self.assertEquals(json_response["ok"], True) 
+
 	def tearDown(self):
 		pass
