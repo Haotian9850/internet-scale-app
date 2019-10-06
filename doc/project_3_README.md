@@ -29,3 +29,25 @@
 4. Head to `localhost:8003/homepage` to access the project:
     - Click `[Check it out!]` button to view details for each pet
     - Type in the search bar and click `[Search]` to search for matching pets
+
+#### Testing
+1. Testing in `entity` (model layer)
+- ssh into container `entity` by running the following command:
+    ```
+    sudo docker exec -it entity /bin/bash
+    ```
+- run the following command to run all tests
+    ```
+    cd /app/portia
+    python manage.py test
+    ```
+2. Testing in `experience` (experience layer)
+- ssh into container `experience` by running the following command:
+    ```
+    sudo docker exec -it experience /bin/bash
+    ```
+- run the following command to run all tests
+    ```
+    cd /app/portia
+    python manage.py test
+    ```
