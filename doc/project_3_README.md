@@ -27,5 +27,5 @@
     ```
 3. Run `sudo docker-compose up` in project root folder to bring up docker container `entity`, `experience` and `presentation`
 4. Head to `localhost:8003/homepage` to access the project:
-    - Click `Check it out!` button to view details for each pet
-    - Type in the search bar and click `Search` to search for matching pets
+    - Click `[Check it out!]` button to view details for each pet
+    - Type in the search bar and click `[Search]` to search for matching pets
