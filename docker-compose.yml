@@ -9,6 +9,7 @@ services:
       - ./entity:/app
     networks:
       - backend
+      - services
     ports:
       - "8001:8000"
     command: bash -c "/app/init.sh"
@@ -20,7 +21,8 @@ services:
     volumes:
       - ./experience:/app
     networks:
-      - backend
+      - services
+      - public
     ports:
       - "8002:8000"
     command: bash -c "/app/init.sh"
@@ -32,7 +34,7 @@ services:
     volumes:
       - ./presentation:/app
     networks: 
-      - backend
+      - public
     ports:
       - "8003:8000"
     command: bash -c "/app/init.sh"
@@ -40,4 +42,8 @@ services:
   
 networks:
   backend:
+    driver: bridge
+  services:
+    driver: bridge
+  public: 
     driver: bridge

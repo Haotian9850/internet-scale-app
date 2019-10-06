@@ -42,7 +42,7 @@ def search_pets(request):
     keyword = request.POST.get('keyword')
     
     for pet in res:
-        if pet['name'].lower().find(keyword.lower()) != -1 or pet['description'].lower().find(keyword.lower()) != -1 or pet['pet_type'].lower().find(keyword.lower()) != -1:
+        if pet['name'].lower().find(keyword.lower()) != -1 or pet['pet_type'].lower().find(keyword.lower()) != -1:
             result.append(pet)
     
     return JsonResponse({

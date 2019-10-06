@@ -1,1 +1,79 @@
-[{"model": "contenttypes.contenttype", "pk": 1, "fields": {"app_label": "admin", "model": "logentry"}}, {"model": "contenttypes.contenttype", "pk": 2, "fields": {"app_label": "auth", "model": "user"}}, {"model": "contenttypes.contenttype", "pk": 3, "fields": {"app_label": "auth", "model": "group"}}, {"model": "contenttypes.contenttype", "pk": 4, "fields": {"app_label": "auth", "model": "permission"}}, {"model": "contenttypes.contenttype", "pk": 5, "fields": {"app_label": "contenttypes", "model": "contenttype"}}, {"model": "contenttypes.contenttype", "pk": 6, "fields": {"app_label": "sessions", "model": "session"}}, {"model": "contenttypes.contenttype", "pk": 7, "fields": {"app_label": "main", "model": "user"}}, {"model": "contenttypes.contenttype", "pk": 8, "fields": {"app_label": "main", "model": "pet"}}, {"model": "main.pet", "pk": 7, "fields": {"name": "Rocky", "pet_type": "dog", "description": "A very nice dog", "price": "99.999", "date_posted": "2019-10-05T22:13:17.377Z"}}, {"model": "main.pet", "pk": 8, "fields": {"name": "Charlie", "pet_type": "cat", "description": "A very nice cat", "price": "111.999", "date_posted": "2019-10-05T22:15:17.377Z"}}, {"model": "auth.permission", "pk": 1, "fields": {"name": "Can add log entry", "content_type": 1, "codename": "add_logentry"}}, {"model": "auth.permission", "pk": 2, "fields": {"name": "Can change log entry", "content_type": 1, "codename": "change_logentry"}}, {"model": "auth.permission", "pk": 3, "fields": {"name": "Can delete log entry", "content_type": 1, "codename": "delete_logentry"}}, {"model": "auth.permission", "pk": 4, "fields": {"name": "Can view log entry", "content_type": 1, "codename": "view_logentry"}}, {"model": "auth.permission", "pk": 5, "fields": {"name": "Can add permission", "content_type": 4, "codename": "add_permission"}}, {"model": "auth.permission", "pk": 6, "fields": {"name": "Can change permission", "content_type": 4, "codename": "change_permission"}}, {"model": "auth.permission", "pk": 7, "fields": {"name": "Can delete permission", "content_type": 4, "codename": "delete_permission"}}, {"model": "auth.permission", "pk": 8, "fields": {"name": "Can view permission", "content_type": 4, "codename": "view_permission"}}, {"model": "auth.permission", "pk": 9, "fields": {"name": "Can add group", "content_type": 3, "codename": "add_group"}}, {"model": "auth.permission", "pk": 10, "fields": {"name": "Can change group", "content_type": 3, "codename": "change_group"}}, {"model": "auth.permission", "pk": 11, "fields": {"name": "Can delete group", "content_type": 3, "codename": "delete_group"}}, {"model": "auth.permission", "pk": 12, "fields": {"name": "Can view group", "content_type": 3, "codename": "view_group"}}, {"model": "auth.permission", "pk": 13, "fields": {"name": "Can add user", "content_type": 2, "codename": "add_user"}}, {"model": "auth.permission", "pk": 14, "fields": {"name": "Can change user", "content_type": 2, "codename": "change_user"}}, {"model": "auth.permission", "pk": 15, "fields": {"name": "Can delete user", "content_type": 2, "codename": "delete_user"}}, {"model": "auth.permission", "pk": 16, "fields": {"name": "Can view user", "content_type": 2, "codename": "view_user"}}, {"model": "auth.permission", "pk": 17, "fields": {"name": "Can add content type", "content_type": 5, "codename": "add_contenttype"}}, {"model": "auth.permission", "pk": 18, "fields": {"name": "Can change content type", "content_type": 5, "codename": "change_contenttype"}}, {"model": "auth.permission", "pk": 19, "fields": {"name": "Can delete content type", "content_type": 5, "codename": "delete_contenttype"}}, {"model": "auth.permission", "pk": 20, "fields": {"name": "Can view content type", "content_type": 5, "codename": "view_contenttype"}}, {"model": "auth.permission", "pk": 21, "fields": {"name": "Can add session", "content_type": 6, "codename": "add_session"}}, {"model": "auth.permission", "pk": 22, "fields": {"name": "Can change session", "content_type": 6, "codename": "change_session"}}, {"model": "auth.permission", "pk": 23, "fields": {"name": "Can delete session", "content_type": 6, "codename": "delete_session"}}, {"model": "auth.permission", "pk": 24, "fields": {"name": "Can view session", "content_type": 6, "codename": "view_session"}}, {"model": "auth.permission", "pk": 25, "fields": {"name": "Can add user", "content_type": 7, "codename": "add_user"}}, {"model": "auth.permission", "pk": 26, "fields": {"name": "Can change user", "content_type": 7, "codename": "change_user"}}, {"model": "auth.permission", "pk": 27, "fields": {"name": "Can delete user", "content_type": 7, "codename": "delete_user"}}, {"model": "auth.permission", "pk": 28, "fields": {"name": "Can view user", "content_type": 7, "codename": "view_user"}}, {"model": "auth.permission", "pk": 29, "fields": {"name": "Can add pet", "content_type": 8, "codename": "add_pet"}}, {"model": "auth.permission", "pk": 30, "fields": {"name": "Can change pet", "content_type": 8, "codename": "change_pet"}}, {"model": "auth.permission", "pk": 31, "fields": {"name": "Can delete pet", "content_type": 8, "codename": "delete_pet"}}, {"model": "auth.permission", "pk": 32, "fields": {"name": "Can view pet", "content_type": 8, "codename": "view_pet"}}]
+[ 
+    { 
+        "model":"main.pet",
+        "pk":5,
+        "fields":{ 
+            "name":"Persian Cat",
+            "pet_type":"cat",
+            "description":"Like dogs, cats look very different from people but share many of our body’s characteristics, such as a circulatory system, lungs, a digestive tract, a nervous system, and so on.",
+            "price":"200.00",
+            "date_posted":"2019-10-05T21:33:09.726Z"
+        }
+    },
+    { 
+        "model":"main.pet",
+        "pk":6,
+        "fields":{ 
+            "name":"Cute Samoyed",
+            "pet_type":"dog",
+            "description":"The Samoyed is a friendly, personable dog. These are intelligent dogs, with a touch of independence. Bred to live in a tent in very close quarters with their families, they thrive on human company. Samoyeds will alarm bark and, if left alone for long periods of time, will often develop into nuisance barkers.",
+            "price":"1230.000",
+            "date_posted":"2019-10-06T04:40:50.054Z"
+        }
+    },
+    { 
+        "model":"main.pet",
+        "pk":8,
+        "fields":{ 
+            "name":"Amazon Tree Frog",
+            "pet_type":"Frog",
+            "description":"Frogs in captivity are quite long lived (with proper care) so be prepared for a long term commitment. Average life spans are typically four to fifteen years, although some frogs have been known to live longer.",
+            "price":"12.000",
+            "date_posted":"2019-10-06T16:47:02.229Z"
+        }
+    },
+    { 
+        "model":"main.pet",
+        "pk":10,
+        "fields":{ 
+            "name":"American Hedgehog",
+            "pet_type":"Hedgehog",
+            "description":"The most common species of domesticated hedgehog is the white-bellied hedgehog, also called African pygmy hedgehog. The Algerian hedgehog is a separate species of hedgehog. The domesticated hedgehog kept as a pet is typically the African pygmy hedgehog.",
+            "price":"112.000",
+            "date_posted":"2019-10-06T16:47:29.478Z"
+        }
+    },
+    { 
+        "model":"main.pet",
+        "pk":11,
+        "fields":{ 
+            "name":"Brown Squirrels",
+            "pet_type":"Squirrels",
+            "description":"Squirrels and other wild animals make lousy pets for numerous reasons. In many states it's illegal to keep them as pets, some states require licenses, and in other states people are required to have wildlife rehabilitator training. Some folks want to find a way around all this license nonsense, and while it’s hard to hide a deer, cute fluffy squirrels can fit in a cage.",
+            "price":"1121.000",
+            "date_posted":"2019-10-06T16:47:29.478Z"
+        }
+    },
+    { 
+        "model":"main.pet",
+        "pk":12,
+        "fields":{ 
+            "name":"Tarantulas",
+            "pet_type":"Spider",
+            "description":"Some species exceed 10 inches in legspan. They’re by far the most popular pet spiders and can be bought in pet stores.",
+            "price":"110.000",
+            "date_posted":"2019-10-06T16:47:29.478Z"
+        }
+    },
+    { 
+        "model":"main.pet",
+        "pk":12,
+        "fields":{ 
+            "name":"American Raccoon",
+            "pet_type":"Raccoon",
+            "description":"Raccoons aren't common pets, but those that choose to invite a raccoon into their home find that they make fascinating and funny companions. Raccoons are a lot like a large ferret or puppy but have characteristics that are still special to their species, and they are always full of mischief. Many experts advise against keeping raccoons as pets, as they are difficult to tame and have health issues that are hard to manage.",
+            "price":"99.000",
+            "date_posted":"2019-10-06T16:47:29.478Z"
+        }
+    }
+]
