@@ -111,7 +111,7 @@ class PetGetAllTest(TestCase):
 		response = c.get('/api/v1/pets/get_all_pets')
 		json_response = len(json.loads((response.content).decode("utf-8")))
 		print (json_response)
-		self.assertEquals(json_response, 1) 
+		self.assertEquals(json_response, 2) 
 		
 	def tearDown(self):
 		pass

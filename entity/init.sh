@@ -1,5 +1,5 @@
-#!/bin/bash          
-
+#!/bin/bash    
+python /app/portia/manage.py flush --no-input
 python /app/portia/manage.py makemigrations main
 python /app/portia/manage.py migrate
 python /app/portia/manage.py loaddata /app/portia/fixture.json
