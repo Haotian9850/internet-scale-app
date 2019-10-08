@@ -1,7 +1,7 @@
 # Project 3 Changes and Updates
 
 ## New features since release `0.0.2`
-### The following features are added in project 3:
+### The following features are made available in project 3:
 - Added new `experience` and `presentation` layer in independent docker containers
 - Added pet data services in `experience` layer
 - Added frontend templates in `presentation` layer including a site homepage, pet detail page and a search result page
@@ -22,7 +22,7 @@
 
 ### Deployment & Testing
 #### Deployment
-1. Ensure that a `mysql` container with a database named `cs4260` and a user `'www'@'%'` who is granted all privileges to `cs4260` and `test_cs4260` (the test database Django test `Client` will create later) 
+1. Ensure that a `mysql` container with a database named `cs4260` and a user `'www'@'%'` who is granted all privileges to `cs4260` and `test_cs4260` (the test database Django test `Client` will create later). Otherwise, `docker-compose up` will not bring up any container
 2. Add `mysql` container to docker networks `backend` by running the following command:
     ```
     sudo docker network connect internet-scale-app_backend mysql
@@ -48,7 +48,7 @@
     ```
     sudo docker exec -it experience /bin/bash
     ```
-- run the following command to run all tests
+- run the following command to run all tests (an new pet named `Rocky` will be added to database `cs4260`)
     ```
     cd /app/portia
     python manage.py test
