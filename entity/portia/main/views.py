@@ -23,7 +23,7 @@ def create_user(request):
         email_address = request.POST.get('email_address'), 
         age = request.POST.get('age'),
         gender = request.POST.get('gender'),
-        date_joined = datetime.datetime.now(), 
+        date_joined = datetime.now(), 
         zipcode = request.POST.get('zipcode'), 
         password = request.POST.get('password')
     )
@@ -202,12 +202,14 @@ def delete_pet(request, pet_id):
     return res_success("Pet with pet_id" + pet_id + " is successfully deleted.")
 
 
-def log_in(request, username, password):
-    if request.method != "GET":
+def log_in(request):
+    if request.method != "POST":
         return res_err(
-            assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "GET")
+            assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "POST")
         )
     try:
+        username = request.POST.get("username")
+        password = request.POST.get("password")
         user = models.User.objects.get(username=username)
         # TODO: add hashing
         token = get_new_authenticator(16)
@@ -223,6 +225,9 @@ def log_in(request, username, password):
             assemble_err_msg(username, "NOT_FOUND", "User")
         )
     
+
+
+
 
 
 #################### Authenticator entity APIs ####################
