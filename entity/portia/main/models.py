@@ -11,7 +11,14 @@ class User(models.Model):
     email_address = models.EmailField(max_length = 254, unique = True, validators = [validate_email])
     date_joined = models.DateTimeField()
     zipcode = models.IntegerField()
-    password = models.CharField(max_length = 96)
+    password = models.CharField(max_length = 96)    #will need to be hashed later in project 4
+
+
+class Authenticator(models.Model):
+    authenticator = models.IntegerField(primary_key : True)
+    user_id = models.IntegerField()
+    date_created = models.DateTimeField()
+
 
 
 class Pet(models.Model):

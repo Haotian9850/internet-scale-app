@@ -197,3 +197,27 @@ def delete_pet(request, pet_id):
         return res_err(assemble_err_msg(pet_id, "NOT_FOUND", "Pet"))
     pet.delete()
     return res_success("Pet with pet_id" + pet_id + " is successfully deleted.")
+
+
+def log_in(request, username, password):
+    if request.method != "GET":
+        return res_err(
+            assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "GET")
+        )
+    try:
+        user = models.User.objects.get(username=username)
+        # TODO: add hashing + return authenticator
+        if user.password == password:
+            return res_success(AUTHENTICATOR_PLACEHOLDER)
+        else:
+            return res_err(
+                assemble_err_msg(username, "WRONG_PASSWORD", "User")
+            )
+    except models.User.DoesNotExist:
+        return res_err(
+            assemble_err_msg(username, "NOT_FOUND", "User")
+        )
+    
+# Authenticator entity APIs
+def create_authenticator(user_id, date_created):
+    # logic to generate authenticator...
