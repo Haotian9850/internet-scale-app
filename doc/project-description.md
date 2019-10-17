@@ -72,6 +72,21 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
     - `api/v1/pets/(\d+)/get_by_id`: get pet by `pet_id`
     - `api/v1/pets/(\d+)/update`: update pet by its `pet_id`
     - `api/v1/pets/(\d+)/delete`: delete pet by its `pet_id`
+    - `api/v1/login`: login a user. `POST` request only. If login is successful returns an authenticator. Request body:
+        ```
+        {
+            "username": hao,
+            "password": 123456
+        }
+        ```
+        Returns:
+        ```
+        {
+            "ok": true, 
+            "res": "sAc0gFXexFLPdL4RKuUXBw=="
+        }
+        ```
+
 
 ### data layer
  - Container image: `mysql:latest`
