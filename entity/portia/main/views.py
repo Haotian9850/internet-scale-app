@@ -1,12 +1,15 @@
 import datetime
 from django import db
-# from django.db import IntegrityError
+from django.db import IntegrityError
 from django.db.utils import DatabaseError
 from main import models 
+from datetime import datetime
 import json
 
 from utils.err_msg_assembler import assemble_err_msg
 from utils.res_handler import res_err, res_success
+from services.authenticator_service import get_new_authenticator
+
 
 
 def create_user(request):
@@ -206,9 +209,11 @@ def log_in(request, username, password):
         )
     try:
         user = models.User.objects.get(username=username)
-        # TODO: add hashing + return authenticator
+        # TODO: add hashing
+        token = get_new_authenticator(16)
+        create_authenticator(user.pk, token)
         if user.password == password:
-            return res_success(AUTHENTICATOR_PLACEHOLDER)
+            return res_success(token)
         else:
             return res_err(
                 assemble_err_msg(username, "WRONG_PASSWORD", "User")
@@ -218,6 +223,28 @@ def log_in(request, username, password):
             assemble_err_msg(username, "NOT_FOUND", "User")
         )
     
-# Authenticator entity APIs
-def create_authenticator(user_id, date_created):
-    # logic to generate authenticator...
+
+
+#################### Authenticator entity APIs ####################
+
+def create_authenticator(user_id, token):
+    new_authenticator = models.Authenticator(
+        authenticator = token,
+        user_id = user_id,
+        date_created = datetime.now()
+    )
+    try:
+        new_authenticator.save()
+    except (db.Error, IntegrityError) as e:
+        print(str(e.args))
+    print("New authenticator for user with ID {} is successfully saved!".format(user_id))
+
+
+
+def delete_authenticator(authenticator):
+    try:
+        authenticator = models.Authenticator.objects.get(authenticator=authenticator)
+    except models.Authenticator.DoesNotExist:
+        print("Authenticator {} not found.".format(authenticator))
+    authenticator.delete()
+    print("Authenticator {} is successfully deleted.".format(authenticator))
