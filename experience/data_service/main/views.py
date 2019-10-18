@@ -5,7 +5,7 @@ from django.http import JsonResponse
 import json
 
 from services.pet_service import get_all_pets
-from services.user_service import log_in
+from services.user_service import log_in, log_out
 
 def get_pet_list(request):
     if request.method != 'GET':
@@ -100,6 +100,23 @@ def log_in_user(request):
 
 
 
+
+def log_out_user(request):
+    if request.method != 'POST':
+        return JsonResponse({
+            'ok': False,
+            'res': 'Wrong request method. Request method must be POST.'
+        })
+    res, status = log_out(request.POST.get('authenticator'))
+    if status == 0:
+        return JsonResponse({
+            'ok': False,
+            'res': res
+        })
+    return JsonResponse({
+        'ok': True,
+        'res': res
+    })
 
     
 

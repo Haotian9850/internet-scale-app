@@ -13,7 +13,7 @@ def get_all_users():
     return json.loads(res.text)["res"], 1
 
 
-
+# TODO: add err handling when user not found
 def log_in(username, password):
     try:
         res = requests.post(
@@ -34,7 +34,7 @@ def log_in(username, password):
 def log_out(authenticator):
     try:
         res = requests.post(
-            url=constants.BA + "logout",
+            url=constants.BASE_URL + "logout",
             data={
                 "authenticator": authenticator
             }
@@ -44,8 +44,3 @@ def log_out(authenticator):
     except requests.exceptions.HTTPError as err:
         return "Request failed with HttpError {}".format(err.response.text), 0
     return json.loads(res.text)["res"], 1
-
-
-
-# def log_out(username):
-
