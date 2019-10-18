@@ -24,7 +24,23 @@ def log_in(username, password):
             }
         )
     except requests.exceptions.Timeout:
-        return "Request time out", 0
+        return "Request timed out", 0
+    except requests.exceptions.HTTPError as err:
+        return "Request failed with HttpError {}".format(err.response.text), 0
+    return json.loads(res.text)["res"], 1
+
+
+
+def log_out(authenticator):
+    try:
+        res = requests.post(
+            url=constants.BA + "logout",
+            data={
+                "authenticator": authenticator
+            }
+        )
+    except requests.exceptions.Timeout:
+        return "Request timed out", 0
     except requests.exceptions.HTTPError as err:
         return "Request failed with HttpError {}".format(err.response.text), 0
     return json.loads(res.text)["res"], 1

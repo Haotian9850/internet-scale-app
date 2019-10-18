@@ -37,6 +37,12 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
             "password": 123456
         }
         ```
+    - `test/logout`: log out a user by deleting its authenticator. `POST` request only. Request body:
+        ```
+        {
+            "authenticator": "sAc0gFXexFLPdL4RKuUXBw=="
+        }
+        ```
 
 
 

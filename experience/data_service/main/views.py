@@ -78,6 +78,7 @@ def sort_pets(request):
     })
 
 
+
 def log_in_user(request):
     if request.method != 'POST':
         return JsonResponse({
@@ -96,6 +97,9 @@ def log_in_user(request):
         'ok': True,
         'res': res
     })
+
+
+
 
     
 
