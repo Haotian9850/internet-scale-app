@@ -105,6 +105,8 @@ def delete_user(request, user_id):
 def create_pet(request):
     if request.method != 'POST':
         return res_err(assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "POST"))
+    if not is_authenticated(request.POST.get("authenticator"), True):
+        return res_err("User not authenticated.")
     new_pet = models.Pet(
         name = request.POST.get('name'), 
         pet_type = request.POST.get('pet_type'), 
@@ -166,6 +168,8 @@ def get_pet_by_id(request, pet_id):
 def update_pet(request, pet_id):
     if request.method != 'POST':
         return res_err(assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "POST"))
+    if not is_authenticated(request.POST.get("authenticator"), request.POST.get("username"), False):
+        return res_err("User is not properly registered / authenticated.")
     try:
         pet = models.Pet.objects.get(pk=pet_id)
     except models.Pet.DoesNotExist:
@@ -194,6 +198,8 @@ def update_pet(request, pet_id):
 def delete_pet(request, pet_id):
     if request.method != "GET":
         return res_err(assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "GET"))
+    if not is_authenticated(request.POST.get("authenticator"), request.POST.get("username"), False):
+        return res_err("User is not properly registered / authenticated.")
     try:
         pet = models.Pet.objects.get(pk=pet_id)
     except models.Pet.DoesNotExist:
@@ -274,3 +280,20 @@ def delete_authenticator(authenticator):
         print("Authenticator {} not found.".format(authenticator))
     authenticator.delete()
     print("Authenticator {} is successfully deleted.".format(authenticator))
+
+
+
+# a user can only update / delete a pet he created
+def is_authenticated(authenticator, username, isCreate):
+    authenticator = ""
+    try:
+        authenticator = models.Authenticator.objects.get(authenticator=authenticator)
+    except models.Authenticator.DoesNotExist:
+        return False
+    if not isCreate:
+        try: 
+            user = models.User.objects.get(username=username)
+        except models.Authenticator.DoesNotExist:
+            return False 
+        return authenticator.user_id == user.id
+    return True 
