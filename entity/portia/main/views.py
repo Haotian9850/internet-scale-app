@@ -211,7 +211,7 @@ def log_in(request):
         username = request.POST.get("username")
         password = request.POST.get("password")
         user = models.User.objects.get(username=username)
-        # TODO: add hashing
+        # TODO: add hashing to password
         token = get_new_authenticator(16)
         create_authenticator(user.pk, token)
         if user.password == password:
