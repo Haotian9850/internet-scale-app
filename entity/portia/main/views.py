@@ -186,7 +186,7 @@ def update_pet(request, pet_id):
     if not new_attributes_updated:
         return res_success("No field is updated.")
     else:
-        return res_success("Pet with pet_id " + pet_id + " is successfully updated.")
+        return res_success("Pet with pet_id {} is successfully updated.".format(pet_id))
     
 
 
@@ -199,7 +199,7 @@ def delete_pet(request, pet_id):
     except models.Pet.DoesNotExist:
         return res_err(assemble_err_msg(pet_id, "NOT_FOUND", "Pet"))
     pet.delete()
-    return res_success("Pet with pet_id" + pet_id + " is successfully deleted.")
+    return res_success("Pet with pet_id {} is successfully deleted.".format(pet_id))
 
 
 def log_in(request):
@@ -224,6 +224,24 @@ def log_in(request):
         return res_err(
             assemble_err_msg(username, "NOT_FOUND", "User")
         )
+
+
+
+def log_out(request):
+    # delete authenticator
+    if request.method != "POST":
+        return res_err(
+            assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "POST")
+        )
+    try:    
+        authenticator = models.Authenticator.objects.get(authenticator=request.POST.get("authenticator"))
+    except models.Authenticator.DoesNotExist:
+        return res_err(
+            assemble_err_msg(request.POST.get("authenticator"), "NOT_FOUND", "Authenticator")
+        )
+    authenticator.delete()
+    return res_success("Authenticator {} is successfully deleted.".format(request.POST.get("authenticator")))
+
     
 
 
@@ -238,11 +256,14 @@ def create_authenticator(user_id, token):
         user_id = user_id,
         date_created = datetime.now()
     )
+    new_authenticator.save()
+    """
     try:
         new_authenticator.save()
     except (db.Error, IntegrityError) as e:
         print(str(e.args))
     print("New authenticator for user with ID {} is successfully saved!".format(user_id))
+    """
 
 
 

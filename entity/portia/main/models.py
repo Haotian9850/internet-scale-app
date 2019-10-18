@@ -15,7 +15,7 @@ class User(models.Model):
 
 
 class Authenticator(models.Model):
-    authenticator = models.CharField(primary_key=True, max_length=16)
+    authenticator = models.CharField(primary_key=True, max_length=64)
     user_id = models.IntegerField()
     date_created = models.DateTimeField()
 
