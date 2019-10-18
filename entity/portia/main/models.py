@@ -21,7 +21,7 @@ class Pet(models.Model):
     description = models.CharField(max_length = 1000)
     price = models.DecimalField(max_digits = 8, decimal_places = 3)
     date_posted = models.DateTimeField()
-    #user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=-1)
 
 
 
