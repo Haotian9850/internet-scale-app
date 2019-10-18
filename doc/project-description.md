@@ -17,19 +17,27 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
  - Container name: `exprience`
  - Django app name: `main`
  - API design
-    - `test/get_all_pets`: return a list of all pets in table `pets`. `GET` request only. No request body required
+    - `test/get_all_pets`: returns a list of all pets in table `pets`. `GET` request only. No request body required
     - `test/search_pets`: return a list of pets matching search keyword. `POST` request only. Request body: 
         ```
         {
             "keyword": "dog"
         }
         ```
-    - `test/sort_pets`: return a list of pets sorted by specified sorting criteria. `POST` request only. Request body: 
+    - `test/sort_pets`: returns a list of pets sorted by specified sorting criteria. `POST` request only. Request body: 
         ```
         {
             "sort_by": "name"
         }
         ```
+    - `test/login`: returns an authenticator if login is successful. `POST` request only
+        ```
+        {
+            "username": hao,
+            "password": 123456
+        }
+        ```
+
 
 
 ### entity layer

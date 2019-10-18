@@ -18,7 +18,7 @@ def get_all_pets():
 def search_pets(keyword):
     try:
         res = requests.post(
-            url = constants.BASE_URL + "search_pets",
+            url=constants.BASE_URL + "search_pets",
             data={
                 'keyword': keyword
             }
