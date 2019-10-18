@@ -105,8 +105,11 @@ def delete_user(request, user_id):
 def create_pet(request):
     if request.method != 'POST':
         return res_err(assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "POST"))
-    if not is_authenticated(request.POST.get("authenticator"), True):
-        return res_err("User not authenticated.")
+    if not is_authenticated(
+        request.POST.get("authenticator"), 
+        request.POST.get("username"), 
+        True):
+        return res_err("User is not properly registered / authenticated.")
     new_pet = models.Pet(
         name = request.POST.get('name'), 
         pet_type = request.POST.get('pet_type'), 
@@ -195,17 +198,17 @@ def update_pet(request, pet_id):
 
 
 
-def delete_pet(request, pet_id):
-    if request.method != "GET":
-        return res_err(assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "GET"))
+def delete_pet(request):
+    if request.method != "POST":
+        return res_err(assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "POST"))
     if not is_authenticated(request.POST.get("authenticator"), request.POST.get("username"), False):
         return res_err("User is not properly registered / authenticated.")
     try:
-        pet = models.Pet.objects.get(pk=pet_id)
+        pet = models.Pet.objects.get(pk=request.POST.get("pet_id"))
     except models.Pet.DoesNotExist:
-        return res_err(assemble_err_msg(pet_id, "NOT_FOUND", "Pet"))
+        return res_err(assemble_err_msg(request.POST.get("pet_id"), "NOT_FOUND", "Pet"))
     pet.delete()
-    return res_success("Pet with pet_id {} is successfully deleted.".format(pet_id))
+    return res_success("Pet with pet_id {} is successfully deleted.".format(request.POST.get("pet_id")))
 
 
 def log_in(request):

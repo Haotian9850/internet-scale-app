@@ -89,7 +89,8 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
             "description": "dog is human's best animal friend",
             "price": 299,
             "date_posted": TIMESTAMP,
-            "authenticator": "IFm1qp3t6SwR17VAk8tvWw=="
+            "authenticator": "IFm1qp3t6SwR17VAk8tvWw==",
+            "username": "hao"
         }
         ```
     - `api/v1/pets/get_all_pets`: get a list of all pets
@@ -102,10 +103,19 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
             "description": "dog is human's best animal friend", # optional
             "price": 299,   # optional
             "date_posted": TIMESTAMP,   #optional
+            "authenticator": "IFm1qp3t6SwR17VAk8tvWw==",
+            "username": "hao"
+        }
+        ```
+    - `api/v1/pets/(\d+)/delete`: delete pet by its `pet_id`. `POST` only. Request body:
+        ```
+        {
+            "pet_id": 3,
+            "username": "hao",
             "authenticator": "IFm1qp3t6SwR17VAk8tvWw=="
         }
         ```
-    - `api/v1/pets/(\d+)/delete`: delete pet by its `pet_id`
+
     - `api/v1/login`: login a user. `POST` request only. If login is successful returns an `UTF-8` encoded 128-bit authenticator. Request body:
         ```
         {
