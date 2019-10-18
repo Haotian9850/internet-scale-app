@@ -80,7 +80,7 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
     - `api/v1/pets/(\d+)/get_by_id`: get pet by `pet_id`
     - `api/v1/pets/(\d+)/update`: update pet by its `pet_id`
     - `api/v1/pets/(\d+)/delete`: delete pet by its `pet_id`
-    - `api/v1/login`: login a user. `POST` request only. If login is successful returns an authenticator. Request body:
+    - `api/v1/login`: login a user. `POST` request only. If login is successful returns an `UTF-8` encoded 128-bit authenticator. Request body:
         ```
         {
             "username": hao,
@@ -92,6 +92,12 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
         {
             "ok": true, 
             "res": "sAc0gFXexFLPdL4RKuUXBw=="
+        }
+        ```
+    - `api/v1/logout`: logout a user by deleting its authenticator. `POST` request only. Request body:
+        ```
+        {
+            "authenticator": "IFm1qp3t6SwR17VAk8tvWw=="
         }
         ```
 
