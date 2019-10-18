@@ -14,12 +14,6 @@ class User(models.Model):
     password = models.CharField(max_length=96)    # TODO: hash later in project 4
 
 
-class Authenticator(models.Model):
-    authenticator = models.CharField(primary_key=True, max_length=64)
-    user_id = models.IntegerField()
-    date_created = models.DateTimeField()
-
-
 
 class Pet(models.Model):
     name = models.CharField(max_length = 50)
@@ -27,4 +21,17 @@ class Pet(models.Model):
     description = models.CharField(max_length = 1000)
     price = models.DecimalField(max_digits = 8, decimal_places = 3)
     date_posted = models.DateTimeField()
+    #user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
+
+
+class Authenticator(models.Model):
+    authenticator = models.CharField(primary_key=True, max_length=64)
+    user_id = models.IntegerField()
+    date_created = models.DateTimeField()
+
+
+
+
 
