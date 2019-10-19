@@ -1,8 +1,10 @@
 from services.pet_service import get_all_pets, search_pets, sort_pets
+from services.user_service import log_in_service, log_out_service
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
+
 from main.forms.create_pet_form import CreatePetForm
 from main.forms.login_form import LoginForm
 from main.forms.register_form import RegisterForm
@@ -118,10 +120,21 @@ def create_new_pet(request):
 
 
 
+# need to set request.session
 def login(request):
     if request.method == "POST":
-        form = LoginForm()
+        form = LoginForm(request.POST)
         if form.is_valid():
+            # log user in
+            res, status = log_in_service(request.POST["username"], request.POST["password"])
+            if status == 0:
+                return JsonResponse({
+                    "ok": False,
+                    "res": res
+                })
+            else:
+                request.session["username"] = request.POST["username"]
+                request.session["authenticator"] = res
             return HttpResponseRedirect("/homepage")
     else:
         form = LoginForm()
@@ -132,6 +145,9 @@ def login(request):
             "form": form
         }
     )
+
+
+    
 
 
 def register(request):

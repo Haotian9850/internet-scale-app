@@ -5,5 +5,7 @@
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Submit">
+    {{ errMsg }}
 </form>
+
 {% endblock %}

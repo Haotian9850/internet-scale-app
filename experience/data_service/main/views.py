@@ -2,6 +2,7 @@ from django.shortcuts import render
 import datetime
 from django.db import IntegrityError
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 import json
 
 from services.pet_service import get_all_pets_service, create_pet_service
@@ -96,7 +97,7 @@ def sort_pets(request):
     })
 
 
-
+@csrf_exempt
 def log_in(request):
     if request.method != 'POST':
         return JsonResponse({
