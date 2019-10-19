@@ -4,7 +4,7 @@ from django.db import IntegrityError
 from django.http import JsonResponse
 import json
 
-from services.pet_service import get_all_pets
+from services.pet_service import get_all_pets_service, create_pet_service
 from services.user_service import log_in, log_out
 
 def get_pet_list(request):
@@ -13,7 +13,7 @@ def get_pet_list(request):
             'ok': False,
             'res': 'Wrong request method. Request method must be GET.'
         })
-    res, status = get_all_pets()
+    res, status = get_all_pets_service()
     if status == 0:
         return JsonResponse({
             'ok': False,
@@ -21,12 +21,26 @@ def get_pet_list(request):
         })
     return JsonResponse({
         'ok': True,
-        'res': get_all_pets()
+        'res': res
     })
 
 
-# def create_pet(request):
-
+def create_pet(request):
+    if request.method != 'POST':
+        return JsonResponse({
+            'ok': False,
+            'res': 'Wrong request method. Request method must be {}'.format("POST")
+        })
+    res, status = create_pet_service(request)
+    if status == 0:
+        return JsonResponse({
+            'ok': False,
+            'res': res
+        })
+    return JsonResponse({
+        'ok': True,
+        'res': res
+    })    
 
 
 
@@ -37,7 +51,7 @@ def search_pets(request):
             'ok': False,
             'res': 'Wrong request method. Request method must be POST.'
         })
-    res, status = get_all_pets()
+    res, status = get_all_pets_service()
     if status == 0:
         return JsonResponse({
             'ok': False,
@@ -63,7 +77,7 @@ def sort_pets(request):
             'ok': False,
             'res': 'Wrong request method. Request method must be POST.'
         })
-    res, status = get_all_pets()
+    res, status = get_all_pets_service()
     if status == 0:
         return JsonResponse({
             'ok': False,

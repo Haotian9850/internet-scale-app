@@ -22,7 +22,7 @@ def list_pets(request):
         request,
         "homepage.html",
         {
-            "all_pets": res[0]
+            "all_pets": res
         }
     )
 
@@ -36,7 +36,7 @@ def show_individual_pet_by_name(request, name):
             'res': res
         })
     result = {}
-    for pet in res[0]: 
+    for pet in res: 
         if pet['name'] == name:
             result = pet
     if len(result) == 0:

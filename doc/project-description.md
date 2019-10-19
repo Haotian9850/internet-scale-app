@@ -21,12 +21,12 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
     - `test/create_pet`: create a new pet object for authenticated user. `POST` request only. Request body:
         ```
         {
-            "username": "hao",
-            "authenticator": "+4FJ5kkUkPPjIX5ioVmQhg==",
-            "name": "cute samoyed",
+            "name": "cute dog",
             "pet_type": "dog",
-            "description": "Samoyeds are good dogs!",
-            "price": 999
+            "description": "dog is human's best animal friend",
+            "price": 299,
+            "authenticator": "IFm1qp3t6SwR17VAk8tvWw==",
+            "username": "hao"
         }
         ```
     - `test/search_pets`: return a list of pets matching search keyword. `POST` request only. Request body: 
@@ -99,7 +99,6 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
             "pet_type": "dog",
             "description": "dog is human's best animal friend",
             "price": 299,
-            "date_posted": TIMESTAMP,
             "authenticator": "IFm1qp3t6SwR17VAk8tvWw==",
             "username": "hao"
         }
