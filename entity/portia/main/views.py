@@ -1,12 +1,15 @@
 import datetime
 from django import db
-# from django.db import IntegrityError
+from django.db import IntegrityError
 from django.db.utils import DatabaseError
 from main import models 
+from datetime import datetime
 import json
 
 from utils.err_msg_assembler import assemble_err_msg
 from utils.res_handler import res_err, res_success
+from services.authenticator_service import get_new_authenticator
+
 
 
 def create_user(request):
@@ -20,7 +23,7 @@ def create_user(request):
         email_address = request.POST.get('email_address'), 
         age = request.POST.get('age'),
         gender = request.POST.get('gender'),
-        date_joined = datetime.datetime.now(), 
+        date_joined = datetime.now(), 
         zipcode = request.POST.get('zipcode'), 
         password = request.POST.get('password')
     )
@@ -101,18 +104,24 @@ def delete_user(request, user_id):
 
 def create_pet(request):
     if request.method != 'POST':
-        return res_err(assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "POST"))
+        return res_err(assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "POST")) 
+    if not is_authenticated(
+        request.POST.get("authenticator"), 
+        request.POST.get("username"), 
+        True):
+        return res_err("User is not properly registered / authenticated.")
     new_pet = models.Pet(
         name = request.POST.get('name'), 
         pet_type = request.POST.get('pet_type'), 
         description = request.POST.get('description'),
         price = request.POST.get('price'),
-        date_posted = datetime.datetime.now()
+        date_posted = datetime.now(),
+        user = models.User.objects.get(username=request.POST.get("username"))
     )
     try:
         new_pet.save()
-    except DatabaseError as text_error:
-        return res_err("Creating pet transaction failed with error " + str(text_error))
+    except DatabaseError as e:
+        return res_err("Creating pet transaction failed with error " + str(e.args))
     return res_success("New Pet with pet_id " + str(new_pet.pk) + " is successfully created!")
 
 
@@ -163,6 +172,8 @@ def get_pet_by_id(request, pet_id):
 def update_pet(request, pet_id):
     if request.method != 'POST':
         return res_err(assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "POST"))
+    if not is_authenticated(request.POST.get("authenticator"), request.POST.get("username"), False):
+        return res_err("User is not properly registered / authenticated.")
     try:
         pet = models.Pet.objects.get(pk=pet_id)
     except models.Pet.DoesNotExist:
@@ -183,17 +194,110 @@ def update_pet(request, pet_id):
     if not new_attributes_updated:
         return res_success("No field is updated.")
     else:
-        return res_success("Pet with pet_id " + pet_id + " is successfully updated.")
+        return res_success("Pet with pet_id {} is successfully updated.".format(pet_id))
     
 
 
 
-def delete_pet(request, pet_id):
-    if request.method != "GET":
-        return res_err(assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "GET"))
+def delete_pet(request):
+    if request.method != "POST":
+        return res_err(assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "POST"))
+    if not is_authenticated(request.POST.get("authenticator"), request.POST.get("username"), False):
+        return res_err("User is not properly registered / authenticated.")
     try:
-        pet = models.Pet.objects.get(pk=pet_id)
+        pet = models.Pet.objects.get(pk=request.POST.get("pet_id"))
     except models.Pet.DoesNotExist:
-        return res_err(assemble_err_msg(pet_id, "NOT_FOUND", "Pet"))
+        return res_err(assemble_err_msg(request.POST.get("pet_id"), "NOT_FOUND", "Pet"))
     pet.delete()
-    return res_success("Pet with pet_id" + pet_id + " is successfully deleted.")
+    return res_success("Pet with pet_id {} is successfully deleted.".format(request.POST.get("pet_id")))
+
+
+def log_in(request):
+    if request.method != "POST":
+        return res_err(
+            assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "POST")
+        )
+    try:
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        user = models.User.objects.get(username=username)
+        # TODO: add hashing to password
+        token = get_new_authenticator(16)
+        create_authenticator(user.pk, token)
+        if user.password == password:
+            return res_success(token)
+        else:
+            return res_err(
+                assemble_err_msg(username, "WRONG_PASSWORD", "User")
+            )
+    except models.User.DoesNotExist:
+        return res_err(
+            assemble_err_msg(username, "NOT_FOUND", "User")
+        )
+
+
+
+def log_out(request):
+    # delete authenticator
+    if request.method != "POST":
+        return res_err(
+            assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "POST")
+        )
+    try:    
+        authenticator = models.Authenticator.objects.get(authenticator=request.POST.get("authenticator"))
+    except models.Authenticator.DoesNotExist:
+        return res_err(
+            assemble_err_msg(request.POST.get("authenticator"), "NOT_FOUND", "Authenticator")
+        )
+    authenticator.delete()
+    return res_success("Authenticator {} is successfully deleted.".format(request.POST.get("authenticator")))
+
+    
+
+
+
+
+
+#################### Authenticator entity APIs ####################
+
+def create_authenticator(user_id, token):
+    new_authenticator = models.Authenticator(
+        authenticator = token,
+        user_id = user_id,
+        date_created = datetime.now()
+    )
+    new_authenticator.save()
+    """
+    try:
+        new_authenticator.save()
+    except (db.Error, IntegrityError) as e:
+        print(str(e.args))
+    print("New authenticator for user with ID {} is successfully saved!".format(user_id))
+    """
+
+
+
+def delete_authenticator(authenticator):
+    try:
+        authenticator = models.Authenticator.objects.get(authenticator=authenticator)
+    except models.Authenticator.DoesNotExist:
+        print("Authenticator {} not found.".format(authenticator))
+    authenticator.delete()
+    print("Authenticator {} is successfully deleted.".format(authenticator))
+
+
+
+# a user can only update / delete a pet he created
+def is_authenticated(token, username, isCreate):
+    authenticator = ""
+    try:
+        authenticator = models.Authenticator.objects.get(authenticator=token)
+    except models.Authenticator.DoesNotExist:
+        return False
+    if not isCreate:
+        try: 
+            user = models.User.objects.get(username=username)
+        except models.User.DoesNotExist:
+            return False 
+        return authenticator.user_id == user.id
+    return True 
