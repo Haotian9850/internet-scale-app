@@ -5,7 +5,7 @@ from django.http import JsonResponse
 import json
 
 from services.pet_service import get_all_pets_service, create_pet_service
-from services.user_service import log_in, log_out
+from services.user_service import log_in_service, log_out_service
 
 def get_pet_list(request):
     if request.method != 'GET':
@@ -97,14 +97,14 @@ def sort_pets(request):
 
 
 
-def log_in_user(request):
+def log_in(request):
     if request.method != 'POST':
         return JsonResponse({
             'ok': False,
             'res': 'Wrong request method. Request method must be POST.'
         })
     # TODO: add hash here (?)
-    res, status = log_in(request.POST.get('username'), request.POST.get('password'))
+    res, status = log_in_service(request.POST.get('username'), request.POST.get('password'))
     if status == 0:
         return JsonResponse({
             'ok': False,
@@ -119,13 +119,13 @@ def log_in_user(request):
 
 
 
-def log_out_user(request):
+def log_out(request):
     if request.method != 'POST':
         return JsonResponse({
             'ok': False,
             'res': 'Wrong request method. Request method must be POST.'
         })
-    res, status = log_out(request.POST.get('authenticator'))
+    res, status = log_out_service(request.POST.get('authenticator'))
     if status == 0:
         return JsonResponse({
             'ok': False,

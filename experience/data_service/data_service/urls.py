@@ -11,6 +11,6 @@ urlpatterns = [
     url('test/create_pet', views.create_pet),
     url('test/search_pets', views.search_pets),
     url('test/sort_pets', views.sort_pets),
-    url('test/login', views.log_in_user),
-    url('test/logout', views.log_out_user)
+    url('test/login', views.log_in),
+    url('test/logout', views.log_out)
 ]

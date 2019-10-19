@@ -3,12 +3,16 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from main.forms import SearchForm
+from main.forms.create_pet_form import CreatePetForm
+from main.forms.login_form import LoginForm
+from main.forms.register_form import RegisterForm
+
 import json
+
+
 
 def list_pets(request):
     res, status = get_all_pets()
-    
     if status == 0:
         errMsg = "An issue has occurred when rendering homepage template..."
         return render(
@@ -28,6 +32,7 @@ def list_pets(request):
 
 
 
+
 def show_individual_pet_by_name(request, name):
     res, status = get_all_pets()
     if status == 0:
@@ -44,14 +49,19 @@ def show_individual_pet_by_name(request, name):
             'ok': False,
             'res': 'No pet found for given name'
         })
-    context = {
-        'result': result
-    }
-    return render(request, 'pet_details.html', context)
+    return render(
+        request, 
+        'pet_details.html', 
+        {
+            'result': result        
+        }
+    )
 
 
 
-def search_pets_by_keyword(request):
+
+
+def search(request):
     if request.method == 'POST':
         if request.POST['keyword'] == '':
             return render(
@@ -77,6 +87,18 @@ def search_pets_by_keyword(request):
             'search.html',
             {
                 'result': res,
-                'keyword': request.POST['keyword']
+                'keyword': request.POST['keyword'],
+                
             }
         )
+
+
+def create_new_pet(request):
+    # process form input after submission
+    if request.method == 'POST':
+        form = CreatePetForm(request.POST)
+        if form.is_valid():
+            return HttpResponseRedirect('/homepage')
+    else:
+        form = CreatePetForm()
+    return render(request,'create_pet.html',{'form': form})

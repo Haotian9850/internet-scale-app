@@ -63,7 +63,8 @@
             <a class="navbar-brand" href="#">Portia: An Exotic Pet Store</a>
             
             <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                <form class="form-inline my-2 my-lg-0" name="search_form", method="POST" action="{% url 'search' %}">{% csrf_token %}
+                <form class="form-inline my-2 my-lg-0" name="search_form", method="post" action="{% url 'search' %}">
+                    {% csrf_token %}
                     <input class="form-control mr-sm-2" type="search" name="keyword" placeholder="What do you like to pet?">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
