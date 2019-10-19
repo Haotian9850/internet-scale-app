@@ -25,6 +25,10 @@ def get_pet_list(request):
     })
 
 
+# def create_pet(request):
+
+
+
 
 def search_pets(request):
     # search in pet name, description and pet_type

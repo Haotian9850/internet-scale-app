@@ -104,7 +104,7 @@ def delete_user(request, user_id):
 
 def create_pet(request):
     if request.method != 'POST':
-        return res_err(assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "POST"))
+        return res_err(assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "POST")) 
     if not is_authenticated(
         request.POST.get("authenticator"), 
         request.POST.get("username"), 
@@ -115,12 +115,13 @@ def create_pet(request):
         pet_type = request.POST.get('pet_type'), 
         description = request.POST.get('description'),
         price = request.POST.get('price'),
-        date_posted = datetime.datetime.now()
+        date_posted = datetime.now(),
+        user = models.User.objects.get(username=request.POST.get("username"))
     )
     try:
         new_pet.save()
-    except DatabaseError as text_error:
-        return res_err("Creating pet transaction failed with error " + str(text_error))
+    except DatabaseError as e:
+        return res_err("Creating pet transaction failed with error " + str(e.args))
     return res_success("New Pet with pet_id " + str(new_pet.pk) + " is successfully created!")
 
 
@@ -287,16 +288,16 @@ def delete_authenticator(authenticator):
 
 
 # a user can only update / delete a pet he created
-def is_authenticated(authenticator, username, isCreate):
+def is_authenticated(token, username, isCreate):
     authenticator = ""
     try:
-        authenticator = models.Authenticator.objects.get(authenticator=authenticator)
+        authenticator = models.Authenticator.objects.get(authenticator=token)
     except models.Authenticator.DoesNotExist:
         return False
     if not isCreate:
         try: 
             user = models.User.objects.get(username=username)
-        except models.Authenticator.DoesNotExist:
+        except models.User.DoesNotExist:
             return False 
         return authenticator.user_id == user.id
     return True 

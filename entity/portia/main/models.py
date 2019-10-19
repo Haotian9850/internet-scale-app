@@ -27,7 +27,7 @@ class Pet(models.Model):
 
 
 class Authenticator(models.Model):
-    authenticator = models.CharField(primary_key=True, max_length=64)
+    authenticator = models.CharField(primary_key=True, max_length=255)
     user_id = models.IntegerField()
     date_created = models.DateTimeField()
 
