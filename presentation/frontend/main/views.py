@@ -1,5 +1,5 @@
-from services.pet_service import get_all_pets, search_pets, sort_pets
-from services.user_service import log_in_service, log_out_service
+from services.pet_service import get_all_pets, search_pets, sort_pets, create_pet_service
+from services.user_service import log_in_service, log_out_service, register_service
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
@@ -100,13 +100,22 @@ def search(request):
 
 
 
-
+# need to implement cookie-based session authenticator check
 def create_new_pet(request):
     # process form input after submission
     if request.method == 'POST':
+        if not request.session["authenticator"]:
+            return HttpResponseRedirect("/login")
         form = CreatePetForm(request.POST)
         if form.is_valid():
-            return HttpResponseRedirect('/homepage')
+            res, status = create_pet_service(request, request.session["username"], request.session["authenticator"])
+            if status == 0:
+                return JsonResponse({
+                    "ok": False,
+                    "errMsg": res
+                })
+            else:
+                return HttpResponseRedirect('/homepage')    # TODO add different redirections for res returned (statusMsg)
     else:
         form = CreatePetForm()
     return render(
@@ -116,6 +125,8 @@ def create_new_pet(request):
             'form': form
         }
     )
+
+
 
 
 
@@ -130,7 +141,7 @@ def login(request):
             if status == 0:
                 return JsonResponse({
                     "ok": False,
-                    "res": res
+                    "errMsg": res
                 })
             else:
                 request.session["username"] = request.POST["username"]
@@ -147,14 +158,34 @@ def login(request):
     )
 
 
+
+
+def logout(request):
+    # internal, no need to check request.method
+    res, status = log_out_service(request.session["authenticator"])
+    if status == 0:
+        return JsonResponse({
+            "ok": False,
+            "errMsg": res
+        })
+    else:
+        return HttpResponseRedirect("/homepage")    # TODO: add statusMsg to redirect
+        
     
 
 
 def register(request):
     if request.method == "POST":
-        form = RegisterForm()
+        form = RegisterForm(request.POST)
         if form.is_valid():
-            return HttpResponseRedirect("/login")
+            res, status = register_service(request)
+            if status == 0:
+                return JsonResponse({
+                    "ok": False,
+                    "errMsg": res
+                })
+            else:
+                return HttpResponseRedirect("/login")
     else:
         form = RegisterForm()
     return render(

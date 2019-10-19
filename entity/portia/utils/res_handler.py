@@ -3,7 +3,7 @@ from django.http import JsonResponse
 def res_err(err_msg):
     return JsonResponse({
         'ok': False,
-        'error': err_msg
+        'res': err_msg
     })
 
 def res_success(res):

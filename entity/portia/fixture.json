@@ -45,6 +45,21 @@
        }
     },
     { 
+      "model":"main.user",
+      "pk":4,
+      "fields":{ 
+         "username":"isabel",
+         "first_name":"isabel",
+         "last_name":"james",
+         "age":21,
+         "gender":"Female",
+         "email_address":"isabel@virginia.edu",
+         "date_joined":"2019-10-18T19:29:13.801Z",
+         "zipcode":22904,
+         "password":"123456"
+      }
+    },
+    { 
        "model":"main.pet",
        "pk":5,
        "fields":{ 
