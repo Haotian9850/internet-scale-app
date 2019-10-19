@@ -11,6 +11,8 @@ import json
 
 
 
+
+
 def list_pets(request):
     res, status = get_all_pets()
     if status == 0:
@@ -29,6 +31,8 @@ def list_pets(request):
             "all_pets": res
         }
     )
+
+
 
 
 
@@ -61,6 +65,7 @@ def show_individual_pet_by_name(request, name):
 
 
 
+
 def search(request):
     if request.method == 'POST':
         if request.POST['keyword'] == '':
@@ -87,10 +92,11 @@ def search(request):
             'search.html',
             {
                 'result': res,
-                'keyword': request.POST['keyword'],
-                
+                'keyword': request.POST['keyword']
             }
         )
+
+
 
 
 def create_new_pet(request):
@@ -101,4 +107,44 @@ def create_new_pet(request):
             return HttpResponseRedirect('/homepage')
     else:
         form = CreatePetForm()
-    return render(request,'create_pet.html',{'form': form})
+    return render(
+        request,
+        'create_pet.html',
+        {
+            'form': form
+        }
+    )
+
+
+
+
+def login(request):
+    if request.method == "POST":
+        form = LoginForm()
+        if form.is_valid():
+            return HttpResponseRedirect("/homepage")
+    else:
+        form = LoginForm()
+    return render(
+        request, 
+        "login.html",
+        {
+            "form": form
+        }
+    )
+
+
+def register(request):
+    if request.method == "POST":
+        form = RegisterForm()
+        if form.is_valid():
+            return HttpResponseRedirect("/login")
+    else:
+        form = RegisterForm()
+    return render(
+        request, 
+        "register.html",
+        {
+            "form": form
+        }
+    )        
