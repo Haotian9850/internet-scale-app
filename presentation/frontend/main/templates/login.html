@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form method="post" action="/login">
+<form method="post" action="/login" class="form form-group form-row">
     {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit">
-    {{ errMsg }}
+    {% for field in form %}
+        <label class="form-label col-sm-2" for="{{ field.name }}">{{ field.label }}</label>
+        {{ field }}
+    {% endfor %}
+    <input type="submit" value="Submit" class="btn btn-primary">
 </form>
 
 {% endblock %}

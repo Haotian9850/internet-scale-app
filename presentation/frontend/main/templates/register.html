@@ -2,9 +2,12 @@
 
 {% block content %}
 <br/>
-<form method="post" action="/register">
+<form method="post" action="/register" class="form form-group form-row"> 
     {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit">
+    {% for field in form %}
+        <label class="form-label col-sm-2" for="{{ field.name }}">{{ field.label }}</label>
+        {{ field }}
+    {% endfor %}
+    <input type="submit" value="Submit" class="btn btn-primary">
 </form>
 {% endblock %}
