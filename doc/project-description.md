@@ -18,6 +18,11 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
  - Django app name: `main`
  - API design
     - `test/get_all_pets`: returns a list of all pets in table `pets`. `GET` request only. No request body required
+    - `test/get_pet_by_user`: get pets by `username`. `POST` only. Request body:
+        ```
+        {
+            "username": "hao"
+        }
     - `test/create_pet`: create a new pet object for authenticated user. `POST` request only. Request body:
         ```
         {

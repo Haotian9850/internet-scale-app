@@ -168,6 +168,7 @@ def get_pet_by_id(request, pet_id):
 
 
 
+
 def get_pets_by_username(request):
     if request.method != "POST":
         return res_err(assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "POST"))

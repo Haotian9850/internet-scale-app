@@ -8,6 +8,7 @@ from main import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     url('test/get_all_pets', views.get_pet_list),
+    url('test/get_pets_by_user', views.get_pets_by_user),
     url('test/create_user', views.create_user),
     url('test/create_pet', views.create_pet),
     url('test/search_pets', views.search_pets),
