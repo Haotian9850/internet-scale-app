@@ -2,15 +2,7 @@
 
 {% block content %}
 <div class="main-block">
-        
-        <form method="post" action="/register" class="form form-group form-row"> 
-            {% csrf_token %}
-            {% for field in form %}
-                <label class="form-label col-sm-2" for="{{ field.name }}">{{ field.label }}</label>
-                {{ field }}
-                
-            {% endfor %}
-            <div class="row status">
+        <div class="row status">
                 {% if statusMsg %}
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                         <strong>{{ statusMsg }}</strong>
@@ -28,9 +20,15 @@
                 </div>
                 {% endif %}
         </div>
+        <form method="post" action="/register" class="form form-group form-row"> 
+            {% csrf_token %}
+            {% for field in form %}
+                <label class="form-label col-sm-2" for="{{ field.name }}">{{ field.label }}</label>
+                {{ field }}
+                
+            {% endfor %}
             <input type="submit" value="Submit" class="btn btn-primary" >
         </form>
-        
 </div>
 
 {% endblock %}
