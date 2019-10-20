@@ -101,18 +101,21 @@ def search(request):
 
 def create_new_pet(request):
     # process form input after submission
+    context = {}
     if request.method == 'POST':
         form = CreatePetForm(request.POST)
         if form.is_valid():
             return HttpResponseRedirect('/homepage')
+
+        context['error'] = "Invalid Entry: Please check if information is correct and make sure price has two decimal places."
     else:
         form = CreatePetForm()
+        
+    context['form'] = form
     return render(
         request,
         'create_pet.html',
-        {
-            'form': form
-        }
+        context
     )
 
 
