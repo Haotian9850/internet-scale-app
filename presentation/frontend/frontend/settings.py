@@ -59,7 +59,7 @@ TEMPLATES = [
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True
-SESSION_COOKIE_AGE=120
+SESSION_COOKIE_AGE=1200
 
 CSRF_COOKIE_SECURE = True
 
