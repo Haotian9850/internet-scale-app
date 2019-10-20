@@ -207,6 +207,9 @@ def login(request):
                     "ok": False,
                     "errMsg": res
                 })
+            elif status == -1:
+                request.session["errMsg"] = res
+                return HttpResponseRedirect("/login")
             else:
                 request.session["username"] = request.POST["username"]
                 request.session["authenticator"] = res
@@ -220,11 +223,11 @@ def login(request):
         request, 
         "login.html",
         {
+            "errMsg": request.session.get("errMsg"),
             "statusMsg": request.session.get("statusMsg"),
             "form": form
         }
     )
-
 
 
 
