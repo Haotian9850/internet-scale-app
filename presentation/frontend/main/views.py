@@ -200,6 +200,8 @@ def create_new_pet(request):
         "create_pet.html",
         {
             "form": form,
+            "authenticated": request.session.get("authenticated"),
+            "username": request.session.get("username")
         }
     )
 
