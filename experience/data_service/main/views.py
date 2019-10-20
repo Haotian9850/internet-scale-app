@@ -54,6 +54,11 @@ def create_pet(request):
             'ok': False,
             'res': res
         })
+    elif status == -1:
+        return JsonResponse({
+            'ok': False,
+            'res': res  # err msg str
+        })
     return JsonResponse({
         'ok': True,
         'res': res
@@ -160,6 +165,11 @@ def create_user(request):
         })
     res, status = create_user_service(request)
     if status == 0:
+        return JsonResponse({
+            "ok": False,
+            "res": res
+        })
+    elif status == -1:
         return JsonResponse({
             "ok": False,
             "res": res

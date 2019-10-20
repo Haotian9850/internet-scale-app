@@ -53,7 +53,9 @@ def register_service(request):
         )
     except requests.exceptions.Timeout:
         return "Request timed out", 0
-    except requests.exceptions.Timeout:
+    except requests.exceptions.Timeout as err:
         return "Request failed with HttpError {}".format(err.response.text), 0
+    if not json.loads(res.text)["ok"]:
+        return json.loads(res.text)["res"], -1
     return json.loads(res.text)["res"], 1
     
