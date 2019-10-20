@@ -5,7 +5,7 @@ from django.db.utils import DatabaseError
 from main import models 
 from datetime import datetime
 import json
-
+from django.contrib.auth.hashers import make_password, check_password
 from utils.err_msg_assembler import assemble_err_msg
 from utils.res_handler import res_err, res_success
 from services.authenticator_service import get_new_authenticator
@@ -16,6 +16,8 @@ def create_user(request):
     if request.method != 'POST':
         return res_err(assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "POST"))
 
+    pword_plain = request.POST.get('password')
+    pword_hash = make_password(pword_plain)
     new_user = models.User(
         username = request.POST.get('username'), 
         first_name = request.POST.get('first_name'), 
@@ -25,7 +27,7 @@ def create_user(request):
         gender = request.POST.get('gender'),
         date_joined = datetime.now(), 
         zipcode = request.POST.get('zipcode'), 
-        password = request.POST.get('password')
+        password = pword_hash
     )
     
     try:
@@ -250,7 +252,8 @@ def log_in(request):
         # TODO: add hashing to password
         token = get_new_authenticator(16)
         create_authenticator(user.pk, token)
-        if user.password == password:
+
+        if check_password(password, user.password):
             return res_success(token)
         else:
             return res_err(
