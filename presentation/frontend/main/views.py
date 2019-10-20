@@ -54,14 +54,16 @@ def list_user_pets(request):
     if request.session.get("username") is None:
         # session timed out
         return HttpResponseRedirect("/homepage")
+    if request.session.get("authenticator") is None:
+        # not authenticated
+        return HttpResponseRedirect("/login")
     res, status = get_pets_by_user_service(request.session["username"])
     if status == 0:
-        errMsg = "An issue has occurred when rendering homepage template..."
         return render(
             request,
             "homepage.html",
             {
-                errMsg : errMsg
+                "errMsg" : "An issue has occurred when rendering homepage template..."
             }
         )
     if type(res) is str:
@@ -70,6 +72,7 @@ def list_user_pets(request):
             "homepage.html",
             {
                 "all_pets": [],
+                "errMsg": "No pet found for current user",
                 "authenticated": request.session.get("authenticated"),
                 "username": request.session.get("username")
             }
@@ -158,7 +161,7 @@ def search(request):
 # need to implement cookie-based session authenticator check
 def create_new_pet(request):
     if request.method == 'POST':
-        if not request.session["authenticator"]:
+        if not request.session.get("authenticator"):
             return HttpResponseRedirect("/login")
         form = CreatePetForm(request.POST)
         if form.is_valid():

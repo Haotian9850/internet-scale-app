@@ -63,4 +63,3 @@ def register_service(request):
     if not json.loads(res.text)["ok"]:
         return json.loads(res.text)["res"], -1
     return json.loads(res.text)["res"], 1
-    

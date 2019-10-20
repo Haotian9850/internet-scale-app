@@ -237,6 +237,7 @@ def delete_pet(request):
     return res_success("Pet with pet_id {} is successfully deleted.".format(request.POST.get("pet_id")))
 
 
+
 def log_in(request):
     if request.method != "POST":
         return res_err(
@@ -309,6 +310,7 @@ def delete_authenticator(authenticator):
         print("Authenticator {} not found.".format(authenticator))
     authenticator.delete()
     print("Authenticator {} is successfully deleted.".format(authenticator))
+
 
 
 
