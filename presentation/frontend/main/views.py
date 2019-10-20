@@ -4,11 +4,11 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-
+from django.contrib.auth.password_validation import validate_password
 from main.forms.create_pet_form import CreatePetForm
 from main.forms.login_form import LoginForm
 from main.forms.register_form import RegisterForm
-
+from django.core.exceptions import ValidationError
 import json
 
 
@@ -275,12 +275,29 @@ def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
-            if request.POST["password"] != request.POST["confirm_password"]:
+            pword = request.POST["password"]
+            if pword != request.POST["confirm_password"]:
                 return render(
                 request,
                 "register.html",
                 {
                     "errMsg": "Invalid Entry: Passwords do not match. ",
+                    "form": form
+                }
+                )
+
+            try: 
+                validate_password(pword)
+                
+            except ValidationError as e:
+                errMsg = ""
+                for error in e:
+                    errMsg = errMsg + error + '\n'
+                return render(
+                request,
+                "register.html",
+                {
+                    "errMsg": errMsg,
                     "form": form
                 }
                 )
