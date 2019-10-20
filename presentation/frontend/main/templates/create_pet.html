@@ -8,5 +8,9 @@
         {{ field }}
     {% endfor %}
     <input type="submit" value="Submit" class="btn btn-primary">
+    <p>{% if error %}
+        {{ error }}
+        {% endif %}
+    </p>
 </form>
 {% endblock %}

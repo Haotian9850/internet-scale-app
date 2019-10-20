@@ -103,6 +103,7 @@ def search(request):
 # need to implement cookie-based session authenticator check
 def create_new_pet(request):
     # process form input after submission
+    context = {}
     if request.method == 'POST':
         if not request.session["authenticator"]:
             return HttpResponseRedirect("/login")
@@ -116,14 +117,15 @@ def create_new_pet(request):
                 })
             else:
                 return HttpResponseRedirect('/homepage')    # TODO add different redirections for res returned (statusMsg)
+        context['error'] = "Invalid Entry: Please check if information is correct and make sure price has two decimal places."
     else:
         form = CreatePetForm()
+        
+    context['form'] = form
     return render(
         request,
         'create_pet.html',
-        {
-            'form': form
-        }
+        context
     )
 
 
