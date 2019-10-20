@@ -13,8 +13,6 @@ import json
 
 
 
-
-
 def list_all_pets(request):
     res, status = get_all_pets()
     if request.session.get("authenticated") == None:
@@ -152,6 +150,9 @@ def search(request):
 
 
 
+
+
+
 # need to implement cookie-based session authenticator check
 def create_new_pet(request):
     # process form input after submission
@@ -208,9 +209,10 @@ def login(request):
         request, 
         "login.html",
         {
-            "form": form
+            "form": form,
         }
     )
+
 
 
 
@@ -229,6 +231,7 @@ def logout(request):
         return HttpResponseRedirect("/homepage")    # TODO: add statusMsg to redirect
         
     
+
 
 
 def register(request):

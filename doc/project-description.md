@@ -12,6 +12,8 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
             - component to list all pets / list search result
         - Pet detail page: single component
 
+
+
 ### experience (application) layer
  - Container image: `tp33/django`
  - Container name: `exprience`
