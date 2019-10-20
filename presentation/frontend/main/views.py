@@ -144,6 +144,16 @@ def search(request):
                     errMsg : errMsg
                 }
             )
+        if len(res) == 0:
+            return render(
+                request,
+                "search.html",
+                {
+                    "result": res,
+                    "keyword": request.POST["keyword"],
+                    "errMsg": "No pets found in our database."
+                }
+            )
         return render(
             request, 
             'search.html',

@@ -33,15 +33,28 @@
     </div>
     <hr/>
     <div class="row">
-        <h2 class="row">
+        <h2>
             Behold, these pets might be what you are looking for:
         </h2>
 
-        {% if errMsg %}
-        <div class="alert alert-warning" role="alert">
-                <strong>{{ errMsg }}</strong>
+        <div class="row status">
+                {% if statusMsg %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>{{ statusMsg }}</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+                {% endif %}
+                {% if errMsg %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>{{ errMsg }}</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+                {% endif %}
         </div>
-        {% endif %}
 
         <div class="row">
                 {% for pet in result %}
