@@ -209,12 +209,16 @@ def login(request):
                 })
             elif status == -1:
                 request.session["errMsg"] = res
+                if request.session.get("statusMsg") is not None:
+                    request.session.__delitem__("statusMsg")
                 return HttpResponseRedirect("/login")
             else:
                 request.session["username"] = request.POST["username"]
                 request.session["authenticator"] = res
                 request.session["authenticated"] = True
                 request.session["statusMsg"] = "Successfully logged in for user {}".format(request.session["username"])
+                if request.session.get("errMsg") is not None:
+                    request.session.__delitem__("errMsg")
                 
             return HttpResponseRedirect("/homepage")
     else:
@@ -264,9 +268,13 @@ def register(request):
                 })
             elif status == -1:
                 request.session["errMsg"] = res
+                if request.session.get("statusMsg") is not None:
+                    request.session.__delitem__("statusMsg") 
                 return HttpResponseRedirect("/register")
             else:
                 request.session["statusMsg"] = res 
+                if request.session.get("errMsg") is not None:
+                    request.session.__delitem__("errMsg") 
                 return HttpResponseRedirect("/login")
     else:
         form = RegisterForm()
