@@ -9,6 +9,6 @@ class RegisterForm(forms.Form):
     email_address = forms.EmailField(label="Email address", widget=forms.TextInput(attrs={'class': "form-field form-control col-sm-10"}))
     zipcode = forms.IntegerField(label="Zipcode", widget=forms.TextInput(attrs={'class': "form-field form-control col-sm-10"}))
     password = forms.CharField(label="Password", max_length=255, widget=forms.PasswordInput(attrs={'class': "form-field form-control col-sm-10"}))
-    confirm_password = forms.CharField(label="Verify Password", max_length=255, widget=forms.PasswordInput(attrs={'class': "form-field form-control col-sm-10"}))
+    confirm_password = forms.CharField(label="Confirm Password", max_length=255, widget=forms.PasswordInput(attrs={'class': "form-field form-control col-sm-10"}))
     
    

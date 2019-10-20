@@ -273,6 +273,15 @@ def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
+            if request.POST["password"] != request.POST["confirm_password"]:
+                return render(
+                request,
+                "register.html",
+                {
+                    "errMsg": "Invalid Entry: Passwords do not match. ",
+                    "form": form
+                }
+                )
             res, status = register_service(request)
             if status == 0:
                 return JsonResponse({
