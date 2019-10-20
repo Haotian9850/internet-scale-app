@@ -25,7 +25,7 @@ def list_all_pets(request):
             request,
             "homepage.html",
             {
-                "errMsg": "An issue has occurred when rendering homepage template..."
+                "errMsg": res
             }
         )
     # empty database err handling
@@ -42,7 +42,8 @@ def list_all_pets(request):
     return render(
         request,
         "homepage.html",
-        {
+        {    
+            "statusMsg": request.session.get("statusMsg"),
             "all_pets": res,
             "authenticated": request.session.get("authenticated"),
             "username": request.session.get("username")
@@ -109,7 +110,7 @@ def show_individual_pet_by_name(request, name):
         'pet_details.html', 
         {
             'authenticated': request.session['authenticated'],
-            'result': result        
+            'result': result   
         }
     )
 
@@ -155,8 +156,6 @@ def search(request):
 
 # need to implement cookie-based session authenticator check
 def create_new_pet(request):
-    # process form input after submission
-    context = {}
     if request.method == 'POST':
         if not request.session["authenticator"]:
             return HttpResponseRedirect("/login")
@@ -169,16 +168,25 @@ def create_new_pet(request):
                     "errMsg": res
                 })
             else:
-                return HttpResponseRedirect('/homepage')    # TODO add different redirections for res returned (statusMsg)
-        context['error'] = "Invalid Entry: Please check if information is correct and make sure price has two decimal places."
+                request.session["statusMsg"] = "Pet {} is successfully created!".format(request.POST["name"])
+                return HttpResponseRedirect("/homepage") 
+        form = CreatePetForm()
+        return render(
+            request,
+            "create_pet.html",
+            {
+                "errMsg": "Invalid Entry: Please check if information is correct and make sure price has two decimal places.",
+                "form": form
+            }
+        )
     else:
         form = CreatePetForm()
-        
-    context['form'] = form
     return render(
         request,
-        'create_pet.html',
-        context
+        "create_pet.html",
+        {
+            "form": form,
+        }
     )
 
 
@@ -202,6 +210,7 @@ def login(request):
                 request.session["username"] = request.POST["username"]
                 request.session["authenticator"] = res
                 request.session["authenticated"] = True
+                request.session["statusMsg"] = "Successfully logged in for user {}".format(request.session["username"])
             return HttpResponseRedirect("/homepage")
     else:
         form = LoginForm()
@@ -226,6 +235,7 @@ def logout(request):
             "errMsg": res
         })
     else:
+        request.session["statusMsg"] = "Successfully logged out for user {}".format(request.session["username"])
         request.session["authenticated"] = False
         request.session["username"] = ""
         return HttpResponseRedirect("/homepage")    # TODO: add statusMsg to redirect
