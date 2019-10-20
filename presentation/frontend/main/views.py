@@ -64,6 +64,7 @@ def show_individual_pet_by_name(request, name):
         request, 
         'pet_details.html', 
         {
+            'authenticated': request.session['authenticated'],
             'result': result        
         }
     )

@@ -78,6 +78,12 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
         ```
         user_id=29
         ```
+    - `api/v1/pets/get_by_user`: get pets by `username`. `POST` only. Request body:
+        ```
+        {
+            "username": "hao"
+        }
+        ```
     - `api/v1/users/(\d+)/update`: update a user by its `user_id`. `POST` request only. Request body (`/(\d+)/` is `user_id`):
         ```
         {

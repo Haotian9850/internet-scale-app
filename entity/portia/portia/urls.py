@@ -28,6 +28,7 @@ urlpatterns = [
     url('api/v1/pets/create', views.create_pet),
     url('api/v1/pets/get_all_pets', views.get_all_pets),
     url('api/v1/pets/(\d+)/get_by_id', views.get_pet_by_id),
+    url('api/v1/pets/get_by_user', views.get_pets_by_username),
     url('api/v1/pets/(\d+)/update', views.update_pet),
     url('api/v1/pets/(\d+)/delete', views.delete_pet),
     url('api/v1/login', views.log_in),
