@@ -11,6 +11,10 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
         - Homepage
             - component to list all pets / list search result
         - Pet detail page: single component
+- This layer contains settings for cookie-based client-side sessions (which contains session-based authenticator):
+    - Time out: 1200 seconds (20 minutes)
+    - Will destroy all sessions after brower process is ended
+
 
 
 

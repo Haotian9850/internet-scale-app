@@ -16,10 +16,8 @@ import json
 def list_all_pets(request):
     res, status = get_all_pets()
     if request.session.get("authenticated") == None:
-        request.session["authenticatde"] = False
+        request.session["authenticated"] = False
         request.session["username"] = ""
-    if request.session.get("showAllPets") == None:
-        request.session["showAllPets"] = True
     if status == 0:
         return render(
             request,
@@ -53,6 +51,9 @@ def list_all_pets(request):
 
 
 def list_user_pets(request):
+    if request.session.get("username") is None:
+        # session timed out
+        return HttpResponseRedirect("/homepage")
     res, status = get_pets_by_user_service(request.session["username"])
     if status == 0:
         errMsg = "An issue has occurred when rendering homepage template..."
@@ -206,11 +207,19 @@ def login(request):
                     "ok": False,
                     "errMsg": res
                 })
+            elif status == -1:
+                request.session["errMsg"] = res
+                if request.session.get("statusMsg") is not None:
+                    request.session.__delitem__("statusMsg")
+                return HttpResponseRedirect("/login")
             else:
                 request.session["username"] = request.POST["username"]
                 request.session["authenticator"] = res
                 request.session["authenticated"] = True
                 request.session["statusMsg"] = "Successfully logged in for user {}".format(request.session["username"])
+                if request.session.get("errMsg") is not None:
+                    request.session.__delitem__("errMsg")
+                
             return HttpResponseRedirect("/homepage")
     else:
         form = LoginForm()
@@ -218,10 +227,11 @@ def login(request):
         request, 
         "login.html",
         {
-            "form": form,
+            "errMsg": request.session.get("errMsg"),
+            "statusMsg": request.session.get("statusMsg"),
+            "form": form
         }
     )
-
 
 
 
@@ -235,10 +245,12 @@ def logout(request):
             "errMsg": res
         })
     else:
-        request.session["statusMsg"] = "Successfully logged out for user {}".format(request.session["username"])
-        request.session["authenticated"] = False
-        request.session["username"] = ""
-        return HttpResponseRedirect("/homepage")    # TODO: add statusMsg to redirect
+        #request.session["statusMsg"] = "Successfully logged out for user {}".format(request.session["username"])
+        #request.session["authenticated"] = False
+        #request.session["username"] = ""
+        request.session.flush()
+        return HttpResponseRedirect("/homepage")
+
         
     
 
@@ -254,7 +266,15 @@ def register(request):
                     "ok": False,
                     "errMsg": res
                 })
+            elif status == -1:
+                request.session["errMsg"] = res
+                if request.session.get("statusMsg") is not None:
+                    request.session.__delitem__("statusMsg") 
+                return HttpResponseRedirect("/register")
             else:
+                request.session["statusMsg"] = res 
+                if request.session.get("errMsg") is not None:
+                    request.session.__delitem__("errMsg") 
                 return HttpResponseRedirect("/login")
     else:
         form = RegisterForm()
@@ -262,6 +282,7 @@ def register(request):
         request, 
         "register.html",
         {
+            "errMsg": request.session.get("errMsg"),
             "form": form
         }
     )        
