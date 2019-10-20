@@ -17,6 +17,9 @@ import json
 
 def list_pets(request):
     res, status = get_all_pets()
+    if request.session.get("authenticated") == None:
+        request.session["authenticatde"] = False
+        request.session["username"] = ""
     if status == 0:
         errMsg = "An issue has occurred when rendering homepage template..."
         return render(
@@ -30,7 +33,9 @@ def list_pets(request):
         request,
         "homepage.html",
         {
-            "all_pets": res
+            "all_pets": res,
+            "authenticated": request.session.get("authenticated"),
+            "username": request.session.get("username")
         }
     )
 
@@ -146,6 +151,7 @@ def login(request):
             else:
                 request.session["username"] = request.POST["username"]
                 request.session["authenticator"] = res
+                request.session["authenticated"] = True
             return HttpResponseRedirect("/homepage")
     else:
         form = LoginForm()
@@ -169,6 +175,8 @@ def logout(request):
             "errMsg": res
         })
     else:
+        request.session["authenticated"] = False
+        request.session["username"] = ""
         return HttpResponseRedirect("/homepage")    # TODO: add statusMsg to redirect
         
     
