@@ -15,6 +15,27 @@ def get_all_pets():
     return json.loads(res.text)['res'], 1
 
 
+def create_pet_service(request, username, authenticator):
+    try:
+        res = requests.post(
+            url=constants.BASE_URL + "create_pet",
+            data={
+                "name": request.POST["name"],
+                "pet_type": request.POST["pet_type"],
+                "description": request.POST["description"],
+                "price": request.POST["price"],
+                "username": username,
+                "authenticator": authenticator
+            }
+        )
+    except requests.exceptions.Timeout:
+        return "Request timed out", 0
+    except requests.exceptions.HTTPError as err:
+        return "Request failed with HttpError {}".format(err.response.text), 0
+    return json.loads(res.text)['res'], 1
+
+
+
 def search_pets(keyword):
     try:
         res = requests.post(
