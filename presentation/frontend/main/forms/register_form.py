@@ -8,7 +8,7 @@ class RegisterForm(forms.Form):
     gender = forms.ChoiceField(label="Gender", choices=[("1", "None"), ("2", "Female"), ("3", "Male"), ("4", "Other")], widget=forms.Select(attrs={'class': "form-dropdown"}))
     email_address = forms.EmailField(label="Email address", widget=forms.TextInput(attrs={'class': "form-field form-control col-sm-10"}))
     zipcode = forms.IntegerField(label="Zipcode", widget=forms.TextInput(attrs={'class': "form-field form-control col-sm-10"}))
-    password = forms.CharField(label="Password", max_length=255, widget=forms.PasswordInput(attrs={'class': "form-field form-control col-sm-10"}))
-    confirm_password = forms.CharField(label="Confirm Password", max_length=255, widget=forms.PasswordInput(attrs={'class': "form-field form-control col-sm-10"}))
+    password = forms.CharField(label="Password", max_length=255, widget=forms.PasswordInput(attrs={'placeholder':"Password must be 8 characters long or more with a majuscule and a number", 'class': "form-field form-control col-sm-10"}))
+    confirm_password = forms.CharField(label="Confirm Password", max_length=255, widget=forms.PasswordInput(attrs={'placeholder':"Please re-type password" , 'class': "form-field form-control col-sm-10"}))
     
    
