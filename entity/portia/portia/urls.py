@@ -32,5 +32,6 @@ urlpatterns = [
     url('api/v1/pets/(\d+)/update', views.update_pet),
     url('api/v1/pets/(\d+)/delete', views.delete_pet),
     url('api/v1/login', views.log_in),
-    url('api/v1/logout', views.log_out)
+    url('api/v1/logout', views.log_out),
+    url('api/v1/reset_password', views.reset_password)
 ]
