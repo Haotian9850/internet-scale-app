@@ -1,4 +1,4 @@
-from services.pet_service import get_all_pets, search_pets, sort_pets, create_pet_service
+from services.pet_service import get_all_pets, search_pets, sort_pets, create_pet_service, get_pets_by_user_service
 from services.user_service import log_in_service, log_out_service, register_service
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render
@@ -15,18 +15,30 @@ import json
 
 
 
-def list_pets(request):
+def list_all_pets(request):
     res, status = get_all_pets()
     if request.session.get("authenticated") == None:
         request.session["authenticatde"] = False
         request.session["username"] = ""
+    if request.session.get("showAllPets") == None:
+        request.session["showAllPets"] = True
     if status == 0:
-        errMsg = "An issue has occurred when rendering homepage template..."
         return render(
             request,
             "homepage.html",
             {
-                errMsg : errMsg
+                "errMsg": "An issue has occurred when rendering homepage template..."
+            }
+        )
+    # empty database err handling
+    if type(res) is str:
+        return render(
+            request,
+            "homepage.html",
+            {
+                "errMsg": res,
+                "authenticated": request.session.get("authenticated"),
+                "username": request.session.get("username")
             }
         )
     return render(
@@ -38,6 +50,40 @@ def list_pets(request):
             "username": request.session.get("username")
         }
     )
+
+
+
+def list_user_pets(request):
+    res, status = get_pets_by_user_service(request.session["username"])
+    if status == 0:
+        errMsg = "An issue has occurred when rendering homepage template..."
+        return render(
+            request,
+            "homepage.html",
+            {
+                errMsg : errMsg
+            }
+        )
+    if type(res) is str:
+        return render(
+            request,
+            "homepage.html",
+            {
+                "all_pets": [],
+                "authenticated": request.session.get("authenticated"),
+                "username": request.session.get("username")
+            }
+        )
+    return render(
+        request,
+        "homepage.html",
+        {
+            "all_pets": res,
+            "authenticated": request.session.get("authenticated"),
+            "username": request.session.get("username")
+        }
+    )
+
 
 
 

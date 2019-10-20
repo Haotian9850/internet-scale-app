@@ -15,6 +15,25 @@ def get_all_pets():
     return json.loads(res.text)['res'], 1
 
 
+
+
+def get_pets_by_user_service(username):
+    try: 
+        res = requests.post(
+            url=constants.BASE_URL + "get_pets_by_user",
+            data={
+                "username": username
+            }
+        )
+    except requests.exceptions.Timeout:
+        return "Request timed out", 0
+    except requests.exceptions.HTTPError as err:
+        return "Request failed with HTTPError {}".format(err.response.text), 0
+    return json.loads(res.text)["res"], 1
+
+
+
+
 def create_pet_service(request, username, authenticator):
     try:
         res = requests.post(

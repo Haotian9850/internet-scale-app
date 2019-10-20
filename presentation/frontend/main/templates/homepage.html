@@ -36,8 +36,14 @@
         <div class="row">
             <h2 class="display-6">
                 Current inventory
+                {% if authenticated %}
+                    <a href="{% url 'homepage/list_user_pets' %}">[My Pets ONLY]</a>
+                {% endif %}
             </h2>
+
         </div>
+
+
 
         {% if errMsg %}
         <div class="alert alert-warning" role="alert">
