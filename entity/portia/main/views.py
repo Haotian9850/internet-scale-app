@@ -9,6 +9,9 @@ from django.contrib.auth.hashers import make_password, check_password
 from utils.err_msg_assembler import assemble_err_msg
 from utils.res_handler import res_err, res_success
 from services.authenticator_service import get_new_authenticator
+from services.mailer_service import send, assemble_pwd_reset_link
+
+from smtplib import SMTPException
 
 
 
@@ -283,7 +286,55 @@ def log_out(request):
 
     
 
+def reset_password(request):
+    if request.POST.get("reset"):
+        # update user password
+        try:
+            user_id = models.Authenticator.objects.get(authenticator=request.POST.get("authenticator")).user_id
+            user = models.User.objects.get(id=user_id)
+            # updated user password
+            user.password = request.POST.get("new_password")
+            try:
+                user.save()
+            except db.Error as e:
+                return res_success(
+                    "Error while saving updated password {}".format(str(e))
+                )
+            return res_success(
+                "Password for user with ID {} has been successfully reset!".format(models.Authenticator.objects.get(authenticator=request.POST.get("authenticator")).user_id)
+            )
+        except models.Authenticator.DoesNotExist:
+            return res_err(
+                assemble_err_msg(request.GET.authenticator, "NOT_FOUND", "Authenticator")
+            )
+    else:
+        # insert authenticator_temp + send mail
+        try:
+            authenticator_temp = get_new_authenticator(16)
+            create_authenticator(
+                models.User.objects.get(username=request.POST.get("username")).id,
+                authenticator_temp
+            )
+            try:
+                send(
+                    "Password recovery for user {}".format(request.POST.get("username")),
+                    "Please follow this link to reset your password on Portia: {}".format(assemble_pwd_reset_link(
+                        authenticator_temp, "localhost", 8003, "reset_password"
+                    )),
+                    "portia_team@localhost",
+                    models.User.objects.get(username=request.POST.get("username")).email_address
+                )
+                return res_success("Password recovery email for user {} is successfully sent".format(models.User.objects.get(username=request.POST.get("username"))))
+            except SMTPException as e:
+                return res_err(
+                    "There is an issue when sending password recovery email: {}".format(e)
+                )
+        except db.Error:    
+            return res_err(str(db.Error))
+        
+        
 
+        
 
 
 
