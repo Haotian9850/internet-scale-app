@@ -293,7 +293,7 @@ def reset_password(request):
             user_id = models.Authenticator.objects.get(authenticator=request.POST.get("authenticator")).user_id
             user = models.User.objects.get(id=user_id)
             # updated user password
-            user.password = request.POST.get("new_password")
+            user.password = make_password(request.POST.get("new_password"))
             try:
                 user.save()
             except db.Error as e:
