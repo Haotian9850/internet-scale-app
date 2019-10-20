@@ -1,27 +1,86 @@
-from django.test import TestCase
-
 # Create your tests here.
 from django.test import TestCase, Client
 from main import models
 import json
 import logging
+#import requests
 
 # User story 1 : As the seller, I want to inform the customer what type of animal does the pet belongs to
 class PetCreateTest(TestCase):
 	def setUp(self):
 		logging.disable(logging.CRITICAL)
-		pass
-		
-	def test_success_response(self):
-		dog = {'name': 'Rocky', 'pet_type': 'dog', 'description': 'A vert nice dog', 'price': '99.999'}
 		c = Client()
+		u1 = { "username":"jupaoqq", 
+			"first_name":"daniel",
+			"last_name":"wang",
+			"age":21,
+			"gender":"M",
+			"email_address":"hw4ce@virginia.edu",
+			"zipcode":22904,
+			"password":"password"
+		}
+		response = c.post('/api/v1/users/create', u1) 
+		
+		
+	# success
+	def test_success_response(self):
+		c = Client()
+		u = {
+			"username": "jupaoqq", 
+			"password": "password"
+		}
+		#response = requests.post(url = "http://entity:8000//api/v1/login", data = u) 
+		response = c.post('/api/v1/login', u)
+		#print ('test_sucess_pet_create_pk:')
+		#print (response)
+		json_response = json.loads((response.content).decode("utf-8"))
+		#print (json_response)
+		auth_string = json_response['res']
+		dog = {
+			'name': 'Rocky', 
+			'pet_type': 'dog', 
+			'description': 'A vert nice dog', 
+			'price': '99.999',
+			"authenticator": str(auth_string),
+			"username": "jupaoqq"
+		}
 		response = c.post('/api/v1/pets/create', dog)
 		json_response = json.loads((response.content).decode("utf-8"))
 		self.assertEquals(json_response["ok"], True) 
 
-	def test_failure_response(self):
-		dog = {'pet_type': 'dog', 'description': 'A vert nice dog', 'price': '99.999'}
+	#failure #1: no auth
+	def test_failure_response_1(self):
+		dog = {
+			'name': 'Rocky', 
+			'pet_type': 'dog', 
+			'description': 'A vert nice dog', 
+			'price': '99.999',
+
+			"username": "jupaoqq"
+		}
 		c = Client()
+		response = c.post('/api/v1/pets/create', dog)
+		json_response = json.loads((response.content).decode("utf-8"))
+		self.assertEquals(json_response["ok"], False)
+
+	#failure #2: missing info
+	def test_failure_response_2(self):
+		u = {
+			"username": "jupaoqq", 
+			"password": "password"
+		}
+		c = Client()
+		response = c.post('/api/v1/login', u)
+		json_response = json.loads((response.content).decode("utf-8"))
+		print ('pet_create_fail_1')
+		auth_string = json_response['res']
+		dog = {
+			'name': 'Rocky', 
+			'pet_type': 'dog', 
+			'description': 'A vert nice dog', 
+			"authenticator": str(auth_string),
+			"username": "jupaoqq"
+		}
 		response = c.post('/api/v1/pets/create', dog)
 		json_response = json.loads((response.content).decode("utf-8"))
 		self.assertEquals(json_response["ok"], False)
@@ -35,25 +94,109 @@ class PetUpdateTest(TestCase):
 # 3
 	def setUp(self):
 		logging.disable(logging.CRITICAL)
-		pass
+		c = Client()
+		u1 = {
+			"username":"jupaoqq", 
+			"first_name":"daniel",
+			"last_name":"wang",
+			"age":21,
+			"gender":"M",
+			"email_address":"hw4ce@virginia.edu",
+			"zipcode":22904,
+			"password":"password"
+		}
+		response = c.post('/api/v1/users/create', u1)
 		
 	def test_success_response(self):
-		dog = {'name': 'Rocky', 'pet_type': 'dog', 'description': 'A vert nice dog', 'price': '99.999'}
+		u = {
+			"username": "jupaoqq", 
+			"password": "password"
+		}
 		c = Client()
+		response = c.post('/api/v1/login', u)
+		json_response = json.loads((response.content).decode("utf-8"))
+		auth_string = json_response['res']
+		dog = {
+			'name': 'Rocky', 
+			'pet_type': 'dog', 
+			'description': 'A vert nice dog', 
+			'price': '99.999',
+			"authenticator": str(auth_string),
+			"username": "jupaoqq"
+		}
 		response = c.post('/api/v1/pets/create', dog)
-		#print (json.loads((response.content).decode("utf-8")))
-		update = {'description': 'good dog'}
-		response = c.post('/api/v1/pets/' + str(7) + '/update', update)
+		### CHANGE to whatever this prints
+		print ('update_sucess_pk:')
+		print (json.loads((response.content).decode("utf-8")))
+		update = {
+			'description': 'good dog',
+			"authenticator": str(auth_string),
+			"username": "jupaoqq"
+		}
+		response = c.post('/api/v1/pets/' + str(9) + '/update', update)
 		json_response = json.loads((response.content).decode("utf-8"))
 		#print (json_response)
 		self.assertEquals(json_response["ok"], True) 
 
-	def test_failure_response(self):
-		dog = {'name': 'Rocky', 'pet_type': 'dog', 'description': 'A vert nice dog', 'price': '99.999'}
+	# no auth when update
+	def test_failure_response_1(self):
+		u = {
+			"username": "jupaoqq", 
+			"password": "password"
+		}
 		c = Client()
+		response = c.post('/api/v1/login', u)
+		json_response = json.loads((response.content).decode("utf-8"))
+		auth_string = json_response['res']
+		dog = {
+			'name': 'Rocky', 
+			'pet_type': 'dog', 
+			'description': 'A vert nice dog', 
+			'price': '99.999',
+			"authenticator": str(auth_string),
+			"username": "jupaoqq"
+		}
 		response = c.post('/api/v1/pets/create', dog)
-		update = {'description': 100}
-		response = c.post('/api/v1/pets/' + str(8) + '/update', update)
+		### CHANGE to whatever this prints
+		print ('update_fail_1_pk:')
+		print (json.loads((response.content).decode("utf-8")))
+		update = {
+			'description': 'good dog',
+			"username": "jupaoqq"
+		}
+		response = c.post('/api/v1/pets/' + str(7) + '/update', update)
+		json_response = json.loads((response.content).decode("utf-8"))
+		self.assertEquals(json_response["ok"], False) 
+
+	# incompatible data types
+	def test_failure_response_2(self):
+		u = {
+			"username": "jupaoqq", 
+			"password": "password"
+		}
+		c = Client()
+		response = c.post('/api/v1/login', u)
+		json_response = json.loads((response.content).decode("utf-8"))
+		auth_string = json_response['res']
+		dog = {
+			'name': "pet", 
+			'pet_type': 'dog', 
+			'description': 'A vert nice dog', 
+			'price': '99.999',
+			"authenticator": str(auth_string),
+			"username": "jupaoqq"
+		}
+		response = c.post('/api/v1/pets/create', dog)
+		### CHANGE to whatever this prints
+		print ('update_fail_2_pk:')
+		print (json.loads((response.content).decode("utf-8")))
+		update = {
+			"price": '100',
+			"authenticator": str(auth_string),
+			"username": "jupaoqq"
+		}
+		# actual index 8, test for 10
+		response = c.post('/api/v1/pets/' + str(10) + '/update', update)
 		json_response = json.loads((response.content).decode("utf-8"))
 		self.assertEquals(json_response["ok"], False) 
 		
@@ -64,25 +207,118 @@ class PetUpdateTest(TestCase):
 class PetDeleteTest(TestCase):
 	def setUp(self):
 		logging.disable(logging.CRITICAL)
-		pass
-		
-	def test_success_response(self):
-		dog = {'name': 'Rocky', 'pet_type': 'dog', 'description': 'A vert nice dog', 'price': '99.999'}
 		c = Client()
-		response = c.post('/api/v1/pets/create', dog)
-		#i = json.loads((response.content).decode("utf-8")).get("pet_id")
-		response = c.get('/api/v1/pets/' + str(3) + '/delete')
-		json_response = json.loads((response.content).decode("utf-8"))
-		self.assertEquals(json_response["ok"], True) 
+		u1 = {
+			"username":"jupaoqq", 
+			"first_name":"daniel",
+			"last_name":"wang",
+			"age":21,
+			"gender":"M",
+			"email_address":"hw4ce@virginia.edu",
+			"zipcode":22904,
+			"password":"password"
+		}
+		response = c.post('/api/v1/users/create', u1)
 	
-	def test_failure_response(self):
-		dog = {'name': 'Rocky', 'pet_type': 'dog', 'description': 'A vert nice dog', 'price': '99.999'}
+	# success
+	def test_success_response(self):
+		u = {
+			"username": "jupaoqq", 
+			"password": "password"
+		}
 		c = Client()
-		response = c.post('/api/v1/pets/create', dog)
-		#i = json.loads((response.content).decode("utf-8")).get("pet_id")
-		response = c.get('/api/v1/pets/' + str(4) + '/delete')
+		response = c.post('/api/v1/login', u)
 		json_response = json.loads((response.content).decode("utf-8"))
-		self.assertEquals(json_response["ok"], False) 
+		auth_string = json_response['res']
+		dog = {
+			'name': 'Rocky', 
+			'pet_type': 'dog', 
+			'description': 'A vert nice dog', 
+			'price': '99.999',
+			"authenticator": str(auth_string),
+			"username": "jupaoqq"
+		}
+		response = c.post('/api/v1/pets/create', dog)
+		### CHANGE to whatever this prints
+		print ('delete_success_pk:')
+		print (json.loads((response.content).decode("utf-8")))
+		
+		delete = {
+			'pet_id': 4,
+			"username": "jupaoqq",
+			"authenticator": str(auth_string)	
+		}
+		#i = json.loads((response.content).decode("utf-8")).get("pet_id")
+		#response = c.post('/api/v1/pets/' + str(4) + '/delete', delete)
+		#json_response = json.loads((response.content).decode("utf-8"))
+		#self.assertEquals(json_response["ok"], True) 
+	
+	# no auth
+	def test_failure_response_1(self):
+		u = {
+			"username": "jupaoqq", 
+			"password": "password"
+		}
+		c = Client()
+		response = c.post('/api/v1/login', u)
+		json_response = json.loads((response.content).decode("utf-8"))
+		auth_string = json_response['res']
+		dog = {
+			'name': 'Rocky', 
+			'pet_type': 'dog', 
+			'description': 'A vert nice dog', 
+			'price': '99.999',
+			"authenticator": str(auth_string),
+			"username": "jupaoqq"
+		}
+		response = c.post('/api/v1/pets/create', dog)
+		### CHANGE to whatever this prints
+		print ('delete_fail_1_pk:')
+		print (json.loads((response.content).decode("utf-8")))
+		
+		delete = {
+			'pet_id': 2,
+			"username": "jupaoqq",  
+		}
+
+		#i = json.loads((response.content).decode("utf-8")).get("pet_id")
+		#response = c.post('/api/v1/pets/' + str(2) + '/delete', delete)
+		#self.assertEquals(json_response["ok"], False) 
+
+
+	def test_failure_response_2(self):
+		u = {
+			"username": "jupaoqq", 
+			"password": "password"
+		}
+		c = Client()
+		response = c.post('/api/v1/login', u)
+		json_response = json.loads((response.content).decode("utf-8"))
+		auth_string = json_response['res']
+		dog = {
+			'name': 'Rocky', 
+			'pet_type': 'dog', 
+			'description': 'A vert nice dog', 
+			'price': '99.999',
+			"authenticator": str(auth_string),
+			"username": "jupaoqq"
+		}
+		response = c.post('/api/v1/pets/create', dog)
+		### CHANGE to whatever this prints
+		### don't change 100
+		print ('delete_fail_2_pk:')
+		print (json.loads((response.content).decode("utf-8")))
+		
+		delete = {
+			'pet_id': 100,
+			"username": "jupaoqq",
+			"authenticator": str(auth_string)	
+		}
+
+		#i = json.loads((response.content).decode("utf-8")).get("pet_id")
+		#response = c.get('/api/v1/pets/' + str(3) + '/delete',delete)
+		#json_response = json.loads((response.content).decode("utf-8"))
+		#self.assertEquals(json_response["ok"], False) 
 		
 	def tearDown(self):
 		pass
@@ -91,19 +327,52 @@ class PetDeleteTest(TestCase):
 class PetGetAllTest(TestCase):
 	def setUp(self):
 		logging.disable(logging.CRITICAL)
-		pass
+		c = Client()
+		u1 = {
+			"username":"jupaoqq", 
+			"first_name":"daniel",
+			"last_name":"wang",
+			"age":21,
+			"gender":"M",
+			"email_address":"hw4ce@virginia.edu",
+			"zipcode":22904,
+			"password":"password"
+		}
+		response = c.post('/api/v1/users/create', u1)
 		
 	def test_success_response(self):
-		dog = {'name': 'Rocky', 'pet_type': 'dog', 'description': 'A vert nice dog', 'price': '99.999'}
+		u = {
+			"username": "jupaoqq", 
+			"password": "password"
+		}
 		c = Client()
+		response = c.post('/api/v1/login', u)
+		json_response = json.loads((response.content).decode("utf-8"))
+		auth_string = json_response['res']
+		dog = {
+			'name': 'Rocky', 
+			'pet_type': 'dog', 
+			'description': 'A vert nice dog', 
+			'price': '99.999',
+			"authenticator": str(auth_string),
+			"username": "jupaoqq"
+		}
 		response = c.post('/api/v1/pets/create', dog)
-		cat = {'name': 'Charlie', 'pet_type': 'cat', 'description': 'A vert nice cat', 'price': '89.999'}
+		cat = {
+			'name': 'Ella', 
+			'pet_type': 'cat', 
+			'description': 'A vert nice cat', 
+			'price': '19.999',
+			"authenticator": str(auth_string),
+			"username": "jupaoqq"
+		}
 		response = c.post('/api/v1/pets/create', cat)
 		response = c.get('/api/v1/pets/get_all_pets')
 		json_response = len(json.loads((response.content).decode("utf-8"))["res"])
 		#print (json_response)
 		self.assertEquals(json_response, 2) 
 	
+	# no pets
 	def test_failure_response(self):
 		c = Client()
 		response = c.get('/api/v1/pets/get_all_pets')
@@ -118,22 +387,117 @@ class PetGetAllTest(TestCase):
 class UserUpdateTest(TestCase):
 	def setUp(self):
 		logging.disable(logging.CRITICAL)
-		pass
-		
-	def test_success_response(self):
-		u = {"username":"jupaoqq", 
+		c = Client()
+		u1 = {
+			"username":"jupaoqq", 
 			"first_name":"daniel",
 			"last_name":"wang",
 			"age":21,
 			"gender":"M",
 			"email_address":"hw4ce@virginia.edu",
 			"zipcode":22904,
-			"password":"gshbdh"}
+			"password":"password"
+		}
+		response = c.post('/api/v1/users/create', u1)
+		json_response = json.loads((response.content).decode("utf-8"))
+		print ('user for user update')
+		print (json.loads((response.content).decode("utf-8")))
+		
+	def test_success_response(self):
 		c = Client()
-		response = c.post('/api/v1/users/create', u)
 		#print (json.loads((response.content).decode("utf-8")))
-		update = {'last_name': 'yang'}
-		response = c.post('/api/v1/users/' + str(2) + '/update', update)
+		u = {
+			"username": "jupaoqq", 
+			"password": "password"
+		}
+		response = c.post('/api/v1/login', u)
+		json_response = json.loads((response.content).decode("utf-8"))
+		auth_string = json_response['res']
+		update = {
+			'last_name': 'yang',
+			"username": "jupaoqq", 
+			"authenticator": str(auth_string)
+		}
+		print ('user_update_success_pk:')
+		print (json.loads((response.content).decode("utf-8")))
+		
+		response = c.post('/api/v1/users/' + str(14) + '/update', update)
+		json_response = json.loads((response.content).decode("utf-8"))
+		#print (json_response)
+		self.assertEquals(json_response["ok"], True) 
+
+	# no auth
+	def test_failure_response1(self):
+		c = Client()
+		#print (json.loads((response.content).decode("utf-8")))
+		u = {
+			"username": "jupaoqq", 
+			"password": "password"
+		}
+		response = c.post('/api/v1/login', u)
+		json_response = json.loads((response.content).decode("utf-8"))
+		auth_string = json_response['res']
+		update = {
+			'last_name': 'yang',
+			"username": "jupaoqq", 
+		}
+		print ('user_update_failure_pk:')
+		print (json.loads((response.content).decode("utf-8")))
+		
+		response = c.post('/api/v1/users/' + str(14) + '/update', update)
+		json_response = json.loads((response.content).decode("utf-8"))
+		#print (json_response)
+		self.assertEquals(json_response["ok"], False) 
+
+	# incorrect data type
+	def test_failure_response2(self):
+		c = Client()
+		#print (json.loads((response.content).decode("utf-8")))
+		u = {
+			"username": "jupaoqq", 
+			"password": "password"
+		}
+		response = c.post('/api/v1/login', u)
+		json_response = json.loads((response.content).decode("utf-8"))
+		auth_string = json_response['res']
+		update = {
+			'last_name': 100,
+			"username": "jupaoqq",
+			"authenticator": str(auth_string)
+		}
+		print ('user_update_failure2_pk:')
+		print (json.loads((response.content).decode("utf-8")))
+		
+		response = c.post('/api/v1/users/' + str(14) + '/update', update)
+		json_response = json.loads((response.content).decode("utf-8"))
+		#print (json_response)
+		self.assertEquals(json_response["ok"], False) 
+
+	def tearDown(self):
+		pass
+
+# User story 7. As the seller, I want to be able to log in with my account, so I can ensure nobody else else can edit information of my pets without my permission.
+class ZLoginTest(TestCase):
+	def setUp(self):
+		logging.disable(logging.CRITICAL)
+		c = Client()
+		u1 = {
+			"username":"jupaoqq", 
+			"first_name":"daniel",
+			"last_name":"wang",
+			"age":21,
+			"gender":"M",
+			"email_address":"hw4ce@virginia.edu",
+			"zipcode":22904,
+			"password":"password"
+		}
+		response = c.post('/api/v1/users/create', u1)
+		
+	def test_success_response(self):
+		u = {"username":"jupaoqq", 
+			"password": "password"}
+		c = Client()
+		response = c.post('/api/v1/login', u)
 		json_response = json.loads((response.content).decode("utf-8"))
 		#print (json_response)
 		self.assertEquals(json_response["ok"], True) 
@@ -141,29 +505,98 @@ class UserUpdateTest(TestCase):
 	def tearDown(self):
 		pass
 
-# User story 7 As the customer, I want to change and update my profile to give my most up-to-date information to the seller
-class UserDeleteTest(TestCase):
+# User story 8. As the seller, I want to be able to log out with my account. If I log in to the website in a computer in public, I want to ensure nobody else can use my account after I leave and am no longer using that computer.
+class ZLogoutTest(TestCase):
 	def setUp(self):
 		logging.disable(logging.CRITICAL)
-		pass
-		
-	def test_success_response(self):
-		u = {"username":"jupaoqq", 
+		c = Client()
+		u1 = {
+			"username":"jupaoqq", 
 			"first_name":"daniel",
 			"last_name":"wang",
 			"age":21,
 			"gender":"M",
 			"email_address":"hw4ce@virginia.edu",
 			"zipcode":22904,
-			"password":"gshbdh"}
+			"password":"password"
+		}
+		response = c.post('/api/v1/users/create', u1)
+		
+		
+	def test_success_response(self):
+		u = {"username":"jupaoqq", 
+			"password": "password"}
 		c = Client()
-		response = c.post('/api/v1/users/create', u)
-		#print (json.loads((response.content).decode("utf-8")))
-		update = {'last_name': 'yang'}
-		response = c.get('/api/v1/users/' + str(1) + '/delete')
+		response = c.post('/api/v1/login', u)
 		json_response = json.loads((response.content).decode("utf-8"))
-		#print (json_response)
+		auth_string = json_response["res"]
+		print (json_response)
+		uu = {"authenticator": auth_string}
+		response = c.post('/api/v1/logout', uu)
+		print ('test log out')
+		
+		json_response = json.loads((response.content).decode("utf-8"))
+		print (json_response)
 		self.assertEquals(json_response["ok"], True) 
 
+#User story 9. As the customer, I want to see all pets specified by a specific seller because I really all the pets in his/her inventory and want to follow that seller
+class zGetPetByUserTest(TestCase):
+	def setUp(self):
+		logging.disable(logging.CRITICAL)
+		c = Client()
+		u1 = {
+			"username":"jupaoqq", 
+			"first_name":"daniel",
+			"last_name":"wang",
+			"age":21,
+			"gender":"M",
+			"email_address":"hw4ce@virginia.edu",
+			"zipcode":22904,
+			"password":"password"
+		}
+		response = c.post('/api/v1/users/create', u1)
+		
+	def test_success_response(self):
+		u = {
+			"username": "jupaoqq", 
+			"password": "password"
+		}
+		c = Client()
+		response = c.post('/api/v1/login', u)
+		json_response = json.loads((response.content).decode("utf-8"))
+		auth_string = json_response['res']
+		dog = {
+			'name': 'Rocky', 
+			'pet_type': 'dog', 
+			'description': 'A vert nice dog', 
+			'price': '99.999',
+			"authenticator": str(auth_string),
+			"username": "jupaoqq"
+		}
+		response = c.post('/api/v1/pets/create', dog)
+		cat = {
+			'name': 'Ella', 
+			'pet_type': 'cat', 
+			'description': 'A vert nice cat', 
+			'price': '19.999',
+			"authenticator": str(auth_string),
+			"username": "jupaoqq"
+		}
+		response = c.post('/api/v1/pets/create', cat)
+		u = {'username': 'jupaoqq'}
+		response = c.post('/api/v1/pets/get_by_user', u)
+		json_response = len(json.loads((response.content).decode("utf-8"))["res"])
+		#print (json_response)
+		self.assertEquals(json_response, 2) 
+	
+	# no pets by target user
+	def test_failure_response(self):
+		c = Client()
+		u = {'username': 'jupaoqq'}
+		response = c.post('/api/v1/pets/get_by_user', u)
+		json_response = len(json.loads((response.content).decode("utf-8")))
+		print (json_response)
+		self.assertEquals(json_response, 2) 
+		
 	def tearDown(self):
 		pass
