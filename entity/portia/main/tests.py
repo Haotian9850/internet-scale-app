@@ -476,7 +476,7 @@ class UserUpdateTest(TestCase):
 	def tearDown(self):
 		pass
 
-# User story 8 As the customer, I want to change and update my profile to give my most up-to-date information to the seller
+# User story 7. As the seller, I want to be able to log in with my account, so I can ensure nobody else else can edit information of my pets without my permission.
 class ZLoginTest(TestCase):
 	def setUp(self):
 		logging.disable(logging.CRITICAL)
@@ -505,7 +505,7 @@ class ZLoginTest(TestCase):
 	def tearDown(self):
 		pass
 
-# User story 9 As the customer, I want to change and update my profile to give my most up-to-date information to the seller
+# User story 8. As the seller, I want to be able to log out with my account. If I log in to the website in a computer in public, I want to ensure nobody else can use my account after I leave and am no longer using that computer.
 class ZLogoutTest(TestCase):
 	def setUp(self):
 		logging.disable(logging.CRITICAL)
@@ -539,7 +539,7 @@ class ZLogoutTest(TestCase):
 		print (json_response)
 		self.assertEquals(json_response["ok"], True) 
 
-#User story 10 As the customer, I want to see all the pets listed by all the sellers
+#User story 9. As the customer, I want to see all pets specified by a specific seller because I really all the pets in his/her inventory and want to follow that seller
 class zGetPetByUserTest(TestCase):
 	def setUp(self):
 		logging.disable(logging.CRITICAL)
