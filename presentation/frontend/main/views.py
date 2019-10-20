@@ -1,4 +1,4 @@
-from services.pet_service import get_all_pets, search_pets, sort_pets, create_pet_service
+from services.pet_service import get_all_pets, search_pets, sort_pets, create_pet_service, get_pets_by_user_service
 from services.user_service import log_in_service, log_out_service, register_service
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render
@@ -15,8 +15,46 @@ import json
 
 
 
-def list_pets(request):
+def list_all_pets(request):
     res, status = get_all_pets()
+    if request.session.get("authenticated") == None:
+        request.session["authenticatde"] = False
+        request.session["username"] = ""
+    if request.session.get("showAllPets") == None:
+        request.session["showAllPets"] = True
+    if status == 0:
+        return render(
+            request,
+            "homepage.html",
+            {
+                "errMsg": "An issue has occurred when rendering homepage template..."
+            }
+        )
+    # empty database err handling
+    if type(res) is str:
+        return render(
+            request,
+            "homepage.html",
+            {
+                "errMsg": res,
+                "authenticated": request.session.get("authenticated"),
+                "username": request.session.get("username")
+            }
+        )
+    return render(
+        request,
+        "homepage.html",
+        {
+            "all_pets": res,
+            "authenticated": request.session.get("authenticated"),
+            "username": request.session.get("username")
+        }
+    )
+
+
+
+def list_user_pets(request):
+    res, status = get_pets_by_user_service(request.session["username"])
     if status == 0:
         errMsg = "An issue has occurred when rendering homepage template..."
         return render(
@@ -26,13 +64,26 @@ def list_pets(request):
                 errMsg : errMsg
             }
         )
+    if type(res) is str:
+        return render(
+            request,
+            "homepage.html",
+            {
+                "all_pets": [],
+                "authenticated": request.session.get("authenticated"),
+                "username": request.session.get("username")
+            }
+        )
     return render(
         request,
         "homepage.html",
         {
-            "all_pets": res
+            "all_pets": res,
+            "authenticated": request.session.get("authenticated"),
+            "username": request.session.get("username")
         }
     )
+
 
 
 
@@ -59,6 +110,7 @@ def show_individual_pet_by_name(request, name):
         request, 
         'pet_details.html', 
         {
+            'authenticated': request.session['authenticated'],
             'result': result        
         }
     )
@@ -148,6 +200,7 @@ def login(request):
             else:
                 request.session["username"] = request.POST["username"]
                 request.session["authenticator"] = res
+                request.session["authenticated"] = True
             return HttpResponseRedirect("/homepage")
     else:
         form = LoginForm()
@@ -171,6 +224,8 @@ def logout(request):
             "errMsg": res
         })
     else:
+        request.session["authenticated"] = False
+        request.session["username"] = ""
         return HttpResponseRedirect("/homepage")    # TODO: add statusMsg to redirect
         
     

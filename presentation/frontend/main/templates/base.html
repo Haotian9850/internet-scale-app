@@ -90,6 +90,22 @@
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
             </div>
+
+            {% if authenticated %}
+            <a href="{% url 'create_new_pet' %}" class="btn btn-light">
+                Create a new pet!
+            </a>
+            &nbsp;&nbsp;&nbsp;
+            <div class="btn btn-light" role="alert">
+                Loggered in as {{ username }} &nbsp;
+                <a href="{% url 'logout' %}">Log out</a>
+            </div>
+            {% else %}
+            <a href="{% url 'register' %}" class="btn btn-light">Register</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="{% url 'login' %}" class="btn btn-light">Log in</a>
+            {% endif %}
+
         </nav>
 
         <div class="main-content">

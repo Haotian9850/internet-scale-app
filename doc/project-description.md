@@ -18,6 +18,11 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
  - Django app name: `main`
  - API design
     - `test/get_all_pets`: returns a list of all pets in table `pets`. `GET` request only. No request body required
+    - `test/get_pet_by_user`: get pets by `username`. `POST` only. Request body:
+        ```
+        {
+            "username": "hao"
+        }
     - `test/create_pet`: create a new pet object for authenticated user. `POST` request only. Request body:
         ```
         {
@@ -77,6 +82,12 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
     - `api/v1/users/(\d+)/get_by_id`: get user by `user_id`. `GET `request only. Request parameter:
         ```
         user_id=29
+        ```
+    - `api/v1/pets/get_by_user`: get pets by `username`. `POST` only. Request body:
+        ```
+        {
+            "username": "hao"
+        }
         ```
     - `api/v1/users/(\d+)/update`: update a user by its `user_id`. `POST` request only. Request body (`/(\d+)/` is `user_id`):
         ```

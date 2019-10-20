@@ -169,6 +169,31 @@ def get_pet_by_id(request, pet_id):
 
 
 
+def get_pets_by_username(request):
+    if request.method != "POST":
+        return res_err(assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "POST"))
+    try:
+        user = models.User.objects.get(username=request.POST["username"])
+        all_pets = []
+        for pet in models.Pet.objects.all():
+            if pet.user_id == user.pk:
+                all_pets.append({
+                    "name": pet.name,
+                    "pet_type": pet.pet_type,
+                    "description": pet.description,
+                    "price": pet.price,
+                    "date_posted": pet.date_posted,
+                    "uesr_id": pet.user_id
+                })
+    except db.Error:
+        return res_err(str(db.Error))
+    if len(all_pets) == 0:
+        return res_success("No pets found for current user!")
+    return res_success(all_pets)
+
+
+
+
 def update_pet(request, pet_id):
     if request.method != 'POST':
         return res_err(assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "POST"))
