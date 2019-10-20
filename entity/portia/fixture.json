@@ -66,7 +66,7 @@
           "name":"Persian Cat",
           "pet_type":"cat",
           "description":"Like dogs, cats look very different from people but share many of our body\u2019s characteristics, such as a circulatory system, lungs, a digestive tract, a nervous system, and so on.",
-          "price":"200.000",
+          "price":"200.00",
           "date_posted":"2019-10-05T21:33:09.726Z",
           "user": 1
        }
@@ -78,7 +78,7 @@
           "name":"Cute Samoyed",
           "pet_type":"dog",
           "description":"The Samoyed is a friendly, personable dog. These are intelligent dogs, with a touch of independence. Bred to live in a tent in very close quarters with their families, they thrive on human company. Samoyeds will alarm bark and, if left alone for long periods of time, will often develop into nuisance barkers.",
-          "price":"1230.000",
+          "price":"1230.00",
           "date_posted":"2019-10-06T04:40:50.054Z",
           "user": 1
        }
@@ -90,7 +90,7 @@
           "name":"Amazon Tree Frog",
           "pet_type":"Frog",
           "description":"Frogs in captivity are quite long lived (with proper care) so be prepared for a long term commitment. Average life spans are typically four to fifteen years, although some frogs have been known to live longer.",
-          "price":"12.000",
+          "price":"12.00",
           "date_posted":"2019-10-06T16:47:02.229Z",
           "user": 1
        }
@@ -102,7 +102,7 @@
           "name":"American Hedgehog",
           "pet_type":"Hedgehog",
           "description":"The most common species of domesticated hedgehog is the white-bellied hedgehog, also called African pygmy hedgehog. The Algerian hedgehog is a separate species of hedgehog. The domesticated hedgehog kept as a pet is typically the African pygmy hedgehog.",
-          "price":"112.000",
+          "price":"112.00",
           "date_posted":"2019-10-06T16:47:29.478Z",
           "user": 2
        }
@@ -114,7 +114,7 @@
           "name":"Brown Squirrels",
           "pet_type":"Squirrels",
           "description":"Squirrels and other wild animals make lousy pets for numerous reasons. In many states it's illegal to keep them as pets, some states require licenses, and in other states people are required to have wildlife rehabilitator training. Some folks want to find a way around all this license nonsense, and while it\u2019s hard to hide a deer, cute fluffy squirrels can fit in a cage.",
-          "price":"1121.000",
+          "price":"1121.00",
           "date_posted":"2019-10-06T16:47:29.478Z",
           "user": 2
        }
@@ -126,7 +126,7 @@
           "name":"American Raccoon",
           "pet_type":"Raccoon",
           "description":"Raccoons aren't common pets, but those that choose to invite a raccoon into their home find that they make fascinating and funny companions. Raccoons are a lot like a large ferret or puppy but have characteristics that are still special to their species, and they are always full of mischief. Many experts advise against keeping raccoons as pets, as they are difficult to tame and have health issues that are hard to manage.",
-          "price":"99.000",
+          "price":"99.00",
           "date_posted":"2019-10-06T16:47:29.478Z",
           "user": 3
        }
