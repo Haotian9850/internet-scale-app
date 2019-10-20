@@ -218,7 +218,8 @@ def login(request):
         request, 
         "login.html",
         {
-            "form": form,
+            "statusMsg": request.session.get("statusMsg"),
+            "form": form
         }
     )
 
@@ -238,7 +239,7 @@ def logout(request):
         request.session["statusMsg"] = "Successfully logged out for user {}".format(request.session["username"])
         request.session["authenticated"] = False
         request.session["username"] = ""
-        return HttpResponseRedirect("/homepage")    # TODO: add statusMsg to redirect
+        return HttpResponseRedirect("/homepage")
         
     
 
@@ -255,6 +256,7 @@ def register(request):
                     "errMsg": res
                 })
             else:
+                request.session["statusMsg"] = "User {} is successfully registered!".format(request.POST["username"])
                 return HttpResponseRedirect("/login")
     else:
         form = RegisterForm()

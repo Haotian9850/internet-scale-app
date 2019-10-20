@@ -89,7 +89,7 @@
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">Portia: An Exotic Pet Store</a>
+            <a class="navbar-brand" href="{% url 'homepage' %}">Portia: An Exotic Pet Store</a>
             
             <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                 <form class="form-inline my-2 my-lg-0" name="search_form", method="post" action="{% url 'search' %}">
