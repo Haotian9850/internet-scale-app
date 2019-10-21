@@ -342,10 +342,14 @@ def reset_password(request):
         if form.is_valid():
             res, status = password_reset_service(request.POST["username"])
             if status == 0 or status == -1:
-                return JsonResponse({
-                    "ok": False,
-                    "res": res
-                })
+                return render(
+                    request,
+                    "reset_password.html",
+                    {
+                        "errMsg": res,
+                        "form": ResetPasswordForm()
+                    }
+                )
             return render(
                 request,
                 "reset_password.html",
