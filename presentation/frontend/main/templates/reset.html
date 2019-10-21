@@ -20,7 +20,7 @@
                 </div>
                 {% endif %}
         </div>
-        <form method="post" action="/reset" class="form form-group form-row">
+        <form method="post" action="/reset/placeholder" class="form form-group form-row">
             {% csrf_token %}
             {% for field in form %}
                 <label class="form-label col-sm-2" for="{{ field.name }}">{{ field.label }}</label>

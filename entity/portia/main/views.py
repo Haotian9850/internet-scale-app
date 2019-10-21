@@ -285,7 +285,7 @@ def log_out(request):
     
 
 def reset_password(request):
-    if request.POST.get("reset") == True:
+    if request.POST["reset"] == "yes":
         # update user password
         try:
             user_id = models.Authenticator.objects.get(authenticator=request.POST.get("authenticator")).user_id
@@ -298,8 +298,10 @@ def reset_password(request):
                 return res_success(
                     "Error while saving updated password {}".format(str(e))
                 )
+            # delete temp authenticator
+            models.Authenticator.objects.get(authenticator=request.POST.get("authenticator")).delete()
             return res_success(
-                "Password for user with ID {} has been successfully reset!".format(models.Authenticator.objects.get(authenticator=request.POST.get("authenticator")).user_id)
+                "Password for user with ID {} has been successfully reset!".format(user_id)
             )
         except models.Authenticator.DoesNotExist:
             return res_err(

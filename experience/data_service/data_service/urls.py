@@ -15,5 +15,6 @@ urlpatterns = [
     url('test/sort_pets', views.sort_pets),
     url('test/login', views.log_in),
     url('test/logout', views.log_out),
-    url('test/reset_password', views.reset_password)
+    url('test/reset_password', views.reset_password),
+    url('test/reset', views.reset)
 ]

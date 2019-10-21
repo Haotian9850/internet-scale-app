@@ -15,5 +15,6 @@ urlpatterns = [
     path("logout", views.logout, name="logout"),
     path("register", views.register, name="register"),
     path("reset_password", views.reset_password, name="reset_password"),
+    path("reset/<str:authenticator>", views.reset, name="reset"),
 ]
 
