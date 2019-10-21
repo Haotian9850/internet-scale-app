@@ -21,7 +21,7 @@
 6. As the customer, I want to change and update my profile to give my most up-to-date information to the seller
 7. As the seller, I want to be able to log in with my account, so I can ensure nobody else else can edit information of my pets without my permission
 8. As the seller, I want to be able to log out with my account. If I log in to the website in a computer in public, I want to ensure nobody else can use my account after I leave and am no longer using that computer
-9. As the customer, I want to see all pets specified by a specific seller because I really all the pets in his/her inventory and want to follow that seller
+9. As the customer, I want to see all pets specified by a specific seller because I really all the pets in his / her inventory and want to follow that seller
 
 
 
@@ -39,7 +39,7 @@
     - Click `[Register]` to register as a new user
     - After registeration, new user will be redirected to a login page. Click `[Log in]` after filling in user information
     - Click `[Forget your password?]` to reset password through email
-        - Since our team does not have a email service (real email services like `Mailchimp` are generally subscription-based paid services), so we opted for Django's build-in `EMAIL_BACKEND = django.core.mail.backends.filebased.EmailBackend`, which will redirect all emails to a local file system. Currently, all emails sent will be redirected to `/app/portia/emails` in the `entity` container
+        - Since our team does not have a dedicated email service (real email services like `Mailchimp` are generally subscription-based paid services), so we opted for Django's build-in `EMAIL_BACKEND = django.core.mail.backends.filebased.EmailBackend`, which will redirect all emails to a local file system. Currently, all emails sent will be redirected to `/app/portia/emails` in the `entity` container
         - **Note: in a production environment (where a real email service is available), making this feature live only requires changing a few settings in `settings.py` such as  `EMAIL_HOST`, `EMAIL_PORT` and `EMAIL_PASSWORD`** 
     - Go to `/app/portia/emails` to view password recovery email. Follow the link in email to reset password. If password reset is successful, user will be redirected to login page
     - After logging in, click `[Create a new pet!]` to create a new listing
