@@ -10,3 +10,4 @@ def validate_pwd(password):
         if token.isdigit():
             containsNumber = True 
     return containsNumber and containsUppercase
+    

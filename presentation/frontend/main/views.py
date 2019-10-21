@@ -1,6 +1,5 @@
 from services.pet_service import get_all_pets, search_pets, sort_pets, create_pet_service, get_pets_by_user_service
 from services.user_service import log_in_service, log_out_service, register_service, password_reset_service, reset_service
-from services.password_service import validate_pwd
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
@@ -285,6 +284,7 @@ def register(request):
                         "errMsg": "Password does not match"
                     }
                 )
+            '''
             if not validate_pwd(request.POST["password"]):
                 return render(
                     request,
@@ -294,6 +294,7 @@ def register(request):
                         "errMsg": "Password must contain one capital letter and one number"
                     }
                 )
+            '''
             res, status = register_service(request)
             if status == 0:
                 return JsonResponse({
@@ -320,6 +321,19 @@ def register(request):
             "form": form
         }
     )        
+
+
+def validate_pwd(password):
+    if len(password) < 8:
+        return False
+    containsUppercase = False 
+    containsNumber = False
+    for token in password:
+        if token.isupper():
+            containsUppercase = True 
+        if token.isdigit():
+            containsNumber = True 
+    return containsNumber and containsUppercase
 
 
 def reset_password(request):
@@ -385,9 +399,9 @@ def reset(request, authenticator=""):
             else:
                 return render(
                     request,
-                    "reset.html",
+                    "login.html",
                     {
-                        "form": ResetForm(),
+                        "form": LoginForm(),
                         "statusMsg": res
                     }
                 )
