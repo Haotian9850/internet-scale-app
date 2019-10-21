@@ -39,8 +39,7 @@ def log_out_service(authenticator):
 
 
     
-
-# TODO: add register service call
+    
 def register_service(request):
     try:
         res = requests.post(

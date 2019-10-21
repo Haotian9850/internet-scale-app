@@ -1,10 +1,10 @@
 from services.pet_service import get_all_pets, search_pets, sort_pets, create_pet_service, get_pets_by_user_service
 from services.user_service import log_in_service, log_out_service, register_service
+from services.password_service import validate_pwd
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.password_validation import validate_password
 from main.forms.create_pet_form import CreatePetForm
 from main.forms.login_form import LoginForm
 from main.forms.register_form import RegisterForm
@@ -275,31 +275,23 @@ def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
-            pword = request.POST["password"]
-            if pword != request.POST["confirm_password"]:
+            if request.POST["password"] != request.POST["confirm_password"]:
                 return render(
-                request,
-                "register.html",
-                {
-                    "errMsg": "Invalid Entry: Passwords do not match. ",
-                    "form": form
-                }
+                    request,
+                    "register.html",
+                    {
+                        "form": RegisterForm(),
+                        "errMsg": "Password does not match"
+                    }
                 )
-
-            try: 
-                validate_password(pword)
-                
-            except ValidationError as e:
-                errMsg = ""
-                for error in e:
-                    errMsg = errMsg + error + '\n'
+            if not validate_pwd(request.POST["password"]):
                 return render(
-                request,
-                "register.html",
-                {
-                    "errMsg": errMsg,
-                    "form": form
-                }
+                    request,
+                    "register.html",
+                    {
+                        "form": RegisterForm(),
+                        "errMsg": "Password must contain one capital letter and one number"
+                    }
                 )
             res, status = register_service(request)
             if status == 0:

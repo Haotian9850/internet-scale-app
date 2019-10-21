@@ -19,8 +19,6 @@ def create_user(request):
     if request.method != 'POST':
         return res_err(assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "POST"))
 
-    pword_plain = request.POST.get('password')
-    pword_hash = make_password(pword_plain)
     new_user = models.User(
         username = request.POST.get('username'), 
         first_name = request.POST.get('first_name'), 
@@ -30,7 +28,7 @@ def create_user(request):
         gender = request.POST.get('gender'),
         date_joined = datetime.now(), 
         zipcode = request.POST.get('zipcode'), 
-        password = pword_hash
+        password = make_password(request.POST.get("password"))
     )
     
     try:
