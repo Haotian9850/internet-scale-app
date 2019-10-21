@@ -123,7 +123,6 @@ def show_individual_pet_by_name(request, name):
 
 
 
-
 def search(request):
     if request.method == 'POST':
         if request.POST['keyword'] == '':
