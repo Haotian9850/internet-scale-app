@@ -184,26 +184,24 @@ def create_new_pet(request):
             else:
                 request.session["statusMsg"] = "Pet {} is successfully created!".format(request.POST["name"])
                 return HttpResponseRedirect("/homepage") 
-        form = CreatePetForm()
         return render(
             request,
             "create_pet.html",
             {
                 "errMsg": "Invalid Entry: Please check if information is correct and make sure price has two decimal places.",
-                "form": form
+                "form": CreatePetForm()
             }
         )
     else:
-        form = CreatePetForm()
-    return render(
-        request,
-        "create_pet.html",
-        {
-            "form": form,
-            "authenticated": request.session.get("authenticated"),
-            "username": request.session.get("username")
-        }
-    )
+        return render(
+            request,
+            "create_pet.html",
+            {
+                "form": CreatePetForm(),
+                "authenticated": request.session.get("authenticated"),
+                "username": request.session.get("username")
+            }
+        )
 
 
 
@@ -236,16 +234,14 @@ def login(request):
                     request.session.__delitem__("errMsg")
                 return HttpResponseRedirect("/homepage")
     else:
-        form = LoginForm()
-    return render(
-        request, 
-        "login.html",
-        {
-            "errMsg": request.session.get("errMsg"),
-            "statusMsg": request.session.get("statusMsg"),
-            "form": form
-        }
-    )
+        return render(
+            request, 
+            "login.html",
+            {
+                "errMsg": request.session.get("errMsg"),
+                "statusMsg": request.session.get("statusMsg"),
+                "form": LoginForm()
+            })
 
 
 
@@ -281,9 +277,7 @@ def register(request):
                     {
                         "form": RegisterForm(),
                         "errMsg": "Password does not match"
-                    }
-                )
-            '''
+                    })
             if not validate_pwd(request.POST["password"]):
                 return render(
                     request,
@@ -291,9 +285,7 @@ def register(request):
                     {
                         "form": RegisterForm(),
                         "errMsg": "Password must contain one capital letter and one number"
-                    }
-                )
-            '''
+                    })
             res, status = register_service(request)
             if status == 0:
                 return JsonResponse({
@@ -311,15 +303,13 @@ def register(request):
                     request.session.__delitem__("errMsg") 
                 return HttpResponseRedirect("/login")
     else:
-        form = RegisterForm()
-    return render(
-        request, 
-        "register.html",
-        {
-            "errMsg": request.session.get("errMsg"),
-            "form": form
-        }
-    )        
+        return render(
+            request, 
+            "register.html",
+            {
+                "errMsg": request.session.get("errMsg"),
+                "form": RegisterForm()
+            })        
 
 
 def validate_pwd(password):
@@ -355,24 +345,21 @@ def reset_password(request):
                 {
                     "statusMsg": res,
                     "form": ResetPasswordForm()
-                }
-            )
+                })
         else:
             return render(
                 request,
                 "reset_password.html",
                 {
                     "form": ResetPasswordForm()
-                }
-            )
+                })
     else:
         return render(
             request,
             "reset_password.html",
             {
                 "form": ResetPasswordForm()
-            }
-        )
+            })
 
     
 def reset(request, authenticator=""):
@@ -384,8 +371,7 @@ def reset(request, authenticator=""):
             "reset.html",
             {
                 "form": ResetForm()
-            }
-        )
+            })
     else:
         form = ResetForm(request.POST)
         if form.is_valid():
@@ -397,8 +383,7 @@ def reset(request, authenticator=""):
                     {
                         "form": ResetForm(),
                         "errMsg": res
-                    }
-                )
+                    })
             else:
                 return render(
                     request,
@@ -406,5 +391,4 @@ def reset(request, authenticator=""):
                     {
                         "form": LoginForm(),
                         "statusMsg": res
-                    }
-                )
+                    })
