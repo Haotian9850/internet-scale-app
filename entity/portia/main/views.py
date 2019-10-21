@@ -285,7 +285,7 @@ def log_out(request):
     
 
 def reset_password(request):
-    if request.POST.get("reset"):
+    if request.POST.get("reset") == True:
         # update user password
         try:
             user_id = models.Authenticator.objects.get(authenticator=request.POST.get("authenticator")).user_id
@@ -317,7 +317,7 @@ def reset_password(request):
                 send(
                     "Password recovery for user {}".format(request.POST.get("username")),
                     "Please follow this link to reset your password on Portia: {}".format(assemble_pwd_reset_link(
-                        authenticator_temp, "localhost", 8003, "reset_password"
+                        authenticator_temp, "localhost", 8003, "reset"
                     )),
                     "portia_team@localhost",
                     models.User.objects.get(username=request.POST.get("username")).email_address

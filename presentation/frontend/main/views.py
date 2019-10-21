@@ -1,5 +1,5 @@
 from services.pet_service import get_all_pets, search_pets, sort_pets, create_pet_service, get_pets_by_user_service
-from services.user_service import log_in_service, log_out_service, register_service
+from services.user_service import log_in_service, log_out_service, register_service, password_reset_service
 from services.password_service import validate_pwd
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render
@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from main.forms.create_pet_form import CreatePetForm
 from main.forms.login_form import LoginForm
 from main.forms.register_form import RegisterForm
+from main.forms.reset_password_form import ResetPasswordForm
 from django.core.exceptions import ValidationError
 import json
 
@@ -319,3 +320,29 @@ def register(request):
             "form": form
         }
     )        
+
+
+def reset_password(request):
+    if request.method == "POST":
+        res, status = password_reset_service(request.POST["username"], False)
+        if status == 0 or status == -1:
+            return JsonResponse({
+                "ok": False,
+                "res": res
+            })
+        return render(
+            request,
+            "reset_password.html",
+            {
+                "statusMsg": res,
+                "form": ResetPasswordForm()
+            }
+        )
+    else:
+        return render(
+            request,
+            "reset_password.html",
+            {
+                "form": ResetPasswordForm()
+            }
+        )

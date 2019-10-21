@@ -61,3 +61,22 @@ def register_service(request):
     if not json.loads(res.text)["ok"]:
         return json.loads(res.text)["res"], -1
     return json.loads(res.text)["res"], 1
+
+
+
+def password_reset_service(username, reset):
+    try:
+        res = requests.post(
+            url=constants.BASE_URL + "reset_password",
+            data={
+                "username": username,
+                "reset": reset
+            }
+        )
+    except requests.exceptions.Timeout:
+        return "Request timed out", 0
+    except requests.exceptions.HTTPError as err:
+        return "Request failed with HttpError {}".format(err.response.text), 0
+    if not json.loads(res.text)["ok"]:
+        return json.loads(res.text)["res"], -1
+    return json.loads(res.text)["res"], 1

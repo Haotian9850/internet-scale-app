@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="main-block">
+        <div class="row status">
+                {% if statusMsg %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>{{ statusMsg }}</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+                {% endif %}
+                {% if errMsg %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>{{ errMsg }}</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+                {% endif %}
+        </div>
+        <form method="post" action="/reset" class="form form-group form-row">
+            {% csrf_token %}
+            {% for field in form %}
+                <label class="form-label col-sm-2" for="{{ field.name }}">{{ field.label }}</label>
+                {{ field }}
+            {% endfor %}
+            <input type="submit" value="Submit" class="btn btn-primary">
+        </form>
+</div>
+{% endblock %}

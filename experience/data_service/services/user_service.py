@@ -75,12 +75,13 @@ def log_out_service(authenticator):
 
 
 
-def password_reset_service(username):
+def password_reset_service(username, reset):
     try:
         res = requests.post(
             url=constants.BASE_URL + "reset_password",
             data={
-                "username": username 
+                "username": username,
+                "reset": reset 
             }
         )
     except requests.exceptions.Timeout:

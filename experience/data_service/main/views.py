@@ -185,9 +185,9 @@ def create_user(request):
     
     
 
-def reset_psasword(request):
+def reset_password(request):
     if request.method == "POST":
-        res, status = password_reset_service(request.POST["username"])
+        res, status = password_reset_service(request.POST["username"], request.POST["reset"])
     if status == 0 or status == -1:
         return JsonResponse({
             "ok": False,
