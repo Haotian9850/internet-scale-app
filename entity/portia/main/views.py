@@ -304,7 +304,7 @@ def reset_password(request):
                 "Password for user with ID {} has been successfully reset!".format(user_id)
             )
         except models.Authenticator.DoesNotExist:
-            return res_err("Invalid link. Cannot reset password.")
+            return res_err("Invalid link. Cannot reset password. Please make sure you are following the correct link!")
     else:
         # insert authenticator_temp + send mail
         try:
