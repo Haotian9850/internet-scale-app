@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 
 from services.pet_service import get_all_pets_service, create_pet_service, get_pets_by_user_service
-from services.user_service import log_in_service, log_out_service, create_user_service
+from services.user_service import log_in_service, log_out_service, create_user_service, password_reset_service, reset_service
 
 def get_pet_list(request):
     if request.method != 'GET':
@@ -168,12 +168,7 @@ def create_user(request):
             "res": "Wrong request method. Request method must be {}".format("POST")
         })
     res, status = create_user_service(request)
-    if status == 0:
-        return JsonResponse({
-            "ok": False,
-            "res": res
-        })
-    elif status == -1:
+    if status == 0 or status == -1:
         return JsonResponse({
             "ok": False,
             "res": res
@@ -185,9 +180,34 @@ def create_user(request):
     
     
 
+def reset_password(request):
+    if request.method == "POST":
+        res, status = password_reset_service(request.POST["username"])
+    if status == 0 or status == -1:
+        return JsonResponse({
+            "ok": False,
+            "res": res
+        })
+    return JsonResponse({
+        "ok": True,
+        "res": res
+    })
 
 
-    
+
+
+def reset(request):
+    if request.method == "POST":
+        res, status = reset_service(request.POST["authenticator"], request.POST["new_password"])
+    if status == 0 or status == -1:
+        return JsonResponse({
+            "ok": False,
+            "res": res
+        })
+    return JsonResponse({
+        "ok": True,
+        "res": res
+    })    
     
 
 

@@ -165,8 +165,8 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
     - `api/v1/reset_password`: reset password for a user. `POST` only. The password resetting process consists of two sequential `POST` requests:
         ```
         {
-            "reset": False,
-            "username": "haot"
+            "reset": "no",
+            "username": "hao"
         }
         ```
         This request will trigger an email being sent to user's registered email address containing an `authenticator`
@@ -174,7 +174,7 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
         followed by:
         ```
         {
-            "reset": True,
+            "reset": "yes",
             "authenticator": "fh84o8/MtiFiwUF05J2gRA==",
             "new_password": 123456789
         }

@@ -10,7 +10,7 @@ def send(subject, msg, sender, recipient):
     )
 
 def assemble_pwd_reset_link(authenticator, hostname, port, path):
-    return "http://{}:{}/{}?authenticator={}".format(
+    return "http://{}:{}/{}/{}".format(
         hostname,
         port,
         path,

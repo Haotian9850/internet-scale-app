@@ -19,8 +19,6 @@ def create_user(request):
     if request.method != 'POST':
         return res_err(assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "POST"))
 
-    pword_plain = request.POST.get('password')
-    pword_hash = make_password(pword_plain)
     new_user = models.User(
         username = request.POST.get('username'), 
         first_name = request.POST.get('first_name'), 
@@ -30,7 +28,7 @@ def create_user(request):
         gender = request.POST.get('gender'),
         date_joined = datetime.now(), 
         zipcode = request.POST.get('zipcode'), 
-        password = pword_hash
+        password = make_password(request.POST.get("password"))
     )
     
     try:
@@ -287,7 +285,7 @@ def log_out(request):
     
 
 def reset_password(request):
-    if request.POST.get("reset"):
+    if request.POST["reset"] == "yes":
         # update user password
         try:
             user_id = models.Authenticator.objects.get(authenticator=request.POST.get("authenticator")).user_id
@@ -300,31 +298,38 @@ def reset_password(request):
                 return res_success(
                     "Error while saving updated password {}".format(str(e))
                 )
+            # delete temp authenticator
+            models.Authenticator.objects.get(authenticator=request.POST.get("authenticator")).delete()
             return res_success(
-                "Password for user with ID {} has been successfully reset!".format(models.Authenticator.objects.get(authenticator=request.POST.get("authenticator")).user_id)
+                "Password for user with ID {} has been successfully reset!".format(user_id)
             )
         except models.Authenticator.DoesNotExist:
-            return res_err(
-                assemble_err_msg(request.GET.authenticator, "NOT_FOUND", "Authenticator")
-            )
+            return res_err("Invalid link. Cannot reset password. Please make sure you are following the correct link!")
     else:
         # insert authenticator_temp + send mail
         try:
             authenticator_temp = get_new_authenticator(16)
+            try:
+                user = models.User.objects.get(username=request.POST.get("username"))
+            except models.User.DoesNotExist:
+                return res_err("User is not registered in our database!")
             create_authenticator(
-                models.User.objects.get(username=request.POST.get("username")).id,
+                user.id,
                 authenticator_temp
             )
             try:
                 send(
                     "Password recovery for user {}".format(request.POST.get("username")),
                     "Please follow this link to reset your password on Portia: {}".format(assemble_pwd_reset_link(
-                        authenticator_temp, "localhost", 8003, "reset_password"
+                        authenticator_temp, "localhost", 8003, "reset"
                     )),
                     "portia_team@localhost",
                     models.User.objects.get(username=request.POST.get("username")).email_address
                 )
-                return res_success("Password recovery email for user {} is successfully sent".format(models.User.objects.get(username=request.POST.get("username"))))
+                return res_success("Password recovery email for user {} is successfully sent. Please check your email address {}".format(
+                    models.User.objects.get(username=request.POST.get("username")).username,
+                    models.User.objects.get(username=request.POST.get("username")).email_address
+                ))
             except SMTPException as e:
                 return res_err(
                     "There is an issue when sending password recovery email: {}".format(e)

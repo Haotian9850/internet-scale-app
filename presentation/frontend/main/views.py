@@ -1,13 +1,14 @@
 from services.pet_service import get_all_pets, search_pets, sort_pets, create_pet_service, get_pets_by_user_service
-from services.user_service import log_in_service, log_out_service, register_service
+from services.user_service import log_in_service, log_out_service, register_service, password_reset_service, reset_service
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.password_validation import validate_password
 from main.forms.create_pet_form import CreatePetForm
 from main.forms.login_form import LoginForm
 from main.forms.register_form import RegisterForm
+from main.forms.reset_password_form import ResetPasswordForm
+from main.forms.reset_form import ResetForm
 from django.core.exceptions import ValidationError
 import json
 
@@ -234,8 +235,7 @@ def login(request):
                 request.session["statusMsg"] = "Successfully logged in for user {}".format(request.session["username"])
                 if request.session.get("errMsg") is not None:
                     request.session.__delitem__("errMsg")
-                
-            return HttpResponseRedirect("/homepage")
+                return HttpResponseRedirect("/homepage")
     else:
         form = LoginForm()
     return render(
@@ -275,32 +275,26 @@ def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
-            pword = request.POST["password"]
-            if pword != request.POST["confirm_password"]:
+            if request.POST["password"] != request.POST["confirm_password"]:
                 return render(
-                request,
-                "register.html",
-                {
-                    "errMsg": "Invalid Entry: Passwords do not match. ",
-                    "form": form
-                }
+                    request,
+                    "register.html",
+                    {
+                        "form": RegisterForm(),
+                        "errMsg": "Password does not match"
+                    }
                 )
-
-            try: 
-                validate_password(pword)
-                
-            except ValidationError as e:
-                errMsg = ""
-                for error in e:
-                    errMsg = errMsg + error + '\n'
+            '''
+            if not validate_pwd(request.POST["password"]):
                 return render(
-                request,
-                "register.html",
-                {
-                    "errMsg": errMsg,
-                    "form": form
-                }
+                    request,
+                    "register.html",
+                    {
+                        "form": RegisterForm(),
+                        "errMsg": "Password must contain one capital letter and one number"
+                    }
                 )
+            '''
             res, status = register_service(request)
             if status == 0:
                 return JsonResponse({
@@ -327,3 +321,87 @@ def register(request):
             "form": form
         }
     )        
+
+
+def validate_pwd(password):
+    if len(password) < 8:
+        return False
+    containsUppercase = False 
+    containsNumber = False
+    for token in password:
+        if token.isupper():
+            containsUppercase = True 
+        if token.isdigit():
+            containsNumber = True 
+    return containsNumber and containsUppercase
+
+
+def reset_password(request):
+    if request.method == "POST":
+        form = ResetPasswordForm(request.POST)
+        if form.is_valid():
+            res, status = password_reset_service(request.POST["username"])
+            if status == 0 or status == -1:
+                return JsonResponse({
+                    "ok": False,
+                    "res": res
+                })
+            return render(
+                request,
+                "reset_password.html",
+                {
+                    "statusMsg": res,
+                    "form": ResetPasswordForm()
+                }
+            )
+        else:
+            return render(
+                request,
+                "reset_password.html",
+                {
+                    "form": ResetPasswordForm()
+                }
+            )
+    else:
+        return render(
+            request,
+            "reset_password.html",
+            {
+                "form": ResetPasswordForm()
+            }
+        )
+
+    
+def reset(request, authenticator=""):
+    if request.method == "GET":
+        # set temp authenticator
+        request.session["authenticator"] = authenticator
+        return render(
+            request,
+            "reset.html",
+            {
+                "form": ResetForm()
+            }
+        )
+    else:
+        form = ResetForm(request.POST)
+        if form.is_valid():
+            res, status = reset_service(request.session["authenticator"], request.POST["new_password"])
+            if status == 0 or status == -1:
+                return render(
+                    request,
+                    "reset.html",
+                    {
+                        "form": ResetForm(),
+                        "errMsg": res
+                    }
+                )
+            else:
+                return render(
+                    request,
+                    "login.html",
+                    {
+                        "form": LoginForm(),
+                        "statusMsg": res
+                    }
+                )
