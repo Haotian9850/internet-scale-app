@@ -39,7 +39,6 @@ def log_out_service(authenticator):
 
 
     
-    
 def register_service(request):
     try:
         res = requests.post(
