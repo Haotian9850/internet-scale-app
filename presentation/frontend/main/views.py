@@ -374,10 +374,14 @@ def reset(request, authenticator=""):
         if form.is_valid():
             res, status = reset_service(request.session["authenticator"], request.POST["new_password"])
             if status == 0 or status == -1:
-                return JsonResponse({
-                    "ok": False,
-                    "res": res
-                })
+                return render(
+                    request,
+                    "reset.html",
+                    {
+                        "form": ResetForm(),
+                        "errMsg": res
+                    }
+                )
             else:
                 return render(
                     request,

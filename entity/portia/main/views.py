@@ -304,15 +304,17 @@ def reset_password(request):
                 "Password for user with ID {} has been successfully reset!".format(user_id)
             )
         except models.Authenticator.DoesNotExist:
-            return res_err(
-                assemble_err_msg(request.GET.authenticator, "NOT_FOUND", "Authenticator")
-            )
+            return res_err("Invalid link. Cannot reset password.")
     else:
         # insert authenticator_temp + send mail
         try:
             authenticator_temp = get_new_authenticator(16)
+            try:
+                user = models.User.objects.get(username=request.POST.get("username"))
+            except models.User.DoesNotExist:
+                return res_err("User is not registered in our database!")
             create_authenticator(
-                models.User.objects.get(username=request.POST.get("username")).id,
+                user.id,
                 authenticator_temp
             )
             try:
@@ -324,7 +326,10 @@ def reset_password(request):
                     "portia_team@localhost",
                     models.User.objects.get(username=request.POST.get("username")).email_address
                 )
-                return res_success("Password recovery email for user {} is successfully sent".format(models.User.objects.get(username=request.POST.get("username"))))
+                return res_success("Password recovery email for user {} is successfully sent. Please check your email address {}".format(
+                    models.User.objects.get(username=request.POST.get("username")).username,
+                    models.User.objects.get(username=request.POST.get("username")).email_address
+                ))
             except SMTPException as e:
                 return res_err(
                     "There is an issue when sending password recovery email: {}".format(e)

@@ -6,6 +6,3 @@ def get_new_authenticator(size):
     while result.find("/") != -1:
         result = b64encode(os.urandom(size)).decode('utf-8')
     return result 
-
-
-print(get_new_authenticator(16))
