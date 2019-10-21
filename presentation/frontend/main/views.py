@@ -379,7 +379,11 @@ def reset(request, authenticator=""):
                     "res": res
                 })
             else:
-                return JsonResponse({
-                    "ok": True,
-                    "res": res
-                })
+                return render(
+                    request,
+                    "reset.html",
+                    {
+                        "form": ResetForm(),
+                        "statusMsg": res
+                    }
+                )
