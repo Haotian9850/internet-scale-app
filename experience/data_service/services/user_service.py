@@ -39,7 +39,6 @@ def create_user_service(request):
 
 
 
-# TODO: add err handling when user not found
 def log_in_service(username, password):
     try:
         res = requests.post(
@@ -72,3 +71,23 @@ def log_out_service(authenticator):
     except requests.exceptions.HTTPError as err:
         return "Request failed with HttpError {}".format(err.response.text), 0
     return json.loads(res.text)["res"], 1
+
+
+
+
+def password_reset_service(username):
+    try:
+        res = requests.post(
+            url=constants.BASE_URL + "reset_password",
+            data={
+                "username": username 
+            }
+        )
+    except requests.exceptions.Timeout:
+        return "Request timed out", 0
+    except requests.exceptions.HTTPError as err:
+        return "Request failed with HttpError {}".format(err.response.text), 0
+    if not json.loads(res.text)["ok"]:
+        return json.loads(res.text)["res"], -1
+    return json.loads(res.text)["res"], 1
+    
