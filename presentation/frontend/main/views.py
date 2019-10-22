@@ -264,8 +264,6 @@ def logout(request):
         
     
 
-
-
 def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
@@ -301,7 +299,14 @@ def register(request):
                 request.session["statusMsg"] = res 
                 if request.session.get("errMsg") is not None:
                     request.session.__delitem__("errMsg") 
-                return HttpResponseRedirect("/login")
+                return render(
+                    request,
+                    "login.html",
+                    {
+                        "form": LoginForm(),
+                        "statusMsg": request.session.get("statusMsg")
+                    }
+                )
     else:
         return render(
             request, 

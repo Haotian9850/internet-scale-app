@@ -22,6 +22,7 @@
 7. As the seller, I want to be able to log in with my account, so I can ensure nobody else else can edit information of my pets without my permission
 8. As the seller, I want to be able to log out with my account. If I log in to the website in a computer in public, I want to ensure nobody else can use my account after I leave and am no longer using that computer
 9. As the customer, I want to see all pets specified by a specific seller because I really all the pets in his / her inventory and want to follow that seller
+10. As the seller, I want to be able to reset my account password so I can log in and retrieve my inventory information if I happened to forget the account password
 
 
 
