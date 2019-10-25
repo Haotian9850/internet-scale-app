@@ -72,6 +72,8 @@ services:
     command: bash -c "app/init.sh"
       
   
+
+
 networks:
   backend:
     driver: bridge
