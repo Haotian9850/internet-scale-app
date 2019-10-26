@@ -14,7 +14,6 @@ services:
     ports:
       - "8001:8000"
     command: bash -c "/app/init.sh"
-
   experience:
     container_name: experience
     image: tp33/django
@@ -28,7 +27,6 @@ services:
     ports:
       - "8002:8000"
     command: bash -c "/app/init.sh"
-
   presentation:
     container_name: presentation
     image: tp33/django
@@ -41,10 +39,9 @@ services:
     ports:
       - "8003:8000"
     command: bash -c "/app/init.sh"
-
   kafka:
-    image: spotify/kafka
     container_name: kafka
+    image: spotify/kafka
     networks:
       - search
       - services
@@ -52,28 +49,23 @@ services:
       ADVERTISED_HOST: kafka
       ADVERTISED_PORT: 9092
     hostname: kafka
-  
   elasticsearch:
-    image: elasticsearch:7.4.0
     container_name: elasticsearch
+    image: elasticsearch:7.4.0
     environment:
       - discovery.type=single-node
     networks:
-      - search
       - services
-   ports:
+      - search
+    ports:
       - "9200:9200"
-
   batch:
-    image: tp33/django
     container_name: batch
+    image: tp33/django
+    volumes:
+      - ./batch:/app
     networks:
       - search
-    command: bash -c "app/init.sh"
-      
-  
-
-
 networks:
   backend:
     driver: bridge
