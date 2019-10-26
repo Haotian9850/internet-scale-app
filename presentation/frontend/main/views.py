@@ -182,7 +182,8 @@ def create_new_pet(request):
                     "errMsg": res
                 })
             else:
-                request.session["statusMsg"] = "Pet {} is successfully created!".format(request.POST["name"])
+                #request.session["statusMsg"] = "Pet {} is successfully created!".format(request.POST["name"])
+                request.session["statusMsg"] = res
                 return HttpResponseRedirect("/homepage") 
         return render(
             request,

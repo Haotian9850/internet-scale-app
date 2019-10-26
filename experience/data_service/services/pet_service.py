@@ -52,7 +52,7 @@ def create_pet_service(request):
         return "Request timed out", 0
     except requests.exceptions.HTTPError as err:
         return "Request failed with HTTPError {}".format(err.response.text), 0
-    if kafka_status:
+    if kafka_status is True:
         return json.loads(res.text)['res'] + "New pet information is successfully put on Kafka queue.", 1 
     else:
         return json.loads(res.text)['res'] + "New pet information is not put on Kafka queue.", 1
