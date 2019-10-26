@@ -1,7 +1,7 @@
 import requests
 import json
 
-from kafka_service import send_new_pet
+from services.kafka_service import send_new_pet
 
 import constants
 
@@ -47,9 +47,12 @@ def create_pet_service(request):
                 "username": request.POST.get("username")
             }
         )
-        send_new_pet(request)
-    except request.exceptions.Timeout:
+        kafka_status = send_new_pet(request)
+    except requests.exceptions.Timeout:
         return "Request timed out", 0
-    except request.exceptions.HTTPError as err:
+    except requests.exceptions.HTTPError as err:
         return "Request failed with HTTPError {}".format(err.response.text), 0
-    return json.loads(res.text)['res'], 1 
+    if kafka_status:
+        return json.loads(res.text)['res'] + "New pet information is successfully put on Kafka queue.", 1 
+    else:
+        return json.loads(res.text)['res'] + "New pet information is not put on Kafka queue.", 1

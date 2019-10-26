@@ -7,7 +7,7 @@ import logging
 # TODO: switch back to async in production 
 
 def send_new_pet(request):
-    producer = KafkaProducer(bootstrap_server="kafka:9092")
+    producer = KafkaProducer(bootstrap_servers=["kafka:9092"])
     try:
         future = producer.send(
             "new-pet-topic",
@@ -23,7 +23,7 @@ def send_new_pet(request):
             ).encode("utf-8")
         )
         result = future.get(timeout = 60)
-        return result is None   # confirms kafka queuing
+        return result is not None   # confirms kafka queuing
     except KafkaError:
         return False
         
