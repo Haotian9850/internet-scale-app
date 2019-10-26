@@ -1,5 +1,7 @@
 from kafka import KafkaConsumer
 from kafka.errors import KafkaError
+
+from elasticsearch import Elasticsearch
 import logging 
 import time 
 import threading
@@ -23,4 +25,7 @@ def print_consumer_topic():
         ))  # will wait for next kafka message
 
 
-print_consumer_topic()
+
+def index_new_pet():
+    es = Elasticsearch(["elasticsearch"])
+    
