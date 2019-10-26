@@ -5,8 +5,8 @@ import time
 import threading
 
 
-# TODO: make sure function is thread-safe
-def print_consumer_topic():
+
+def print_consumer_topic():  
     consumer = KafkaConsumer(
         "new-pet-topic",
         group_id=None,
@@ -20,7 +20,7 @@ def print_consumer_topic():
             message.offset,
             message.key,
             message.value
-        ))
-    #threading.Timer(5, print_consumer_topic).start()
+        ))  # will wait for next kafka message
+
 
 print_consumer_topic()
