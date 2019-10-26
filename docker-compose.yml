@@ -49,6 +49,14 @@ services:
       ADVERTISED_HOST: kafka
       ADVERTISED_PORT: 9092
     hostname: kafka
+  batch:
+    container_name: batch
+    image: tp33/django
+    volumes:
+      - ./batch:/app
+    networks:
+      - search
+    command: bash -c "/app/init.sh"
   elasticsearch:
     container_name: elasticsearch
     image: elasticsearch:7.4.0
@@ -59,13 +67,7 @@ services:
       - search
     ports:
       - "9200:9200"
-  batch:
-    container_name: batch
-    image: tp33/django
-    volumes:
-      - ./batch:/app
-    networks:
-      - search
+
 networks:
   backend:
     driver: bridge

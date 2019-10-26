@@ -1,6 +1,8 @@
 import requests
 import json
 
+from kafka_service import send_new_pet
+
 import constants
 
 # check HTTP-related errors only (other error msgs should be passed from entity)
@@ -45,6 +47,7 @@ def create_pet_service(request):
                 "username": request.POST.get("username")
             }
         )
+        send_new_pet(request)
     except request.exceptions.Timeout:
         return "Request timed out", 0
     except request.exceptions.HTTPError as err:
