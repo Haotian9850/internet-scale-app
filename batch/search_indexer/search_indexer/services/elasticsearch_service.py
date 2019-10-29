@@ -24,6 +24,18 @@ def check_existing_index(es, index_name):
     return es.indices.exists(index_name)
 
 
+def update_pet_view(views, index_name, es):
+    for pet_id in views.keys():
+        es.update(
+            index=index_name,
+            id=views[pet_id],
+            body={
+                "script": "ctx._source.views += 1"
+            }
+        )
+    
+
+
 
 def print_consumer_topic():  
     consumer = KafkaConsumer(

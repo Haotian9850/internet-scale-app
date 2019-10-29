@@ -21,7 +21,6 @@ def parse_pet_log():
         lines = log.readlines()
     for line in lines:
         result[line.split(":")[2]] = result.get(line.split(":")[2], 0) + 1
-    print(result)
     return result
 
 
