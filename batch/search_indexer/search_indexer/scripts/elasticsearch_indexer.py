@@ -7,8 +7,6 @@ import time
 import threading
 
 
-es_id_mapping
-
 
 def get_es_client():
     es = Elasticsearch(["elasticsearch:9200"])
