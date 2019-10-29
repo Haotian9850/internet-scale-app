@@ -125,7 +125,7 @@ def create_pet(request):
         new_pet.save()
     except DatabaseError as e:
         return res_err("Creating pet transaction failed with error " + str(e.args))
-    return res_success("New Pet with pet_id " + str(new_pet.pk) + " is successfully created!")
+    return res_success(str(new_pet.pk))
 
 
 
