@@ -11,8 +11,7 @@ def get_es_client():
     return es
 
 
-def init(index_name, index_mapping):
-    es = get_es_client()
+def init(index_name, index_mapping, es):
     if not check_existing_index(es, index_name):
         return es.indices.create(
             index=index_name,
