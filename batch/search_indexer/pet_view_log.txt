@@ -1,0 +1,14 @@
+INFO:elasticsearch:HEAD http://elasticsearch:9200/ [status:200 request:0.008s]
+INFO:elasticsearch:PUT http://elasticsearch:9200/pets [status:200 request:0.235s]
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=kafka:9092 <connecting> [IPv4 ('172.22.0.3', 9092)]>: connecting to kafka:9092 [('172.22.0.3', 9092) IPv4]
+INFO:kafka.conn:Probing node bootstrap-0 broker version
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=kafka:9092 <connecting> [IPv4 ('172.22.0.3', 9092)]>: Connection complete.
+INFO:kafka.conn:Broker version identifed as 0.10.1
+INFO:kafka.conn:Set configuration api_version=(0, 10, 1) to skip auto check_version requests on startup
+WARNING:kafka.coordinator.consumer:group_id is None: disabling auto-commit.
+INFO:kafka.consumer.subscription_state:Updating subscribed topics to: ('new-pet-topic',)
+INFO:kafka.consumer.subscription_state:Updated partition assignment: [TopicPartition(topic='new-pet-topic', partition=0)]
+INFO:kafka.conn:<BrokerConnection node_id=0 host=kafka:9092 <connecting> [IPv4 ('172.22.0.3', 9092)]>: connecting to kafka:9092 [('172.22.0.3', 9092) IPv4]
+INFO:kafka.conn:<BrokerConnection node_id=0 host=kafka:9092 <connecting> [IPv4 ('172.22.0.3', 9092)]>: Connection complete.
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=kafka:9092 <connected> [IPv4 ('172.22.0.3', 9092)]>: Closing connection. 
+INFO:elasticsearch:POST http://elasticsearch:9200/pets/_doc/1 [status:201 request:0.079s]

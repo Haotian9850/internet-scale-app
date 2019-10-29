@@ -2,30 +2,17 @@ from elasticsearch import Elasticsearch
 from kafka import KafkaConsumer
 from kafka.errors import KafkaError
 import json
-
-
-INDEX_NAME = "pets"
-INDEX_MAPPING = {
-    "settings": {
-        "number_of_shards" : 1
-    },
-    "mappings": {
-            "properties": {
-                "name" : { "type" : "text" },
-                "pet_type" : { "type" : "text" },
-                "description" : { "type" : "text" },
-                "price" : { "type" : "double" },
-                "views" : { "type" : "long" }
-            } 
-    }
-}
-
+import time
 
 
 def get_es_client():
     es = Elasticsearch(["elasticsearch:9200"])
-    if not es.ping():
-        print("Cannot establish a connection to elasticsearch host.")
+    for i in range(100):
+        if not es.ping():
+            print("Cannot establish a connection to elasticsearch host. Retrying....")
+        else:
+            break
+        time.sleep(1)
     return es
 
 
@@ -48,7 +35,7 @@ def update_pet_view(es, index_name, views):
 
 def update_view(es, index_name, pet_id, new_view):
     es.update(
-        index=INDEX_NAME,
+        index=index_name,
         id=pet_id,
         body={
             "script": "ctx._source.visits={}".format(new_view)
@@ -95,24 +82,3 @@ def ingest_new_pet(es, index_name):
             message.key,
             message.value
         ))  # will wait for next kafka message (will hold)
-
-
-
-if __name__ == "__main__":
-    '''
-    pet = {
-        "name": "test_pet",
-        "pet_type": "dog",
-        "description": "test description",
-        "price": 123,
-        "pet_id": 15,
-        "views": 0
-    }
-    '''
-    '''
-    es = get_es_client()
-    ingest_new_pet(get_es_client(), INDEX_NAME, pet)
-    update_pet_view(get_es_client(), INDEX_NAME, 15, 43)
-    '''
-
-    ingest_new_pet(get_es_client(), INDEX_NAME)

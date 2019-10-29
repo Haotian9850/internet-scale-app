@@ -52,6 +52,9 @@ services:
   batch:
     container_name: batch
     image: tp33/django
+    depends_on:
+      - elasticsearch
+      - kafka
     volumes:
       - ./batch:/app
     networks:
