@@ -56,6 +56,8 @@ services:
       - ./batch:/app
     networks:
       - search
+    ports:
+      - "8004:8000"
     command: bash -c "/app/init.sh"
   elasticsearch:
     container_name: elasticsearch

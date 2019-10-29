@@ -36,23 +36,36 @@ def get_pets_by_user_service(request):
 
 def create_pet_service(request):
     try:
+        name = request.POST.get("name"),
+        pet_type = request.POST.get("pet_type"),
+        description = request.POST.get("description"),
+        price = request.POST.get("price"),
+        authenticator = request.POST.get("authenticator"),
+        username = request.POST.get("username")
+
         res = requests.post(
             constants.BASE_URL + "pets/create",
             data={
-                "name": request.POST.get("name"),
-                "pet_type": request.POST.get("pet_type"),
-                "description": request.POST.get("description"),
-                "price": request.POST.get("price"),
-                "authenticator": request.POST.get("authenticator"),
-                "username": request.POST.get("username")
+                "name": name,
+                "pet_type": pet_type,
+                "description": description,
+                "price": price,
+                "authenticator": authenticator,
+                "username": username
             }
         )
-        kafka_status = send_new_pet(request)
+        kafka_status = send_new_pet({
+            "name": name,
+            "pet_type": pet_type,
+            "description": description,
+            "price": price,
+            "pet_id": json.loads(res.text)["res"]
+        })
     except requests.exceptions.Timeout:
         return "Request timed out", 0
     except requests.exceptions.HTTPError as err:
         return "Request failed with HTTPError {}".format(err.response.text), 0
     if kafka_status is True:
-        return json.loads(res.text)['res'] + "New pet information is successfully put on Kafka queue.", 1 
+        return "New pet with pet_id {} is successfully created and put on Kafka queue.".format(json.loads(res.text)["res"]), 1 
     else:
-        return json.loads(res.text)['res'] + "New pet information is not put on Kafka queue.", 1
+        return "New pet with pet_id {} is successfully created but not put on Kafka queue.".format(json.loads(res.text)["res"]), 1 

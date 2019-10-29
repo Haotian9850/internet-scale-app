@@ -1,13 +1,7 @@
+from elasticsearch import Elasticsearch
 from kafka import KafkaConsumer
 from kafka.errors import KafkaError
 
-from elasticsearch import Elasticsearch
-import logging 
-import time 
-import threading
-
-
-es_id_mapping
 
 
 def get_es_client():
@@ -17,29 +11,28 @@ def get_es_client():
     return es
 
 
-def init(index_name, index_mapping):
-    es = get_es_client()
+def init(index_name, index_mapping, es):
     if not check_existing_index(es, index_name):
         return es.indices.create(
             index=index_name,
             body=index_mapping
         )
-    
+
 
 def check_existing_index(es, index_name):
     return es.indices.exists(index_name)
 
 
-# check for pet existence first
-'''
-def index_pet(message, index_name):
-    es = get_es_client()
-    return es.index(
-        index=index_name,
-        body=parse_pet(message)
-    )
-'''
-
+def update_pet_view(views, index_name, es):
+    for pet_id in views.keys():
+        es.update(
+            index=index_name,
+            id=views[pet_id],
+            body={
+                "script": "ctx._source.views += 1"
+            }
+        )
+    
 
 def print_consumer_topic():  
     consumer = KafkaConsumer(
@@ -57,6 +50,4 @@ def print_consumer_topic():
             message.value
         ))  # will wait for next kafka message
 
-
-
-    
+print_consumer_topic()
