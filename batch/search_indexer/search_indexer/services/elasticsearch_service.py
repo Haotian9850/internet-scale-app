@@ -58,7 +58,7 @@ def ingest_pet(es, index_name, pet):
     )
 
 
-def ingest_new_pet(es, index_name):  
+def index_pet(es, index_name):  
     consumer = KafkaConsumer(
         "new-pet-topic",
         group_id=None,
@@ -67,14 +67,17 @@ def ingest_new_pet(es, index_name):
     ) 
     for message in consumer:
         pet = json.loads(message.value.decode("utf-8"))
-        ingest_pet(es, index_name, {
-            "name": pet["name"],
-            "pet_type": pet["pet_type"],
-            "description": pet["description"],
-            "price": pet["price"],
-            "pet_id": pet["pet_id"],
-            "views": pet["views"]
-        })
+        if pet["views"] == 0:
+            ingest_pet(es, index_name, {
+                "name": pet["name"],
+                "pet_type": pet["pet_type"],
+                "description": pet["description"],
+                "price": pet["price"],
+                "pet_id": pet["pet_id"],
+                "views": pet["views"]
+            })
+        if pet["views"] == -1:
+            # TODO: split services to Kafka service
         print("{}:{}:{}: key={} value={}".format(
             message.topic,
             message.partition,

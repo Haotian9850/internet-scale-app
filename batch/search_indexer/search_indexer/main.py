@@ -1,5 +1,6 @@
-from services.elasticsearch_service import get_es_client, init, update_pet_view, ingest_new_pet
+from services.elasticsearch_service import get_es_client, init, update_pet_view, index_pet
 from services.logging_service import parse_pet_log
+
 
 INDEX_NAME = "pets"
 INDEX_MAPPING = {
