@@ -1,10 +1,6 @@
+from elasticsearch import Elasticsearch
 from kafka import KafkaConsumer
 from kafka.errors import KafkaError
-
-from elasticsearch import Elasticsearch
-import logging 
-import time 
-import threading
 
 
 
@@ -22,21 +18,11 @@ def init(index_name, index_mapping):
             index=index_name,
             body=index_mapping
         )
-    
+
 
 def check_existing_index(es, index_name):
     return es.indices.exists(index_name)
 
-
-# check for pet existence first
-'''
-def index_pet(message, index_name):
-    es = get_es_client()
-    return es.index(
-        index=index_name,
-        body=parse_pet(message)
-    )
-'''
 
 
 def print_consumer_topic():  
@@ -54,7 +40,3 @@ def print_consumer_topic():
             message.key,
             message.value
         ))  # will wait for next kafka message
-
-
-
-    

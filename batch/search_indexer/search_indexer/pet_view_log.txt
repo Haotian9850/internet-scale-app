@@ -1,0 +1,3 @@
+INFO:pet_view_logger:29: 1
+INFO:root:29: 1
+INFO:root:29:1
