@@ -53,6 +53,6 @@ def create_pet_service(request):
     except requests.exceptions.HTTPError as err:
         return "Request failed with HTTPError {}".format(err.response.text), 0
     if kafka_status is True:
-        return json.loads(res.text)['res'] + "New pet information is successfully put on Kafka queue.", 1 
+        return "New pet with pet_id {} is successfully created and put on Kafka queue.".format(json.loads(res.text)["res"]), 1 
     else:
-        return json.loads(res.text)['res'] + "New pet information is not put on Kafka queue.", 1
+        return "New pet with pet_id {} is successfully created but not put on Kafka queue.".format(json.loads(res.text)["res"]), 1 
