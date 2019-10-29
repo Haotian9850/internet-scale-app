@@ -38,18 +38,18 @@ def init(index_name, index_mapping, es):
 
 def check_existing_index(es, index_name):
     return es.indices.exists(index_name)
-
-
-def update_pet_view(views, index_name, es):
-    for pet_id in views.keys():
-        es.update(
-            index=index_name,
-            id=views[pet_id],
-            body={
-                "script": "ctx._source.views += 1"
-            }
-        )
     
+
+def update_pet_view(es, index_name, pet_id, new_view):
+    return es.update(
+        index=INDEX_NAME,
+        id=pet_id,
+        body={
+            "script": "ctx._source.visits={}".format(new_view)
+        }
+    )
+
+
 
 def ingest_new_pet(es, index_name, pet):
     return es.index(
@@ -92,6 +92,6 @@ if __name__ == "__main__":
         "pet_id": 15,
         "views": 0
     }
-    init(INDEX_NAME, INDEX_MAPPING, get_es_client())
-    ingest_new_pet(get_es_client(), INDEX_NAME, pet)
-    # print_consumer_topic()
+    #init(INDEX_NAME, INDEX_MAPPING, get_es_client())
+    #ingest_new_pet(get_es_client(), INDEX_NAME, pet)
+    update_pet_view(get_es_client(), INDEX_NAME, 15, 43)
