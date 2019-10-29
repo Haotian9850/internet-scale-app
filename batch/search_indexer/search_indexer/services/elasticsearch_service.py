@@ -35,8 +35,6 @@ def update_pet_view(views, index_name, es):
         )
     
 
-
-
 def print_consumer_topic():  
     consumer = KafkaConsumer(
         "new-pet-topic",
@@ -52,3 +50,5 @@ def print_consumer_topic():
             message.key,
             message.value
         ))  # will wait for next kafka message
+
+print_consumer_topic()

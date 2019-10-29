@@ -7,6 +7,7 @@ import logging
 # TODO: switch back to async in production 
 
 # elasticsearch index schema
+'''
 pet = {
     "name": "test_pet",
     "pet_type": "dog",
@@ -15,6 +16,7 @@ pet = {
     "pet_id": 15,
     "views": 0
 }
+'''
 
 
 
@@ -25,11 +27,11 @@ def send_new_pet(pet):
             "new-pet-topic",
             json.dumps(
                 {
-                    "name": pet.name,
-                    "pet_type": pet.pet_type,
-                    "description": pet.description,
-                    "price": pet.price,
-                    "pet_id": pet.pet_id,
+                    "name": pet.get("name")[0],
+                    "pet_type": pet.get("pet_type")[0],
+                    "description": pet.get("description")[0],
+                    "price": pet.get("price")[0],
+                    "pet_id": pet.get("pet_id")[0],
                     "views": 0
                 }
             ).encode("utf-8")
