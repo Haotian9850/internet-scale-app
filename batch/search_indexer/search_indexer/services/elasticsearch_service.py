@@ -1,14 +1,15 @@
 from elasticsearch import Elasticsearch
 from kafka import KafkaConsumer
 from kafka.errors import KafkaError
+import json
 
 
 INDEX_NAME = "pets"
 INDEX_MAPPING = {
-    "settings" :{
+    "settings": {
         "number_of_shards" : 1
     },
-    "mappings" : {
+    "mappings": {
             "properties": {
                 "name" : { "type" : "text" },
                 "pet_type" : { "type" : "text" },
@@ -40,8 +41,13 @@ def check_existing_index(es, index_name):
     return es.indices.exists(index_name)
     
 
-def update_pet_view(es, index_name, pet_id, new_view):
-    return es.update(
+def update_pet_view(es, index_name, views):
+    for pet_id in views.keys():
+        update_view(es, index_name, pet_id, views["pet_id"])
+
+
+def update_view(es, index_name, pet_id, new_view):
+    es.update(
         index=INDEX_NAME,
         id=pet_id,
         body={
@@ -51,7 +57,7 @@ def update_pet_view(es, index_name, pet_id, new_view):
 
 
 
-def ingest_new_pet(es, index_name, pet):
+def ingest_pet(es, index_name, pet):
     return es.index(
         index=index_name,
         id=pet["pet_id"],
@@ -65,7 +71,7 @@ def ingest_new_pet(es, index_name, pet):
     )
 
 
-def print_consumer_topic():  
+def ingest_new_pet(es, index_name):  
     consumer = KafkaConsumer(
         "new-pet-topic",
         group_id=None,
@@ -73,17 +79,27 @@ def print_consumer_topic():
         bootstrap_servers=["kafka:9092"]
     ) 
     for message in consumer:
+        pet = json.loads(message.value.decode("utf-8"))
+        ingest_pet(es, index_name, {
+            "name": pet["name"],
+            "pet_type": pet["pet_type"],
+            "description": pet["description"],
+            "price": pet["price"],
+            "pet_id": pet["pet_id"],
+            "views": pet["views"]
+        })
         print("{}:{}:{}: key={} value={}".format(
             message.topic,
             message.partition,
             message.offset,
             message.key,
             message.value
-        ))  # will wait for next kafka message
+        ))  # will wait for next kafka message (will hold)
 
 
 
 if __name__ == "__main__":
+    '''
     pet = {
         "name": "test_pet",
         "pet_type": "dog",
@@ -92,6 +108,11 @@ if __name__ == "__main__":
         "pet_id": 15,
         "views": 0
     }
-    #init(INDEX_NAME, INDEX_MAPPING, get_es_client())
-    #ingest_new_pet(get_es_client(), INDEX_NAME, pet)
+    '''
+    '''
+    es = get_es_client()
+    ingest_new_pet(get_es_client(), INDEX_NAME, pet)
     update_pet_view(get_es_client(), INDEX_NAME, 15, 43)
+    '''
+
+    ingest_new_pet(get_es_client(), INDEX_NAME)
