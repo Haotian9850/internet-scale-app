@@ -3,6 +3,23 @@ from kafka import KafkaConsumer
 from kafka.errors import KafkaError
 
 
+INDEX_NAME = "pets"
+INDEX_MAPPING = {
+    "settings" :{
+        "number_of_shards" : 1
+    },
+    "mappings" : {
+            "properties": {
+                "name" : { "type" : "text" },
+                "pet_type" : { "type" : "text" },
+                "description" : { "type" : "text" },
+                "price" : { "type" : "double" },
+                "views" : { "type" : "long" }
+            } 
+    }
+}
+
+
 
 def get_es_client():
     es = Elasticsearch(["elasticsearch:9200"])
@@ -34,6 +51,20 @@ def update_pet_view(views, index_name, es):
         )
     
 
+def ingest_new_pet(es, index_name, pet):
+    return es.index(
+        index=index_name,
+        id=pet["pet_id"],
+        body={
+            "name": pet["name"],
+            "pet_type": pet["pet_type"],
+            "description": pet["description"],
+            "price": pet["price"],
+            "views": pet["views"]
+        }
+    )
+
+
 def print_consumer_topic():  
     consumer = KafkaConsumer(
         "new-pet-topic",
@@ -50,4 +81,17 @@ def print_consumer_topic():
             message.value
         ))  # will wait for next kafka message
 
-print_consumer_topic()
+
+
+if __name__ == "__main__":
+    pet = {
+        "name": "test_pet",
+        "pet_type": "dog",
+        "description": "test description",
+        "price": 123,
+        "pet_id": 15,
+        "views": 0
+    }
+    init(INDEX_NAME, INDEX_MAPPING, get_es_client())
+    ingest_new_pet(get_es_client(), INDEX_NAME, pet)
+    # print_consumer_topic()
