@@ -52,36 +52,8 @@ def ingest_pet(es, index_name, pet):
             "name": pet["name"],
             "pet_type": pet["pet_type"],
             "description": pet["description"],
-            "price": pet["price"],
-            "views": pet["views"]
+            "price": pet["price"]
         }
     )
 
 
-def index_pet(es, index_name):  
-    consumer = KafkaConsumer(
-        "new-pet-topic",
-        group_id=None,
-        auto_offset_reset="earliest", 
-        bootstrap_servers=["kafka:9092"]
-    ) 
-    for message in consumer:
-        pet = json.loads(message.value.decode("utf-8"))
-        if pet["views"] == 0:
-            ingest_pet(es, index_name, {
-                "name": pet["name"],
-                "pet_type": pet["pet_type"],
-                "description": pet["description"],
-                "price": pet["price"],
-                "pet_id": pet["pet_id"],
-                "views": pet["views"]
-            })
-        if pet["views"] == -1:
-            # TODO: split services to Kafka service
-        print("{}:{}:{}: key={} value={}".format(
-            message.topic,
-            message.partition,
-            message.offset,
-            message.key,
-            message.value
-        ))  # will wait for next kafka message (will hold)

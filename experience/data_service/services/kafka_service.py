@@ -13,8 +13,7 @@ pet = {
     "pet_type": "dog",
     "description": "test description",
     "price": 123,
-    "pet_id": 15,
-    "views": 0
+    "pet_id": 15
 }
 '''
 
@@ -24,7 +23,7 @@ def send_new_pet(pet):
     producer = KafkaProducer(bootstrap_servers=["kafka:9092"])
     try:
         future = producer.send(
-            "new-pet-topic",
+            "new-pet",
             json.dumps(
                 {
                     "name": pet.get("name")[0],
