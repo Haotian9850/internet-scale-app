@@ -155,20 +155,22 @@ def get_all_pets(request):
 
 
 
-def get_pet_by_id(request, pet_id):
-    if request.method != 'GET':
-        return res_err(assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "GET"))
+def get_pet_by_id(request):
+    if request.method != 'POST':
+        return res_err(assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "POST"))
     try:
-        pet = models.Pet.objects.get(pk=pet_id)
+        pet = models.Pet.objects.get(pk=request.POST["id"])
     except models.Pet.DoesNotExist:
-        return res_err(assemble_err_msg(pet_id, "NOT_FOUND", "Pet"))
+        return res_err(assemble_err_msg(request.POST["id"], "NOT_FOUND", "Pet"))
     return res_success({
+        'pet_id': pet.id,
         'name': pet.name,
         'pet_type': pet.pet_type,
         'description': pet.description,
         'price': pet.price,
         'date_posted': pet.date_posted,
     })
+
 
 
 

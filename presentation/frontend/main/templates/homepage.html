@@ -75,7 +75,7 @@
                 <div class="card-body">
                   <p class="card-text">{{ pet.description }}</p>
                   <p class="card-text">$ {{ pet.price }}</p>
-                  <a href="{% url 'pet_details' pet.name %}" class="btn btn-primary">Check it out!</a>
+                  <a href="{% url 'pet_details' pet.pet_id %}" class="btn btn-primary">Check it out!</a>
                 </div>
         </div>
         {% endfor %}

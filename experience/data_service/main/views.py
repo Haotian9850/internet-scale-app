@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 
-from services.pet_service import get_all_pets_service, create_pet_service, get_pets_by_user_service
+from services.pet_service import get_all_pets_service, create_pet_service, get_pets_by_user_service, get_pet_by_id_service
 from services.user_service import log_in_service, log_out_service, create_user_service, password_reset_service, reset_service
 
 def get_pet_list(request):
@@ -24,6 +24,21 @@ def get_pet_list(request):
         'ok': True,
         'res': res
     })
+
+
+def get_pet_by_id(request):
+    # internal, no need to check request.method
+    res, status = get_pet_by_id_service(request)
+    if status == 0:
+        return JsonResponse({
+            "ok": False,
+            "res": res
+        })
+    return JsonResponse({
+            "ok": True,
+            "res": res
+    })
+
 
 
 def get_pets_by_user(request):

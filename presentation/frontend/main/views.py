@@ -1,4 +1,4 @@
-from services.pet_service import get_all_pets, search_pets, sort_pets, create_pet_service, get_pets_by_user_service
+from services.pet_service import get_all_pets, search_pets, sort_pets, create_pet_service, get_pets_by_user_service, get_pet_by_id_service
 from services.user_service import log_in_service, log_out_service, register_service, password_reset_service, reset_service
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render
@@ -91,31 +91,21 @@ def list_user_pets(request):
 
 
 
-
-
-
-def show_individual_pet_by_name(request, name):
-    res, status = get_all_pets()
+def show_individual_pet_by_id(request, id):
+    res, status = get_pet_by_id_service(id)
     if status == 0:
-        return JsonResponse({
-            'ok': False,
-            'res': res
-        })
-    result = {}
-    for pet in res: 
-        if pet['name'] == name:
-            result = pet
-    if len(result) == 0:
-        return JsonResponse({
-            'ok': False,
-            'res': 'No pet found for given name'
-        })
+        return render(
+            request,
+            "pet_details.html",
+            {
+                "errMsg": "An issue has occurred while rendering this pet details template..."
+            }
+        )
     return render(
         request, 
-        'pet_details.html', 
+        "pet_details.html", 
         {
-            'authenticated': request.session['authenticated'],
-            'result': result   
+            "result": res   
         }
     )
 
@@ -123,23 +113,26 @@ def show_individual_pet_by_name(request, name):
 
 
 
+
+
+
 def search(request):
-    if request.method == 'POST':
-        if request.POST['keyword'] == '':
+    if request.method == "POST":
+        if request.POST["keyword"] == "":
             return render(
                 request,
-                'search.html',
+                "search.html",
                 {
-                    'result': [],
-                    'keyword': ""
+                    "result": [],
+                    "keyword": ""
                 }
             )
-        res, status = search_pets(request.POST['keyword'])
+        res, status = search_pets(request.POST["keyword"])
         if status == 0:
-            errMsg = 'An issue has occurred while searching in our database...'
+            errMsg = "An issue has occurred while searching in our database..."
             return render(
                 request,
-                'search.html',
+                "search.html",
                 {
                     errMsg : errMsg
                 }
@@ -156,10 +149,10 @@ def search(request):
             )
         return render(
             request, 
-            'search.html',
+            "search.html",
             {
-                'result': res,
-                'keyword': request.POST['keyword']
+                "result": res,
+                "keyword": request.POST["keyword"]
             }
         )
 
@@ -170,7 +163,7 @@ def search(request):
 
 # need to implement cookie-based session authenticator check
 def create_new_pet(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         if not request.session.get("authenticator"):
             return HttpResponseRedirect("/login")
         form = CreatePetForm(request.POST)
