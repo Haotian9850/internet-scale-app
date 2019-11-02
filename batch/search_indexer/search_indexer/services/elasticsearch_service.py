@@ -52,7 +52,8 @@ def ingest_pet(es, index_name, pet):
             "name": pet["name"],
             "pet_type": pet["pet_type"],
             "description": pet["description"],
-            "price": pet["price"]
+            "price": pet["price"],
+            "pet_id": pet["pet_id"]
         }
     )
 

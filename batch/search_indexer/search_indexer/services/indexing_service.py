@@ -24,6 +24,7 @@ pet-view:
     }
 '''
 def index_pet(es, index_name):  
+    es = get_es_client()
     consumer = KafkaConsumer(
         group_id=None,
         auto_offset_reset="earliest", 
@@ -35,21 +36,31 @@ def index_pet(es, index_name):
     # TODO: change to non-blocking in production (?)
     while True:
         for msg in consumer:
+            if msg.topic == "new-pet":
+                ingest_pet(
+                    es,
+                    index_name,
+                    json.loads(msg.value.decode("utf-8"))
+                )
+            if msg.topic == "pet-view":
+                log_pet_views(json.loads(msg.value.decode("utf-8")))
+                print("logging...")
             # testing purpose only
+            '''
             print("{}:{}:{}: key={} value={}".format(
                     msg.topic,
                     msg.partition,
                     msg.offset,
                     msg.key,
-                    msg.value
+                    json.loads(msg.value.decode("utf-8"))
                 ))  # will wait for next kafka message
-        
+            '''
+
+           
         '''
         if msg is None:
             continue
-        if msg.error():
-            print("Kafka consumer error: {}".format(msg.error()))
-            continue
+
         if msg.topic() == "new-pet":
             ingest_pet(
                 es,
@@ -68,5 +79,22 @@ def index_pet(es, index_name):
                 "pet_id": msg.value.get("pet_id")
             })
         '''
+
+def parse_new_pet(msg):
+    return {
+        "name": msg.value
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 index_pet(get_es_client(), "pets")
