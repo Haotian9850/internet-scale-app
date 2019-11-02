@@ -138,6 +138,7 @@ def get_all_pets(request):
         # make result list
         for pet in models.Pet.objects.all():
             new_pet = {
+                'pet_id': pet.id,
                 'name': pet.name,
                 'pet_type': pet.pet_type,
                 'description': pet.description,
