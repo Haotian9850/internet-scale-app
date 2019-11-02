@@ -18,9 +18,3 @@ INDEX_MAPPING = {
     }
 }
 
-
-
-if __name__ == "__main__":
-    es = get_es_client()
-    init(INDEX_NAME, INDEX_MAPPING, es)
-    ingest_new_pet(es, INDEX_NAME)

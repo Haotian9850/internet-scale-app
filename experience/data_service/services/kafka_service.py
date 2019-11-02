@@ -15,10 +15,34 @@ pet = {
     "price": 123,
     "pet_id": 15
 }
+
+view = {
+    "username": hao
+    "pet_id": 6
+}
 '''
 
 def get_kafka_producer():
     return KafkaProducer(bootstrap_servers=["kafka:9092"])
+
+
+
+def send_pet_view(producer, view):
+    try:
+        future = producer.send(
+            "pet-view",
+            json.dumps(
+                {
+                    "username": view.get("username"),
+                    "pet_id": view.get("pet_id")
+                }
+            ).encode("utf-8")
+        )
+        result = future.get(timeout = 60)
+        return result is not None
+    except KafkaError:
+        return False
+    
 
 
 
@@ -34,7 +58,6 @@ def send_new_pet(producer, pet):
                     "description": pet.get("description")[0],
                     "price": pet.get("price")[0],
                     "pet_id": pet.get("pet_id")[0],
-                    "views": 0
                 }
             ).encode("utf-8")
         )

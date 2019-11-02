@@ -7,7 +7,6 @@ import json
 import time
 
 
-
 '''
 Kafka msg schema:
 new-pet:
@@ -20,20 +19,32 @@ new-pet:
     }
 pet-view:
     {
-        "user_id": 3,
+        "username": hao,
         "pet_id": 6
     }
 '''
 def index_pet(es, index_name):  
     consumer = KafkaConsumer(
-        ["new-pet", "pet-view"],
         group_id=None,
         auto_offset_reset="earliest", 
         bootstrap_servers=["kafka:9092"]
     ) 
+    consumer.subscribe(
+        ["new-pet", "pet-view"]
+    )
     # TODO: change to non-blocking in production (?)
     while True:
-        msg = consumer.poll(1000)   # timeout: 1000ms
+        for msg in consumer:
+            # testing purpose only
+            print("{}:{}:{}: key={} value={}".format(
+                    msg.topic,
+                    msg.partition,
+                    msg.offset,
+                    msg.key,
+                    msg.value
+                ))  # will wait for next kafka message
+        
+        '''
         if msg is None:
             continue
         if msg.error():
@@ -56,3 +67,6 @@ def index_pet(es, index_name):
                 "user_id": msg.value.get("user_id"),
                 "pet_id": msg.value.get("pet_id")
             })
+        '''
+
+index_pet(get_es_client(), "pets")

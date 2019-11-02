@@ -1,7 +1,7 @@
 import requests
 import json
 
-from services.kafka_service import get_kafka_producer
+from services.kafka_service import get_kafka_producer, send_new_pet, send_pet_view
 
 import constants
 
@@ -27,20 +27,24 @@ def get_pet_by_id_service(request):
                 "id": request.POST.get("id")
             }
         )
-        
+        kafka_status = send_pet_view(
+            get_kafka_producer(),
+            {
+                "username": json.loads(res.text)["res"]["user"],
+                "pet_id": json.loads(res.text)["res"]["pet_id"]
+            }
+        )
 
     except requests.exceptions.Timeout:
         return "Request timed out", 0
     except requests.exceptions.HTTPError as err:
         return "Request failed with HTTPError {}".format(err.response.text), 0
-    return json.loads(res.text)["res"], 1
-
-    '''
+    #return json.loads(res.text)["res"], 1
     if kafka_status is True:
         return json.loads(res.text)["res"], 1
     else:
-        return json.loads(res.text)["res"], 2   # msg not send
-        '''
+        return json.loads(res.text)["res"], -1   # msg not send
+
 
 
 
@@ -81,9 +85,8 @@ def create_pet_service(request):
             }
         )
 
-        producer = get_kafka_producer()
         kafka_status = send_new_pet(
-            producer,
+            get_kafka_producer(),
             {
                 "name": name,
                 "pet_type": pet_type,

@@ -29,7 +29,7 @@ def get_pet_list(request):
 def get_pet_by_id(request):
     # internal, no need to check request.method
     res, status = get_pet_by_id_service(request)
-    if status == 0:
+    if status == 0 or status == -1:
         return JsonResponse({
             "ok": False,
             "res": res
@@ -64,15 +64,10 @@ def create_pet(request):
             'res': 'Wrong request method. Request method must be {}'.format("POST")
         })
     res, status = create_pet_service(request)
-    if status == 0:
+    if status == 0 or status == -1:
         return JsonResponse({
             'ok': False,
             'res': res
-        })
-    elif status == -1:
-        return JsonResponse({
-            'ok': False,
-            'res': res  # err msg str
         })
     return JsonResponse({
         'ok': True,
