@@ -7,6 +7,23 @@ import json
 import time
 
 
+
+'''
+Kafka msg schema:
+new-pet:
+    {
+        "name": cute samoyed,
+        "pet_type": dog,
+        "description": samoyeds are cute dogs,
+        "price": 213,
+        "id": 6
+    }
+pet-view:
+    {
+        "user_id": 3,
+        "pet_id": 6
+    }
+'''
 def index_pet(es, index_name):  
     consumer = KafkaConsumer(
         ["new-pet", "pet-view"],
@@ -35,24 +52,7 @@ def index_pet(es, index_name):
                 }
             )
         if msg.topic() == "pet-view":
-
-
-    '''
-    for message in consumer:
-        pet = json.loads(message.value.decode("utf-8"))
-        if pet["views"] == 0:
-            ingest_pet(es, index_name, {
-                "name": pet["name"],
-                "pet_type": pet["pet_type"],
-                "description": pet["description"],
-                "price": pet["price"],
-                "pet_id": pet["pet_id"]
+            log_pet_views({
+                "user_id": msg.value.get("user_id"),
+                "pet_id": msg.value.get("pet_id")
             })
-            print("{}:{}:{}: key={} value={}".format(
-                message.topic,
-                message.partition,
-                message.offset,
-                message.key,
-                message.value
-            ))  # will wait for next kafka message (will hold)
-    '''
