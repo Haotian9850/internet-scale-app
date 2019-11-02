@@ -90,7 +90,6 @@ def list_user_pets(request):
 
 
 
-
 def show_individual_pet_by_id(request, id):
     res, status = get_pet_by_id_service(id)
     if status == 0:
@@ -108,11 +107,6 @@ def show_individual_pet_by_id(request, id):
             "result": res   
         }
     )
-
-
-
-
-
 
 
 

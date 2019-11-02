@@ -1,7 +1,7 @@
 import requests
 import json
 
-from services.kafka_service import send_new_pet
+from services.kafka_service import get_kafka_producer
 
 import constants
 
@@ -24,14 +24,24 @@ def get_pet_by_id_service(request):
         res = requests.post(
             url=constants.BASE_URL + "pets/get_by_id",
             data={
-                "id": request.POST["id"]
+                "id": request.POST.get("id")
             }
         )
+        
+
     except requests.exceptions.Timeout:
         return "Request timed out", 0
     except requests.exceptions.HTTPError as err:
         return "Request failed with HTTPError {}".format(err.response.text), 0
     return json.loads(res.text)["res"], 1
+
+    '''
+    if kafka_status is True:
+        return json.loads(res.text)["res"], 1
+    else:
+        return json.loads(res.text)["res"], 2   # msg not send
+        '''
+
 
 
 def get_pets_by_user_service(request):
@@ -70,13 +80,19 @@ def create_pet_service(request):
                 "username": username
             }
         )
-        kafka_status = send_new_pet({
-            "name": name,
-            "pet_type": pet_type,
-            "description": description,
-            "price": price,
-            "pet_id": json.loads(res.text)["res"]
-        })
+
+        producer = get_kafka_producer()
+        kafka_status = send_new_pet(
+            producer,
+            {
+                "name": name,
+                "pet_type": pet_type,
+                "description": description,
+                "price": price,
+                "pet_id": json.loads(res.text)["res"]
+            }
+        )
+
     except requests.exceptions.Timeout:
         return "Request timed out", 0
     except requests.exceptions.HTTPError as err:

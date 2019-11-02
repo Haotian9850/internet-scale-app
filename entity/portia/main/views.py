@@ -169,6 +169,7 @@ def get_pet_by_id(request):
         'description': pet.description,
         'price': pet.price,
         'date_posted': pet.date_posted,
+        'user': pet.user.username
     })
 
 

@@ -17,10 +17,13 @@ pet = {
 }
 '''
 
+def get_kafka_producer():
+    return KafkaProducer(bootstrap_servers=["kafka:9092"])
 
 
-def send_new_pet(pet):
-    producer = KafkaProducer(bootstrap_servers=["kafka:9092"])
+
+
+def send_new_pet(producer, pet):
     try:
         future = producer.send(
             "new-pet",
