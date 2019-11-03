@@ -20,8 +20,9 @@ def get_es_client():
     @Returns;
         A list of pet object defined in es index mapping
 '''
-def search_pet_by_keyword(es, keyword):
+def search_pet_by_keyword(request):
     # internal, no need to check request method
+    es = get_es_client()
     pets = []
     sorted_pets = []
     result = es.search(
@@ -29,7 +30,7 @@ def search_pet_by_keyword(es, keyword):
         body={
             "query": {
                     "multi_match" : {
-                    "query": keyword,
+                    "query": request.POST["keyword"],
                     "type": "best_fields",
                     "fields": ["name", "description", "pet_type"],
                     "tie_breaker": 0.3
@@ -52,7 +53,3 @@ def search_pet_by_keyword(es, keyword):
                 sorted_pets.append(pet)
     return sorted_pets
     
-
-
-
-search_pet_by_keyword(get_es_client(), "dog")

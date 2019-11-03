@@ -7,6 +7,7 @@ import json
 
 from services.pet_service import get_all_pets_service, create_pet_service, get_pets_by_user_service, get_pet_by_id_service
 from services.user_service import log_in_service, log_out_service, create_user_service, password_reset_service, reset_service
+from services.search_service import search_pet_by_keyword
 
 def get_pet_list(request):
     if request.method != 'GET':
@@ -75,40 +76,17 @@ def create_pet(request):
     })    
 
 
-'''
-def search_pets(request):
-    # search in pet name, description and pet_type
-    if request.method != 'POST':
-        return JsonResponse({
-            'ok': False,
-            'res': 'Wrong request method. Request method must be POST.'
-        })
-    res, status = get_all_pets_service()
-    if status == 0:
-        return JsonResponse({
-            'ok': False,
-            'res': res
-        })
-    result = []
-    keyword = request.POST.get('keyword')
-    
-    for pet in res:
-        if pet['name'].lower().find(keyword.lower()) != -1 or pet['pet_type'].lower().find(keyword.lower()) != -1:
-            result.append(pet)
-    
-    return JsonResponse({
-        'ok': True,
-        'res': result
-    })
-
-'''
 def search_pets(request):
     if request.method != "POST":
         return JsonResponse({
             "ok": False,
             "res": "Wrong request method. Request method must be POST."
         })
-    res, status = 
+    return JsonResponse({
+        "ok": True,
+        "res": search_pet_by_keyword(request)
+    })
+
 
 
 
