@@ -75,7 +75,7 @@ def create_pet(request):
     })    
 
 
-
+'''
 def search_pets(request):
     # search in pet name, description and pet_type
     if request.method != 'POST':
@@ -100,6 +100,16 @@ def search_pets(request):
         'ok': True,
         'res': result
     })
+
+'''
+def search_pets(request):
+    if request.method != "POST":
+        return JsonResponse({
+            "ok": False,
+            "res": "Wrong request method. Request method must be POST."
+        })
+    res, status = 
+
 
 
 def sort_pets(request):
