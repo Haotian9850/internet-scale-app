@@ -7,6 +7,7 @@ from .logging_service import log_pet_views, parse_pet_log
 import json
 import time
 import os
+from datetime import datetime
 
 
 '''
@@ -26,10 +27,11 @@ pet-view:
     }
 '''
 def index_pet(es, index_name):  
+    os.system("touch index_pet_called")
     time.sleep(60)  # wait for kafka and elasticsearch to be ready
     os.system("touch start_index")
     consumer = KafkaConsumer(
-        group_id=None,
+        group_id="pet-indexer",
         auto_offset_reset="earliest", 
         bootstrap_servers=["kafka:9092"]
     ) 
