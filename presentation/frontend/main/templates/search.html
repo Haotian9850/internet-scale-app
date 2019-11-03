@@ -34,7 +34,7 @@
     <hr/>
     <div class="row">
         <h2>
-            Behold, these pets might be what you are looking for:
+            Take a look at these pets (sorted by popularity):
         </h2>
 
         <div class="row status">
@@ -62,12 +62,12 @@
                         <h5 class="card-header">
                             {{ pet.name }}
                             <br/>
-                            <small>{{ pet.pet_type }}</small>
+                            <small>{{ pet.pet_type }}, {{ pet.views }} views</small>
                         </h5>
                         <div class="card-body">
                           <p class="card-text">{{ pet.description }}</p>
                           <p class="card-text">$ {{ pet.price }}</p>
-                          <a href="{% url 'pet_details' pet.name %}" class="btn btn-primary">Check it out!</a>
+                          <a href="{% url 'pet_details' pet.pet_id %}" class="btn btn-primary">Check it out!</a>
                         </div>
                 </div>
                 {% endfor %}

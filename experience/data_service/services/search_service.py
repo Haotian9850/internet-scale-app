@@ -30,7 +30,7 @@ def search_pet_by_keyword(request):
         body={
             "query": {
                     "multi_match" : {
-                    "query": request.POST["keyword"],
+                    "query": request.POST.get("keyword"),
                     "type": "best_fields",
                     "fields": ["name", "description", "pet_type"],
                     "tie_breaker": 0.3

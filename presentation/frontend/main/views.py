@@ -141,6 +141,12 @@ def search(request):
                     "errMsg": "No pets found in our database."
                 }
             )
+        '''
+        return JsonResponse({
+            "ok": True,
+            "res": res
+        })
+        '''
         return render(
             request, 
             "search.html",
@@ -149,8 +155,7 @@ def search(request):
                 "keyword": request.POST["keyword"]
             }
         )
-
-
+        
 
 
 
