@@ -1,7 +1,7 @@
 import requests
 import json
 
-from services.kafka_service import get_kafka_producer, send_new_pet, send_pet_view
+from .kafka_service import get_kafka_producer, send_new_pet, send_pet_view
 
 import constants
 
@@ -104,3 +104,17 @@ def create_pet_service(request):
         return "New pet with pet_id {} is successfully created and put on Kafka queue.".format(json.loads(res.text)["res"]), 1 
     else:
         return "New pet with pet_id {} is successfully created but not put on Kafka queue.".format(json.loads(res.text)["res"]), 1 
+
+
+'''
+send_new_pet(
+    get_kafka_producer(),
+    {
+        "name": "test4",
+        "pet_type": "dog",
+        "description": "Des",
+        "price": 123,
+        "pet_id": 34
+    }
+)
+'''

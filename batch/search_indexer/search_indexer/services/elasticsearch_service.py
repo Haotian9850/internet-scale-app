@@ -4,6 +4,8 @@ from kafka.errors import KafkaError
 import json
 import time
 
+#from logging_service import parse_pet_log
+
 
 def get_es_client():
     es = Elasticsearch(["elasticsearch:9200"])
@@ -31,7 +33,7 @@ def check_existing_index(es, index_name):
 
 def update_pet_view(es, index_name, views):
     for pet_id in views.keys():
-        update_view(es, index_name, pet_id, views["pet_id"])
+        update_view(es, index_name, pet_id, views[pet_id])
 
 
 def update_view(es, index_name, pet_id, new_view):
@@ -71,6 +73,14 @@ ingest_pet(
         "price": 123,
         "pet_id": 29
     }
+)
+'''
+
+'''
+update_pet_view(
+    get_es_client(),
+    "pets",
+    parse_pet_log()
 )
 '''
 

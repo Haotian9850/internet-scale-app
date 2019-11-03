@@ -1,7 +1,7 @@
 from kafka import KafkaConsumer
 from kafka.errors import KafkaError
 from .elasticsearch_service import get_es_client, ingest_pet, update_pet_view
-from .logging_service import log_pet_views
+from .logging_service import log_pet_views, parse_pet_log
 
 
 import json
@@ -47,9 +47,9 @@ def index_pet(es, index_name):
                 )
             if msg.topic == "pet-view":
                 log_pet_views(json.loads(msg.value.decode("utf-8")))
+                update_pet_view(es, index_name, parse_pet_log())
                 
     
-
 
 
     

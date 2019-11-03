@@ -53,11 +53,11 @@ def send_new_pet(producer, pet):
             "new-pet",
             json.dumps(
                 {
-                    "name": pet.get("name"),
-                    "pet_type": pet.get("pet_type"),
-                    "description": pet.get("description"),
-                    "price": pet.get("price"),
-                    "pet_id": pet.get("pet_id"),
+                    "name": pet["name"],
+                    "pet_type": pet["pet_type"],
+                    "description": pet["description"],
+                    "price": pet["price"],
+                    "pet_id": pet["pet_id"]
                 }
             ).encode("utf-8")
         )
@@ -67,15 +67,16 @@ def send_new_pet(producer, pet):
         return False
         
 
-'''
+
 send_new_pet(
     get_kafka_producer(),
     {
-        "name": "test1",
+        "name": "test5",
         "pet_type": "dog",
         "description": "Des",
         "price": 123,
-        "pet_id": 29
+        "pet_id": 36
     }
 )
-'''
+
+

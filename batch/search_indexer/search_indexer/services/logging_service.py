@@ -15,10 +15,11 @@ def assemble_log_entry(view):
 
 def parse_pet_log():
     result = {}
-    with open("../pet_view_log.txt") as log:
+    with open("/app/pet_view_log.txt") as log:
         lines = log.readlines()
     for line in lines:
-        result[line.split(":")[2]] = result.get(line.split(":")[2], 0) + 1
+        result[line.split(":")[0]] = result.get(line.split(":")[0], 0) + 1
+    #print(result)
     return result
 
 
