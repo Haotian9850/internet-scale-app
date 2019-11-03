@@ -1,33 +1,32 @@
-import logging 
-logging.basicConfig(filename="../pet_view_log.txt", level=logging.INFO)
 
 
 def log_pet_views(view):
-    logger = logging.getLogger("")
-    logger.info(assemble_log_entry(view))
-
-
+    log_file = open("/app/pet_view_log.txt", "a+")
+    log_file.write(assemble_log_entry(view))
+    log_file.close()
+    
+    
 
 def assemble_log_entry(view):
-    return "{}:{}".format(
+    return "{}:{}\n".format(
         view["pet_id"],
-        view["user_id"]
+        view["username"]
     )
-
 
 def parse_pet_log():
     result = {}
-    with open("../pet_view_log.txt") as log:
+    with open("/app/pet_view_log.txt") as log:
         lines = log.readlines()
     for line in lines:
-        result[line.split(":")[2]] = result.get(line.split(":")[2], 0) + 1
+        result[line.split(":")[0]] = result.get(line.split(":")[0], 0) + 1
+    #print(result)
     return result
 
 
 
 '''
 view = {
-    "user_id": 29,
+    "username": hao,
     "pet_id": 1
 }
 '''

@@ -13,26 +13,51 @@ pet = {
     "pet_type": "dog",
     "description": "test description",
     "price": 123,
-    "pet_id": 15,
-    "views": 0
+    "pet_id": 15
+}
+
+view = {
+    "username": hao
+    "pet_id": 6
 }
 '''
 
+def get_kafka_producer():
+    return KafkaProducer(bootstrap_servers=["kafka:9092"])
 
 
-def send_new_pet(pet):
-    producer = KafkaProducer(bootstrap_servers=["kafka:9092"])
+
+def send_pet_view(producer, view):
     try:
         future = producer.send(
-            "new-pet-topic",
+            "pet-view",
             json.dumps(
                 {
-                    "name": pet.get("name")[0],
-                    "pet_type": pet.get("pet_type")[0],
-                    "description": pet.get("description")[0],
-                    "price": pet.get("price")[0],
-                    "pet_id": pet.get("pet_id")[0],
-                    "views": 0
+                    "username": view.get("username"),
+                    "pet_id": view.get("pet_id")
+                }
+            ).encode("utf-8")
+        )
+        result = future.get(timeout = 60)
+        return result is not None
+    except KafkaError:
+        return False
+    
+
+
+
+
+def send_new_pet(producer, pet):
+    try:
+        future = producer.send(
+            "new-pet",
+            json.dumps(
+                {
+                    "name": pet["name"][0],
+                    "pet_type": pet["pet_type"][0],
+                    "description": pet["description"][0],
+                    "price": pet["price"][0],
+                    "pet_id": pet["pet_id"]
                 }
             ).encode("utf-8")
         )
@@ -41,3 +66,17 @@ def send_new_pet(pet):
     except KafkaError:
         return False
         
+
+'''
+send_new_pet(
+    get_kafka_producer(),
+    {
+        "name": "test5",
+        "pet_type": "dog",
+        "description": "Des",
+        "price": 123,
+        "pet_id": 36
+    }
+)
+'''
+

@@ -56,6 +56,9 @@ services:
       - ./batch:/app
     networks:
       - search
+    depends_on:
+      - kafka
+      - elasticsearch
     ports:
       - "8004:8000"
     command: bash -c "/app/init.sh"
