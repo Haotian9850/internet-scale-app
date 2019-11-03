@@ -16,7 +16,7 @@ import json
 
 def list_all_pets(request):
     res, status = get_all_pets()
-    if request.session.get("authenticated") == None:
+    if request.session.get("authenticated") is None:
         request.session["authenticated"] = False
         request.session["username"] = ""
     if status == 0:
@@ -24,7 +24,9 @@ def list_all_pets(request):
             request,
             "homepage.html",
             {
-                "errMsg": res
+                "errMsg": res,
+                "authenticated": request.session.get("authenticated"),
+                "username": request.session.get("username")
             }
         )
     # empty database err handling
@@ -138,7 +140,7 @@ def search(request):
                 {
                     "result": res,
                     "keyword": request.POST["keyword"],
-                    "errMsg": "No pets found in our database."
+                    "errMsg": "No matching pets found in our database."
                 }
             )
         return render(
@@ -149,8 +151,7 @@ def search(request):
                 "keyword": request.POST["keyword"]
             }
         )
-
-
+        
 
 
 
@@ -198,7 +199,7 @@ def create_new_pet(request):
 
 # need to set request.session
 def login(request):
-    if request.method == "POST":
+    if request.method == "POST" and request.session.get("authenticator") is None:
         form = LoginForm(request.POST)
         if form.is_valid():
             # log user in
@@ -221,7 +222,7 @@ def login(request):
                 if request.session.get("errMsg") is not None:
                     request.session.__delitem__("errMsg")
                 return HttpResponseRedirect("/homepage")
-    else:
+    elif request.session.get("authenticator") is None:
         return render(
             request, 
             "login.html",
@@ -230,6 +231,8 @@ def login(request):
                 "statusMsg": request.session.get("statusMsg"),
                 "form": LoginForm()
             })
+    else:
+        return HttpResponseRedirect("/homepage")
 
 
 

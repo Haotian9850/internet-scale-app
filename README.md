@@ -2,14 +2,10 @@
 ## Architecture
 This project follows a 4-tier Django project architecture: HTML frontend + experience service APIs + entity / model APIs + backend database. Every tier lives in a separate Docker container, each of which is orchestrated by `docker-compose.yml`
 
+
 ### presentation layer
  - Container image: `tp33/django`
  - Container name: `presentation`
- - Template hierarchy:
-    - base view (header + footer, contains search bar)
-        - Homepage
-            - component to list all pets / list search result
-        - Pet detail page: single component
 - This layer contains settings for cookie-based client-side sessions (which contains session-based authenticator):
     - Time out: 1200 seconds (20 minutes)
     - Will destroy all sessions after brower process is ended
@@ -43,12 +39,6 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
         ```
         {
             "keyword": "dog"
-        }
-        ```
-    - `test/sort_pets`: returns a list of pets sorted by specified sorting criteria. `POST` request only. Request body: 
-        ```
-        {
-            "sort_by": "name"
         }
         ```
     - `test/login`: returns an authenticator if login is successful. `POST` request only
