@@ -39,7 +39,7 @@ def update_view(es, index_name, pet_id, new_view):
         index=index_name,
         id=pet_id,
         body={
-            "script": "ctx._source.visits={}".format(new_view)
+            "script": "ctx._source.views={}".format(new_view)
         }
     )
 
@@ -54,8 +54,24 @@ def ingest_pet(es, index_name, pet):
             "pet_type": pet["pet_type"],
             "description": pet["description"],
             "price": pet["price"],
-            "pet_id": pet["pet_id"]
+            "pet_id": pet["pet_id"],
+            "views": 0
         }
     )
+
+
+'''
+ingest_pet(
+    get_es_client(),
+    "pets",
+    {
+        "name": "test",
+        "pet_type": "dog",
+        "description": "Des",
+        "price": 123,
+        "pet_id": 29
+    }
+)
+'''
 
 

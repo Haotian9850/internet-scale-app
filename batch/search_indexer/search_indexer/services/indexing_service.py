@@ -47,6 +47,7 @@ def index_pet(es, index_name):
                 )
             if msg.topic == "pet-view":
                 log_pet_views(json.loads(msg.value.decode("utf-8")))
+                
     
 
 

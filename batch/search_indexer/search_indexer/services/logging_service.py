@@ -13,7 +13,6 @@ def assemble_log_entry(view):
         view["username"]
     )
 
-
 def parse_pet_log():
     result = {}
     with open("../pet_view_log.txt") as log:

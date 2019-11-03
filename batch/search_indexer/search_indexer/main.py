@@ -15,7 +15,8 @@ INDEX_MAPPING = {
                 "pet_type" : { "type" : "text" },
                 "description" : { "type" : "text" },
                 "price" : { "type" : "double" },
-                "pet_id" : { "type" : "integer" }
+                "pet_id" : { "type" : "integer" },
+                "views": {"type": "integer"}
             } 
     }
 }
