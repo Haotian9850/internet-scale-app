@@ -18,6 +18,7 @@ def get_es_client():
 
 def init(index_name, index_mapping, es):
     if not check_existing_index(es, index_name):
+        print("Creating elasticsearch index {}".format(index_name))
         return es.indices.create(
             index=index_name,
             body=index_mapping

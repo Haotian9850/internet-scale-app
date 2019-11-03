@@ -1,7 +1,7 @@
 
 
 def log_pet_views(view):
-    log_file = open("../../pet_view_log.txt", "a+")
+    log_file = open("/app/pet_view_log.txt", "a+")
     log_file.write(assemble_log_entry(view))
     log_file.close()
     

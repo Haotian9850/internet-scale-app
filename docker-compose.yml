@@ -52,13 +52,13 @@ services:
   batch:
     container_name: batch
     image: tp33/django
-    depends_on:
-      - elasticsearch
-      - kafka
     volumes:
       - ./batch:/app
     networks:
       - search
+    depends_on:
+      - kafka
+      - elasticsearch
     ports:
       - "8004:8000"
     command: bash -c "/app/init.sh"
