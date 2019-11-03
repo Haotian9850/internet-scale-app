@@ -138,15 +138,9 @@ def search(request):
                 {
                     "result": res,
                     "keyword": request.POST["keyword"],
-                    "errMsg": "No pets found in our database."
+                    "errMsg": "No matching pets found in our database."
                 }
             )
-        '''
-        return JsonResponse({
-            "ok": True,
-            "res": res
-        })
-        '''
         return render(
             request, 
             "search.html",
