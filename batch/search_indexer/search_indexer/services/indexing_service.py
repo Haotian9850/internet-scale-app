@@ -28,7 +28,9 @@ pet-view:
 '''
 def index_pet(es, index_name):  
     os.system("touch index_pet_called")
-    time.sleep(60)  # wait for kafka and elasticsearch to be ready
+    #time.sleep(60)  # wait for kafka and elasticsearch to be ready
+    while os.system("ping -c 1 kafka") != 0:
+        time.sleep(60)
     os.system("touch start_index")
     consumer = KafkaConsumer(
         group_id="pet-indexer",

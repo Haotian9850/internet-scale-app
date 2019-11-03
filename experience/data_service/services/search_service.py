@@ -51,5 +51,6 @@ def search_pet_by_keyword(request):
         for pet in pets:
             if pet["views"] == view:
                 sorted_pets.append(pet)
+                pets.remove(pet)
     return sorted_pets
     
