@@ -27,6 +27,7 @@ pet-view:
 '''
 def index_pet(es, index_name):  
     time.sleep(60)  # wait for kafka and elasticsearch to be ready
+    os.system("touch start_index")
     consumer = KafkaConsumer(
         group_id=None,
         auto_offset_reset="earliest", 
@@ -36,9 +37,9 @@ def index_pet(es, index_name):
         ["new-pet", "pet-view"]
     )
     # TODO: change to non-blocking in production (?) + add exception handling
-    os.system("touch start")
     while True:
         for msg in consumer:
+            os.system("touch start_consume")
             if msg.topic == "new-pet":
                 ingest_pet(
                     es,
