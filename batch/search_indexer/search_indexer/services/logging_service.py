@@ -7,8 +7,6 @@ def log_pet_views(view):
     
     
 
-
-
 def assemble_log_entry(view):
     return "{}:{}\n".format(
         view["pet_id"],

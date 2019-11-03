@@ -35,7 +35,7 @@ def index_pet(es, index_name):
     consumer.subscribe(
         ["new-pet", "pet-view"]
     )
-    # TODO: change to non-blocking in production (?)
+    # TODO: change to non-blocking in production (?) + add exception handling
     os.system("touch start")
     while True:
         for msg in consumer:
@@ -47,6 +47,7 @@ def index_pet(es, index_name):
                 )
             if msg.topic == "pet-view":
                 log_pet_views(json.loads(msg.value.decode("utf-8")))
+    
 
 
 
