@@ -2,6 +2,12 @@
 ## Architecture
 This project follows a 4-tier Django project architecture: HTML frontend + experience service APIs + entity / model APIs + backend database. Every tier lives in a separate Docker container, each of which is orchestrated by `docker-compose.yml`
 
+### search layer
+ - Container image: `tp33/django`
+ - Container name: `batch`
+ - Design
+    - This container consumes from `kafka` and index messages into `elasticsearch` to support popularity-based pet searching by invoking a blocking script `app/search_indexer/search_indexer/main.py` 
+
 
 ### presentation layer
  - Container image: `tp33/django`
@@ -19,6 +25,14 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
  - Django app name: `main`
  - API design
     - `test/get_all_pets`: returns a list of all pets in table `pets`. `GET` request only. No request body required
+    - `test/get_pet_by_id`: returns a pet of specified `pet_id`. `POST` only. Request body:
+        ```
+        {
+            "username": "hao",
+            "id": 1
+        }
+        ```
+        *Note: when a user is not logged in, `username` will be set to `"visitor"`* (implementation details, internal use only)
     - `test/get_pet_by_user`: get pets by `username`. `POST` only. Request body:
         ```
         {
@@ -44,8 +58,8 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
     - `test/login`: returns an authenticator if login is successful. `POST` request only
         ```
         {
-            "username": hao,
-            "password": 123456
+            "username": "hao",
+            "password": "123456"
         }
         ```
     - `test/logout`: log out a user by deleting its authenticator. `POST` request only. Request body:
@@ -71,7 +85,7 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
             "age": 21,
             "gender": "Male",
             "zipcode": 22904,
-            "password": 123456  # currently unencrypted
+            "password": "123456"
         }
         ```
     - `api/v1/users/(\d+)/get_by_id`: get user by `user_id`. `GET `request only. Request parameter:
@@ -94,7 +108,7 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
             "age": 21,                  # optional
             "gender": "Male",           # optional
             "zipcode": 22904,           # optional
-            "password": 123456          # optional
+            "password": "123456"          # optional
         }
         ```
     - `api/v1/users/(\d+)/delete`: delete user by its `user_id`. `GET` request only.
@@ -114,9 +128,9 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
     - `api/v1/pets/(\d+)/update`: update pet by its `pet_id`. `POST` only. Request body:
         ```
         {
-            "name": "cute dog", # optional
+            "name": "cute samoyed", # optional
             "pet_type": "dog",  # optional   
-            "description": "dog is human's best animal friend", # optional
+            "description": "samoyed is cute", # optional
             "price": 299,   # optional
             "date_posted": TIMESTAMP,   #optional
             "authenticator": "IFm1qp3t6SwR17VAk8tvWw==",
@@ -136,7 +150,7 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
         ```
         {
             "username": hao,
-            "password": 123456
+            "password": "123456"
         }
         ```
         Returns:
