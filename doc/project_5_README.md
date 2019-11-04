@@ -2,7 +2,7 @@
 
 ## New features since release `0.0.X`
 ### The following features are made available in project 5:
-1. Added custom-ranking search functionality based on popularity (handled by container `batch`, `kafka` and `elasticsearch`)
+1. Added custom-ranking search functionality based on popularity (added container `batch`, `kafka` and `elasticsearch`)
 2. Fixed double login issue in previous release
 
 
@@ -35,17 +35,14 @@
     ```
 3. Run `sudo docker-compose up` in project root folder to bring up docker container `entity`, `experience`, `presentation`, `batch`, `kafka` and `elasticsearch`
 4. Head to `localhost:8003/homepage` to access the project:
-    - Click `[Register]` to register as a new user
-    - After registeration, new user will be redirected to a login page. Click `[Log in]` after filling in user information
-    - After logging in, click `[Create a new pet!]` to create a new listing
+    - Since no data is loaded from fixture, there will be a red `[No pets available]` status message on top homepage
+    - To create a new pet, click `[Register]` to register as a new user
+    - After registeration, user will be redirected to login page. Click `[Log in]` after filling in user credentials. A user who is already logged in will be redirected to homepage
+    - After logging in, click `[Create a new pet!]` to create a new pet
     - After a new pet is created, user will be redirected to homepage
     - Click `[Check it out!]` on each pet created to view its detailed information
-    - Type in the search bar and then click `[Search]` to search for pets based on popularity (views)
+    - Type in the search bar and then click `[Search]` to search pets. Search result page will contain a list of pets matching search phrase entered and will be sorted by views. Only user logged contributes to a pet's view count
     - Click `[Log out]` to log out
 
-
-
-### Testing
-
-    ```
+#### Django unit tests
 
