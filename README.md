@@ -2,6 +2,17 @@
 ## Architecture
 This project follows a 4-tier Django project architecture: HTML frontend + experience service APIs + entity / model APIs + backend database. Every tier lives in a separate Docker container, each of which is orchestrated by `docker-compose.yml`
 
+### elasticsearch
+ - Container image: `elasticsearch:7.4.0`
+ - Container name: `elasticsearch`
+ - No persistent local mounting storage. Index data will be reset each time
+
+### kafka
+ - Container image: `spotify/kafka`
+ - Container name: `kafka`
+ - No persistent local mounting storage. Queue will be reset each time
+
+
 ### search layer
  - Container image: `tp33/django`
  - Container name: `batch`
