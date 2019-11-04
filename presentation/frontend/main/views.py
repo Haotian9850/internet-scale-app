@@ -93,7 +93,10 @@ def list_user_pets(request):
 
 
 def show_individual_pet_by_id(request, id):
-    res, status = get_pet_by_id_service(id)
+    if request.session.get("username", None) is not None and request.session.get("username") != "":
+        res, status = get_pet_by_id_service(id, request.session.get("username"))
+    else:
+        res, status = get_pet_by_id_service(id, "visitor")
     if status == 0:
         return render(
             request,
@@ -120,17 +123,20 @@ def search(request):
                 "search.html",
                 {
                     "result": [],
-                    "keyword": ""
+                    "keyword": "",
+                    "authenticated": request.session.get("authenticated"),
+                    "username": request.session.get("username")
                 }
             )
         res, status = search_pets(request.POST["keyword"])
         if status == 0:
-            errMsg = "An issue has occurred while searching in our database..."
             return render(
                 request,
                 "search.html",
                 {
-                    errMsg : errMsg
+                    "errMsg": "An issue has occurred while searching in our database...",
+                    "authenticated": request.session.get("authenticated"),
+                    "username": request.session.get("username")
                 }
             )
         if len(res) == 0:
@@ -140,7 +146,9 @@ def search(request):
                 {
                     "result": res,
                     "keyword": request.POST["keyword"],
-                    "errMsg": "No matching pets found in our database."
+                    "errMsg": "No matching pets found in our database.",
+                    "authenticated": request.session.get("authenticated"),
+                    "username": request.session.get("username")
                 }
             )
         return render(
@@ -148,7 +156,9 @@ def search(request):
             "search.html",
             {
                 "result": res,
-                "keyword": request.POST["keyword"]
+                "keyword": request.POST["keyword"],
+                "authenticated": request.session.get("authenticated"),
+                "username": request.session.get("username")
             }
         )
         

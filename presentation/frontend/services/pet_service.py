@@ -15,12 +15,13 @@ def get_all_pets():
     return json.loads(res.text)['res'], 1
 
 
-def get_pet_by_id_service(id):
+def get_pet_by_id_service(id, username):
     try: 
         res = requests.post(
             url=constants.BASE_URL + "get_pet_by_id",
             data={
-                "id": id
+                "id": id,
+                "username": username
             }
         )
     except requests.exceptions.Timeout:
