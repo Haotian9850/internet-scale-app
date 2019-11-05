@@ -45,4 +45,5 @@
     - Click `[Log out]` to log out
 
 #### Django unit tests
+- No new unit tests are added in this release
 
