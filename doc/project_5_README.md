@@ -41,7 +41,7 @@
     - After logging in, click `[Create a new pet!]` to create a new pet
     - After a new pet is created, user will be redirected to homepage
     - Click `[Check it out!]` on each pet created to view its detailed information
-    - Type in the search bar and then click `[Search]` to search pets. Search result page will contain a list of pets matching search phrase entered and will be sorted by views. Only user logged contributes to a pet's view count
+    - Type in the search bar and then click `[Search]` to search pets. Search result page will contain a list of pets matching search phrase entered and will be sorted by views. Pets that have more than 5 views will be listed as `hot listing`. Only user logged contributes to a pet's view count
     - Click `[Log out]` to log out
 
 #### Django unit tests

@@ -134,6 +134,7 @@ This project follows a 4-tier Django project architecture: HTML frontend + exper
             "username": "hao"
         }
         ```
+        *Note: will return `pet_id` in `res` field of return body*
     - `api/v1/pets/get_all_pets`: get a list of all pets
     - `api/v1/pets/(\d+)/get_by_id`: get pet by `pet_id`
     - `api/v1/pets/(\d+)/update`: update pet by its `pet_id`. `POST` only. Request body:

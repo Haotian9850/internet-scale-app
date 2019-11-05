@@ -63,6 +63,9 @@
                             {{ pet.name }}
                             <br/>
                             <small>{{ pet.pet_type }}, {{ pet.views }} views</small>
+                            {% if pet.views > 4 %}
+                            <span class="badge badge-danger">Hot listing</span>
+                            {% endif %}
                         </h5>
                         <div class="card-body">
                           <p class="card-text">{{ pet.description }}</p>
