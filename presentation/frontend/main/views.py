@@ -152,7 +152,7 @@ def search(request):
                 }
             )
         return render(
-            request, 
+            request,
             "search.html",
             {
                 "result": res,
@@ -161,6 +161,16 @@ def search(request):
                 "username": request.session.get("username")
             }
         )
+
+    return render(
+        request, 
+        "search.html",
+        {
+            "errMsg": "Please enter search keyword first.",
+            "authenticated": request.session.get("authenticated"),
+            "username": request.session.get("username")
+        }
+    )
         
 
 
@@ -241,7 +251,7 @@ def login(request):
                 "statusMsg": request.session.get("statusMsg"),
                 "form": LoginForm()
             })
-    else:
+    elif request.session.get("authenticator") is not None:
         return HttpResponseRedirect("/homepage")
 
 
@@ -382,6 +392,7 @@ def reset(request, authenticator=""):
         form = ResetForm(request.POST)
         if form.is_valid():
             res, status = reset_service(request.session["authenticator"], request.POST["new_password"])
+            request.session.__delitem__("authenticator")
             if status == 0 or status == -1:
                 return render(
                     request,
@@ -391,10 +402,9 @@ def reset(request, authenticator=""):
                         "errMsg": res
                     })
             else:
-                return render(
-                    request,
-                    "login.html",
-                    {
-                        "form": LoginForm(),
-                        "statusMsg": res
-                    })
+                '''
+                return JsonResponse({
+                    "status": "Password succesfully reset!"
+                })
+                '''
+                return HttpResponseRedirect("/homepage")

@@ -121,10 +121,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+EMAIL_FILE_PATH = '/app/portia/emails/'
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = '/app/portia/emails'
 EMAIL_HOST = 'localhost'
-EMAIL_PORT = 1025
+#EMAIL_PORT = 1025
 EMAIL_HOST_USER = None
 EMAIL_HOST_PASSWORD = None
 
