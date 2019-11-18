@@ -17,6 +17,5 @@ def test_create_pet(driver):
 if __name__ == "__main__":
     driver = webdriver.Remote("http://selenium-chrome:4444/wd/hub", DesiredCapabilities.CHROME)
     driver.get("http:presentation-0:8000/homepage")
-    print(driver.page_source)
     elem = driver.find_element_by_id("registerButton")
     elem.click()
