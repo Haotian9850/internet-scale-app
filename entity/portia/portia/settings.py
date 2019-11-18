@@ -81,7 +81,7 @@ DATABASES = {
     }
 }
 
-ALLOWED_HOSTS = ['localhost', 'entity']
+ALLOWED_HOSTS = ["*"]
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
