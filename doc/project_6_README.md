@@ -29,13 +29,14 @@
 
 ### Deployment & Testing
 #### Suggested testing workflow
+1. Ensure the init script for each container is executable
 1. Ensure that a `mysql` container with a database named `cs4260` and a user `'www'@'%'` who is granted all privileges to `cs4260` and `test_cs4260` (the test database Django test `Client` will create later). Otherwise, `docker-compose up` will not bring up any container
 2. Add `mysql` container to docker networks `backend` by running the following command:
     ```
     sudo docker network connect internet-scale-app_backend mysql
     ```
 3. Run `sudo docker-compose up` in project root folder to bring up docker container `entity`, `experience`, `presentation`, `batch`, `kafka` and `elasticsearch`
-4. Head to `localhost:8003/homepage` to access the project:
+4. Head to `localhost:8006/homepage` to access the project:
     - Since no data is loaded from fixture, there will be a red `[No pets available]` status message on top homepage
     - To create a new pet, click `[Register]` to register as a new user
     - After registeration, user will be redirected to login page. Click `[Log in]` after filling in user credentials. A user who is already logged in will be redirected to homepage
@@ -45,6 +46,5 @@
     - Type in the search bar and then click `[Search]` to search pets. Search result page will contain a list of pets matching search phrase entered and will be sorted by views. Pets that have more than 5 views will be listed as `hot listing`. Only user logged contributes to a pet's view count
     - Click `[Log out]` to log out
 
-#### Django unit tests
-- No new unit tests are added in this release
+#### Selenium integration testing
 
