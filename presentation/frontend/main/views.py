@@ -113,14 +113,18 @@ def show_individual_pet_by_id(request, id):
             request,
             "pet_details.html",
             {
-                "errMsg": "An issue has occurred while rendering this pet details template..."
+                "errMsg": "An issue has occurred while rendering this pet details template...",
+                "authenticated": request.session.get("authenticated"),
+                "username": request.session.get("username")
             }
         )
     return render(
         request, 
         "pet_details.html", 
         {
-            "result": res   
+            "result": res,
+            "authenticated": request.session.get("authenticated"),
+            "username": request.session.get("username")   
         }
     )
 
