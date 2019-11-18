@@ -110,7 +110,7 @@
                 <a href="{% url 'logout' %}">Log out</a>
             </div>
             {% else %}
-            <a href="{% url 'register' %}" class="btn btn-light">Register</a>
+            <a id="registerButton" href="{% url 'register' %}" class="btn btn-light">Register</a>
             &nbsp;&nbsp;&nbsp;
             <a href="{% url 'login' %}" class="btn btn-light">Log in</a>
             {% endif %}

@@ -14,7 +14,7 @@ SECRET_KEY = 'tsz6eo-kx2xtn--%r@e-nm*6-schh#*s#p$guo1q-yrnsf&73s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "frontend", "experience"]
+ALLOWED_HOSTS = ["localhost", "frontend", "experience", "presentation", "selenium-test", "selenium-chrome"]
 
 
 # Application definition

@@ -72,6 +72,24 @@ services:
       - search
     ports:
       - "9200:9200"
+  selenium_chrome:
+    image: selenium/standalone-chrome
+    container_name: selenium-chrome
+    networks:
+      - services
+      - public
+    volumes:
+      - /dev/shm:/dev/shm
+    ports:
+      - "4444:4444"
+  selenium_test:
+    image: tp33/django
+    container_name: selenium-test
+    networks:
+      - services
+    volumes:
+      - ./selenium:/app
+    command: bash -c "/app/init.sh"
 
 networks:
   backend:
