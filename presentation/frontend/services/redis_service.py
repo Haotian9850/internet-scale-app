@@ -11,7 +11,8 @@ def get_redis_client(host="redis", port=6379, db=0):
 def insert_cache(client, pet_id, pet_details):
     return client.set(
         pet_id,
-        json.dumps(pet_details)
+        json.dumps(pet_details),
+        ex=1200
     )
     
 
