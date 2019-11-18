@@ -27,8 +27,8 @@ services:
     ports:
       - "8002:8000"
     command: bash -c "/app/init.sh"
-  presentation:
-    container_name: presentation
+  presentation_0:
+    container_name: presentation-0
     image: tp33/django
     links: 
       - experience
@@ -38,6 +38,18 @@ services:
       - public
     ports:
       - "8003:8000"
+    command: bash -c "/app/init.sh"
+  presentation_1:
+    container_name: presentation-1
+    image: tp33/django
+    links: 
+      - experience
+    volumes:
+      - ./presentation:/app
+    networks: 
+      - public
+    ports:
+      - "8004:8000"
     command: bash -c "/app/init.sh"
   kafka:
     container_name: kafka
@@ -60,7 +72,7 @@ services:
       - kafka
       - elasticsearch
     ports:
-      - "8004:8000"
+      - "8005:8000"
     command: bash -c "/app/init.sh"
   elasticsearch:
     container_name: elasticsearch
@@ -90,6 +102,15 @@ services:
     volumes:
       - ./selenium:/app
     command: bash -c "/app/init.sh"
+  load_balancer:
+    image: haproxy
+    container_name: load-balancer
+    networks:
+      - public
+    volumes:
+      - ./haproxy:/usr/local/etc/haproxy/haproxy.cfg:ro
+    ports:
+      - "8006:8000"
 
 networks:
   backend:
