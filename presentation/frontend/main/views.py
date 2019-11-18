@@ -1,5 +1,8 @@
 from services.pet_service import get_all_pets, search_pets, sort_pets, create_pet_service, get_pets_by_user_service, get_pet_by_id_service
 from services.user_service import log_in_service, log_out_service, register_service, password_reset_service, reset_service
+from services.redis_service import get_redis_client, insert_cache, look_up_cache
+
+
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
@@ -93,10 +96,21 @@ def list_user_pets(request):
 
 
 def show_individual_pet_by_id(request, id):
-    if request.session.get("username", None) is not None and request.session.get("username") != "":
-        res, status = get_pet_by_id_service(id, request.session.get("username"))
+    redis_client = get_redis_client()
+    status = -1
+    cache_hit, cache_res = look_up_cache(redis_client, id)
+    if cache_hit:
+        res = json.loads(json.loads(cache_res.decode("utf-8")))
+        status = 1
     else:
-        res, status = get_pet_by_id_service(id, "visitor")
+        if request.session.get("username", None) is not None and request.session.get("username") != "":
+            res, status = get_pet_by_id_service(id, request.session.get("username"))
+            return JsonResponse({
+                "res_alt": res
+            })
+        else:
+            res, status = get_pet_by_id_service(id, "visitor")
+        insert_cache(redis_client, id, json.dumps(res))
     if status == 0:
         return render(
             request,

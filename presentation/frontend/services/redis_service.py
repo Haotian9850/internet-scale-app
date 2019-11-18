@@ -8,14 +8,14 @@ def get_redis_client(host="redis", port=6379, db=0):
         db
     )
 
-def insert(client, pet_id, pet_details):
+def insert_cache(client, pet_id, pet_details):
     return client.set(
         pet_id,
-        json.loads(pet_details)
+        json.dumps(pet_details)
     )
     
 
-def look_up(client, pet_id):
+def look_up_cache(client, pet_id):
     if client.exists(pet_id):
-        return False
-    return client.get(pet_id)
+        return True, client.get(pet_id)
+    return False, 
