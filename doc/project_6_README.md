@@ -1,12 +1,10 @@
 # Project 6 Changes and Updates
-
-
-
-
-
-## New features since release `0.0.X`
+## New features since release `0.0.6`
 ### The following features are made available in project 6:
-
+1. Added Travis CI to the project to ensure CI / CD
+2. Added full-page redis caching to `presentation` layer
+3. Added a load balancer based on `haproxy`
+4. Added integration testing with `selenium`
 
 
 ### The following features are deprecated in project 6:
