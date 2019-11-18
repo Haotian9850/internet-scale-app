@@ -77,7 +77,7 @@ DATABASES = {
         'NAME': 'cs4260',
         'USER': 'www',
         'PASSWORD': '$3cureUS',
-        'HOST': 'db',
+        'HOST': 'mysql',
     }
 }
 
