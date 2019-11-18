@@ -1,0 +1,20 @@
+sudo: required
+language: python
+services:
+  - docker
+before_install:
+  - docker pull tp33/django
+  - docker pull mysql:latest
+  - mkdir db
+  - docker run --name mysql -d -e MYSQL\_ROOT\_PASSWORD='$3cureUS' -v ~/db:/var/lib/mysql  mysql:latest
+  - docker exec mysql /bin/bash -c 'mysql -uroot -p $3cureUS < travis.sql' 
+  - docker network create internet-scale-app_backend
+  - docker network connect internet-scale-app_backend mysql
+before_script:
+- docker-compose up
+script:
+- docker exec -it selenium-test python tests.py
+after_script:
+- docker-compose stop
+- docker-compose rm y
+- rm -rf db

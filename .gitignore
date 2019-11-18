@@ -2,7 +2,6 @@ db
 db/*
 db/
 *.pyc
-.*
 
 # Created by https://www.gitignore.io
 
