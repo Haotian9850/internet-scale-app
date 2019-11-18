@@ -18,4 +18,4 @@ def insert_cache(client, pet_id, pet_details):
 def look_up_cache(client, pet_id):
     if client.exists(pet_id):
         return True, client.get(pet_id)
-    return False, 
+    return False, "empty"
