@@ -2,13 +2,12 @@ sudo: required
 language: python
 services:
   - docker
-  - mysql
 before_install:
   - docker pull mysql:5.7.28
   - mkdir db
   - docker run --name mysql -d -e MYSQL_ROOT_PASSWORD='$3cureUS' -v ~/db:/var/lib/mysql  mysql:5.7.28
   - sleep 20
-  - docker exec -i mysql mysql -uroot -p'$3cureUS' <<< "CREATE USER 'www'@'%' IDENTIFIED BY '$3cureUS';GRANT ALL ON cs4260.* to 'www'@'%' WITH GRANT OPTION;FLUSH PRIVILEGES;"
+  - docker exec -i mysql mysql -uroot -p'$3cureUS' <<< "CREATE USER 'www'@'%' IDENTIFIED BY '$3cureUS';GRANT ALL ON cs4260.* to 'www'@'%' WITH GRANT OPTION;GRANT SELECT ON mysql.user TO 'root'@'%';FLUSH PRIVILEGES;"
   - docker network create internet-scale-app_backend
   - docker network connect internet-scale-app_backend mysql
 before_script:
