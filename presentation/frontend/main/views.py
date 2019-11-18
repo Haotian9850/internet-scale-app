@@ -105,9 +105,6 @@ def show_individual_pet_by_id(request, id):
     else:
         if request.session.get("username", None) is not None and request.session.get("username") != "":
             res, status = get_pet_by_id_service(id, request.session.get("username"))
-            return JsonResponse({
-                "res_alt": res
-            })
         else:
             res, status = get_pet_by_id_service(id, "visitor")
         insert_cache(redis_client, id, json.dumps(res))
