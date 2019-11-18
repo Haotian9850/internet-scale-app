@@ -27,7 +27,7 @@
                 <label class="form-label col-sm-2" for="{{ field.name }}">{{ field.label }}</label>
                 {{ field }}
             {% endfor %}
-            <input type="submit" value="Submit" class="btn btn-primary">
+            <input type="submit" value="Submit" class="btn btn-primary" id="id_create_pet_submit">
             <p>{% if error %}
                 {{ error }}
                 {% endif %}
