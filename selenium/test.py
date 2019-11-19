@@ -101,7 +101,7 @@ def test_login(driver, user_data):
     submit_button = driver.find_element_by_id("id_login_submit")
     submit_button.click()
 
-    assert "Successfully logged in" in driver.page_source
+    assert "Logged in" in driver.page_source
 
     print("passing login test")
 
@@ -148,18 +148,21 @@ if __name__ == "__main__":
     driver.get("http:presentation-0:8000/homepage")
     assert "Portia" in driver.title
 
-    user_data = {"Username": "test_username1", "First_name": "test_firstname1", "Last_name": "test_lastname1", 
-    "Age": "23", "Gender": "Other", "Email_address": "test_emailaddress1@test.com", "Zipcode": "22904", 
-    "Password": "Test_password1"}
+    user_data = {"Username": "test5_username", "First_name": "test5_firstname", "Last_name": "test5_lastname", 
+    "Age": "23", "Gender": "Other", "Email_address": "test5_emailaddress@test5.com", "Zipcode": "22904", 
+    "Password": "Test5_password"}
     
     test_registration(driver, user_data)
+
+    driver.get("http:presentation-0:8000/homepage")
+    assert "Portia" in driver.title
 
     test_login(driver, user_data)
 
     driver.get("http:presentation-0:8000/homepage")
     assert "Portia" in driver.title
 
-    pet_data = {"Name": "bagelbunny", "Pet_type":"dog", "Description": "not a bunny", "Price": "18.00"}
+    pet_data = {"Name": "bagelbunny2", "Pet_type":"dog", "Description": "not a bunny", "Price": "18.00"}
 
     test_create_pet(driver, pet_data)
 
