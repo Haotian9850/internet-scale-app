@@ -8,7 +8,7 @@ before_install:
   - mkdir db
   - docker run --name mysql -d -e MYSQL_ROOT_PASSWORD='$3cureUS' -v ~/db:/var/lib/mysql  mysql:latest
   - sleep 20
-  - docker exec -i mysql mysql -uroot -p'$3cureUS' <<< "CREATE USER 'www'@'%' IDENTIFIED WTIH mysql_native_password BY '$3cureUS';GRANT ALL ON cs4260.* to 'www'@'%' WITH GRANT OPTION;"
+  - docker exec -i mysql mysql -uroot -p'$3cureUS' <<< "drop user if exists 'www'@'%'; flush privileges; CREATE USER 'www'@'%' identified with mysql_native_password BY '$3cureUS';GRANT ALL ON cs4260.* to 'www'@'%' WITH GRANT OPTION;"
   - docker network create internet-scale-app_backend
   - docker network connect internet-scale-app_backend mysql
 before_script:
