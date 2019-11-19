@@ -69,6 +69,8 @@ N/A
     Email: hl7gr@virginia.edu
     Password: <NOT AVAILABLE>
     ```
+Here is a sample screenshot of a `haproxy` session:
+![papertrail](../imgs/papertrail.png)
 
 #### Caching
 1. Full-page redis caching on pet_detail page is implemented in `presentation-x` and `redis` container. 
