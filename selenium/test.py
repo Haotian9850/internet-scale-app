@@ -9,7 +9,7 @@ def test_search_bar(driver, keyword):
     search_bar.clear()
     search_bar.send_keys(keyword)
     search_bar.send_keys(Keys.RETURN)
-    print(keyword)
+    print("searching for: ", keyword)
 
     assert "No matching pets found in our database." not in driver.page_source
 
@@ -23,6 +23,8 @@ def test_registration(driver, user_data):
 
     register_button = driver.find_element_by_id("registerButton")
     register_button.click()
+
+    print("adding ", user_data["Username"], " to the database....")
 
     username_field = driver.find_element_by_id("id_username")
     first_name_field = driver.find_element_by_id("id_first_name")
@@ -81,24 +83,91 @@ def test_registration(driver, user_data):
 
     pass
 
-def test_create_pet(driver):
+def test_login(driver, user_data):
+    login_button = driver.find_element_by_id("id_login_button")
+    login_button.click()
+
+    print("logging in as ", user_data["Username"])
+
+    username_field = driver.find_element_by_id("id_username")
+    pwd_field = driver.find_element_by_id("id_password")
+
+    username_field.clear()
+    username_field.send_keys(user_data["Username"])
+
+    pwd_field.clear()
+    pwd_field.send_keys(user_data["Password"])
+
+    submit_button = driver.find_element_by_id("id_login_submit")
+    submit_button.click()
+
+    assert "Logged in" in driver.page_source
+
+    print("passing login test")
+
+    pass
+
+
+def test_create_pet(driver, pet_data):
+    create_pet_button = driver.find_element_by_id("id_create_pet_button")
+    create_pet_button.click()
+
+    print("adding ", pet_data["Name"], " to the database....")
+
+    pet_name_field = driver.find_element_by_id("id_name")
+    pet_type_field = driver.find_element_by_id("id_pet_type")
+    pet_descr_field = driver.find_element_by_id("id_description")
+    price_field = driver.find_element_by_id("id_price")
+
+    pet_name_field.clear()
+    pet_name_field.send_keys(pet_data["Name"])
+
+    pet_type_field.clear()
+    pet_type_field.send_keys(pet_data["Pet_type"])
+
+    pet_descr_field.clear()
+    pet_descr_field.send_keys(pet_data["Description"])
+
+    price_field.clear()
+    price_field.send_keys(pet_data["Price"])
+
+    submit_button = driver.find_element_by_id("id_create_pet_submit")
+    submit_button.click()
+
+    assert "successfully created" in driver.page_source
+
+    print("passing create pet test")
+
     pass 
 
 
 
 if __name__ == "__main__":
     driver = webdriver.Remote("http://selenium-chrome:4444/wd/hub", DesiredCapabilities.CHROME)
-    driver.get("http:presentation-0:8000/homepage")
 
+    driver.get("http:presentation-0:8000/homepage")
     assert "Portia" in driver.title
 
-    user_data = {"Username": "test_username1", "First_name": "test_firstname1", "Last_name": "test_lastname1", 
-    "Age": 23, "Gender": "Other", "Email_address": "test_emailaddress1@test.com", "Zipcode": 22904, 
-    "Password": "Test_password1"}
+    user_data = {"Username": "test5_username", "First_name": "test5_firstname", "Last_name": "test5_lastname", 
+    "Age": "23", "Gender": "Other", "Email_address": "test5_emailaddress@test5.com", "Zipcode": "22904", 
+    "Password": "Test5_password"}
     
     test_registration(driver, user_data)
 
     driver.get("http:presentation-0:8000/homepage")
+    assert "Portia" in driver.title
+
+    test_login(driver, user_data)
+
+    driver.get("http:presentation-0:8000/homepage")
+    assert "Portia" in driver.title
+
+    pet_data = {"Name": "bagelbunny2", "Pet_type":"dog", "Description": "not a bunny", "Price": "18.00"}
+
+    test_create_pet(driver, pet_data)
+
+    driver.get("http:presentation-0:8000/homepage")
+    assert "Portia" in driver.title
 
     test_search_bar(driver, "dog")
 

@@ -101,7 +101,7 @@
             </div>
 
             {% if authenticated %}
-            <a href="{% url 'create_new_pet' %}" class="btn btn-light">
+            <a href="{% url 'create_new_pet' %}" class="btn btn-light" id="id_create_pet_button">
                 Create a new pet!
             </a>
             &nbsp;&nbsp;&nbsp;
@@ -112,7 +112,7 @@
             {% else %}
             <a id="registerButton" href="{% url 'register' %}" class="btn btn-light">Register</a>
             &nbsp;&nbsp;&nbsp;
-            <a href="{% url 'login' %}" class="btn btn-light">Log in</a>
+            <a href="{% url 'login' %}" class="btn btn-light" id="id_login_button">Log in</a>
             {% endif %}
 
         </nav>
