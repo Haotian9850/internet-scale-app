@@ -13,6 +13,8 @@ before_install:
 before_script:
   - docker start mysql
   - docker-compose up
+install:
+  - pip install -r requirements.txt
 script:
   - docker exec -it selenium-test python test.py
 after_script:
