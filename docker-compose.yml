@@ -118,6 +118,14 @@ services:
       - public
     ports:
       - "6379:6379"
+  jmeter:
+    image: justb4/jmeter
+    container_name: jmeter
+    networks:
+        - public
+    volumes:
+      - ./jmeter:/etc
+    command: -n -t /etc/test.jmx -l /etc/JmeterTestResult.log 
 
 networks:
   backend:

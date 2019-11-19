@@ -333,6 +333,15 @@ def register(request):
                         "statusMsg": request.session.get("statusMsg")
                     }
                 )
+        else:
+            return render(
+                request,
+                "register.html",
+                {
+                    "errMsg": "Registration form input not valid",
+                    "form": RegisterForm()
+                }
+            )
     else:
         return render(
             request, 
