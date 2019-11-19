@@ -62,14 +62,19 @@ N/A
 #### Performance testing
 1. `jmeter` performance tests will be performed automatically when `docker-compose` starts. Test result is stored in `jmeter/JmeterTestResult.log`
 
+    Here is a sample testing result:
+
+![result](../imgs/performance.png)
+
 #### Load balancing
 1. `haproxy` load balancer utilize two backend servers, `presentation-0` and `presentation-1` to distribute traffics (roundrobin algorithm). As a result, the project entrypoint has changed to `load-balancer`'s export point at `localhost:8006/homepage`
 2. Logging: head to `https://papertrailapp.com/dashboard` to view `haproxy` logs with the following credentials:
     ```
     Email: hl7gr@virginia.edu
-    Password: <NOT AVAILABLE>
+    Password: 123456789
     ```
-Here is a sample screenshot of a `haproxy` session:
+    Here is a sample screenshot of a `haproxy` session:
+
 ![papertrail](../imgs/papertrail.png)
 
 #### Caching
