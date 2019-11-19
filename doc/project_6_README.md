@@ -84,7 +84,13 @@ N/A
     ![papertrail](../imgs/papertrail.png)
 
 #### Caching
-1. Full-page redis caching on pet_detail page is implemented in `presentation-x` and `redis` container. 
+1. Full-page redis caching on pet_detail page is implemented in `presentation-x` and `redis` container. To verify caching insertion, SSH into the `redis` container and run the following command:
+    ```
+    $ sudo docker exec -it redis /bin/bash
+    root@0fasrbfds6ef1:redis-cli
+    root@0fasrbfds6ef1:SELECT 0
+    root@0fasrbfds6ef1:KEYS * 
+    ```
 2. Caching invalidation strategy: redis cache is invalidated every 20 minutes (same invalidation time as a user's `session` to ensure efficient cache usage)
 
 
