@@ -7,15 +7,12 @@ before_install:
   - mkdir db
   - docker run --name mysql -d -e MYSQL_ROOT_PASSWORD='$3cureUS' -v ~/db:/var/lib/mysql  mysql:5.7.28
   - sleep 20
-  - pip freeze > requirements.txt
+  - docker exec -i mysql mysql -uroot -p'$3cureUS' <<< "CREATE USER 'www'@'%' IDENTIFIED BY '$3cureUS';GRANT ALL ON cs4260.* to 'www'@'%' WITH GRANT OPTION;FLUSH PRIVILEGES;"
   - docker network create internet-scale-app_backend
   - docker network connect internet-scale-app_backend mysql
 before_script:
   - docker start mysql
-  - docker exec -i mysql mysql -uroot -p'$3cureUS' <<< "drop user if exists 'www'@'%'; flush privileges; create user 'www'@'%' identified with mysql_native_password by '$3cureUS';grant all privileges on *.* to 'www'@'%' with grant option;"
   - docker-compose up
-install:
-  - pip install -r requirements.txt
 script:
   - docker exec -it selenium-test python test.py
 after_script:
