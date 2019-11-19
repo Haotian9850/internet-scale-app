@@ -3,6 +3,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.support.ui import Select
 
+import time
+
 
 def test_search_bar(driver, keyword):
     search_bar = driver.find_element_by_name("keyword")
@@ -168,6 +170,8 @@ if __name__ == "__main__":
 
     driver.get("http:presentation-0:8000/homepage")
     assert "Portia" in driver.title
+
+    time.sleep(5)  # wait for docker
 
     test_search_bar(driver, "dog")
 

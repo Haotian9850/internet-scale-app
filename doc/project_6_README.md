@@ -59,12 +59,18 @@ N/A
     $ python3 test.py
     ```
 
+    Here is a sample screenshot of selenium test results:
+
+    ![result](../imgs/se.png)
+
+    *Note: selenium test can only be run with a **empty** database.*
+
 #### Performance testing
 1. `jmeter` performance tests will be performed automatically when `docker-compose` starts. Test result is stored in `jmeter/JmeterTestResult.log`
 
     Here is a sample testing result:
 
-![result](../imgs/performance.png)
+    ![result](../imgs/performance.png)
 
 #### Load balancing
 1. `haproxy` load balancer utilize two backend servers, `presentation-0` and `presentation-1` to distribute traffics (roundrobin algorithm). As a result, the project entrypoint has changed to `load-balancer`'s export point at `localhost:8006/homepage`
@@ -75,7 +81,7 @@ N/A
     ```
     Here is a sample screenshot of a `haproxy` session:
 
-![papertrail](../imgs/papertrail.png)
+    ![papertrail](../imgs/papertrail.png)
 
 #### Caching
 1. Full-page redis caching on pet_detail page is implemented in `presentation-x` and `redis` container. 
