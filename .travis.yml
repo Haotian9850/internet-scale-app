@@ -14,8 +14,9 @@ before_script:
   - docker start mysql
   - docker exec -i mysql mysql -uroot -p'$3cureUS' <<< "drop user if exists 'www'@'%'; flush privileges; create user 'www'@'%' identified with mysql_native_password by '\$3cureUS';grant all privileges on *.* to 'www'@'%' with grant option;create database cs4260 character set utf8;"
   - docker-compose up -d
-install:
-  - pip install -r requirements.txt
+  - sleep 120
+script:
+  - docker exec -it selenium-test python test.py
 after_script:
   - docker-compose stop
   - docker-compose rm y
