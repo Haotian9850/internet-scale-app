@@ -1,4 +1,5 @@
 # Project 6 Changes and Updates
+[![Build Status](https://travis-ci.com/Haotian9850/internet-scale-app.png)](https://travis-ci.com/Haotian9850/internet-scale-app)
 ## New features since release `0.0.6`
 ### The following features are made available in project 6:
 1. Added Travis CI to the project
@@ -13,7 +14,7 @@ N/A
 
 
  
-### Portia: user stories (continuingly updated)
+### Portia: user stories (continuously updated)
 1. As the seller, I want to inform the customer what type of animal does the pet belongs to
 2. As the seller, I want to update the information of the pet to let the customer know the most up-to-date condition of the pet
 3. As the seller, I want to request to cancel sales when the pet is no longer available
