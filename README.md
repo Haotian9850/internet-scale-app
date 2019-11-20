@@ -1,212 +1,97 @@
-# Portia: an exotic pet store
-## Architecture
-This project follows a 4-tier Django project architecture: HTML frontend + experience service APIs + entity / model APIs + backend database. Every tier lives in a separate Docker container, each of which is orchestrated by `docker-compose.yml`
-
-### elasticsearch
- - Container image: `elasticsearch:7.4.0`
- - Container name: `elasticsearch`
- - No persistent local mounting storage. Index data will be reset each time
-
-### kafka
- - Container image: `spotify/kafka`
- - Container name: `kafka`
- - No persistent local mounting storage. Queue will be reset each time
+# Project 6 Changes and Updates
+https://travis-ci.com/Haotian9850/internet-scale-app.png?branch=master
+## New features since release `0.0.6`
+### The following features are made available in project 6:
+1. Added Travis CI to the project
+2. Added full-page redis caching to `presentation` layer
+3. Added a load balancer based on `haproxy`
+4. Added front-end integration testing with `selenium`
+5. Added `jmeter` performance testing
 
 
-### search layer
- - Container image: `tp33/django`
- - Container name: `batch`
- - Design
-    - This container consumes from `kafka` and index messages into `elasticsearch` to support popularity-based pet searching by invoking a blocking script `app/search_indexer/search_indexer/main.py` 
+### The following features are deprecated in project 6:
+N/A
 
 
-### presentation layer
- - Container image: `tp33/django`
- - Container name: `presentation`
-- This layer contains settings for cookie-based client-side sessions (which contains session-based authenticator):
-    - Time out: 1200 seconds (20 minutes)
-    - Will destroy all sessions after brower process is ended
-
+ 
+### Portia: user stories (continuingly updated)
+1. As the seller, I want to inform the customer what type of animal does the pet belongs to
+2. As the seller, I want to update the information of the pet to let the customer know the most up-to-date condition of the pet
+3. As the seller, I want to request to cancel sales when the pet is no longer available
+4. As the customer, I want to see all the pets listed by all the sellers
+5. As the customer, I want to type and search about the pet I want
+6. As the customer, I want to change and update my profile to give my most up-to-date information to the seller
+7. As the seller, I want to be able to log in with my account, so I can ensure nobody else else can edit information of my pets without my permission
+8. As the seller, I want to be able to log out with my account. If I log in to the website in a computer in public, I want to ensure nobody else can use my account after I leave and am no longer using that computer
+9. As the customer, I want to see all pets specified by a specific seller because I really all the pets in his / her inventory and want to follow that seller
+10. As the seller, I want to be able to reset my account password so I can log in and retrieve my inventory information if I happened to forget the account password
 
 
 
-### experience (application) layer
- - Container image: `tp33/django`
- - Container name: `exprience`
- - Django app name: `main`
- - API design
-    - `test/get_all_pets`: returns a list of all pets in table `pets`. `GET` request only. No request body required
-    - `test/get_pet_by_id`: returns a pet of specified `pet_id`. `POST` only. Request body:
-        ```
-        {
-            "username": "hao",
-            "id": 1
-        }
-        ```
-        *Note: when a user is not logged in, `username` will be set to `"visitor"`* (implementation details, internal use only)
-    - `test/get_pet_by_user`: get pets by `username`. `POST` only. Request body:
-        ```
-        {
-            "username": "hao"
-        }
-    - `test/create_pet`: create a new pet object for authenticated user. `POST` request only. Request body:
-        ```
-        {
-            "name": "cute dog",
-            "pet_type": "dog",
-            "description": "dog is human's best animal friend",
-            "price": 299,
-            "authenticator": "IFm1qp3t6SwR17VAk8tvWw==",
-            "username": "hao"
-        }
-        ```
-    - `test/search_pets`: return a list of pets matching search keyword. `POST` request only. Request body: 
-        ```
-        {
-            "keyword": "dog"
-        }
-        ```
-    - `test/login`: returns an authenticator if login is successful. `POST` request only
-        ```
-        {
-            "username": "hao",
-            "password": "123456"
-        }
-        ```
-    - `test/logout`: log out a user by deleting its authenticator. `POST` request only. Request body:
-        ```
-        {
-            "authenticator": "sAc0gFXexFLPdL4RKuUXBw=="
-        }
-        ```
+### Deployment & Testing
+#### Suggested testing workflow
+1. Ensure the init script for each container is executable by running the following command:
+    ```
+    $ sudo chmod -R 777 internet-scale-app_00X
+    ```
+1. Ensure that a `mysql` container with a database named `cs4260` and a user `'www'@'%'` who is granted all privileges to `cs4260` and `test_cs4260` (the test database Django test `Client` will create later). Otherwise, `docker-compose up` will not bring up any container
+2. Add `mysql` container to docker networks `backend` by running the following command:
+    ```
+    $ sudo docker network connect internet-scale-app_backend mysql
+    ```
+3. Run `sudo docker-compose up` in project root folder to bring up docker containers
+4. Head to `localhost:8006/homepage` to access the project:
+    - Since no data is loaded from fixture, there will be a red `[No pets available]` status message on top homepage
+    - To create a new pet, click `[Register]` to register as a new user
+    - After registeration, user will be redirected to login page. Click `[Log in]` after filling in user credentials. A user who is already logged in will be redirected to homepage
+    - After logging in, click `[Create a new pet!]` to create a new pet
+    - After a new pet is created, user will be redirected to homepage
+    - Click `[Check it out!]` on each pet created to view its detailed information
+    - Type in the search bar and then click `[Search]` to search pets. Search result page will contain a list of pets matching search phrase entered and will be sorted by views. Pets that have more than 5 views will be listed as `hot listing`. Only user logged contributes to a pet's view count
+    - Click `[Log out]` to log out
+
+#### Selenium integration testing
+1. SSH into `selenium-test` container:
+    ```
+    $ sudo docker exec -it selenium-test /bin/bash
+    ```
+2. Run the following command to run selenium tests:
+    ```
+    $ python3 test.py
+    ```
+
+    Here is a sample screenshot of selenium test results:
+
+    ![result](imgs/se.png)
+
+    *Note: selenium test can only be run with a **empty** database.*
+
+#### Performance testing
+1. `jmeter` performance tests will be performed automatically when `docker-compose` starts. Test result is stored in `jmeter/JmeterTestResult.log`
+
+    Here is a sample testing result:
+
+    ![result](imgs/performance.png)
+
+#### Load balancing
+1. `haproxy` load balancer utilize two backend servers, `presentation-0` and `presentation-1` to distribute traffics (roundrobin algorithm). As a result, the project entrypoint has changed to `load-balancer`'s export point at `localhost:8006/homepage`
+2. Logging: head to `https://papertrailapp.com/dashboard` to view `haproxy` logs with the following credentials:
+    ```
+    Email: hl7gr@virginia.edu
+    Password: 123456789
+    ```
+    Here is a sample screenshot of a `haproxy` session:
+
+    ![papertrail](imgs/papertrail.png)
+
+#### Caching
+1. Full-page redis caching on pet_detail page is implemented in `presentation-x` and `redis` container. To verify caching insertion, SSH into the `redis` container and run the following command:
+    ```
+    $ sudo docker exec -it redis /bin/bash
+    root@0fasrbfds6ef1:redis-cli
+    root@0fasrbfds6ef1:SELECT 0
+    root@0fasrbfds6ef1:KEYS * 
+    ```
+2. Caching invalidation strategy: redis cache is invalidated every 20 minutes (same invalidation time as a user's `session` to ensure efficient cache usage)
 
 
-
-### entity layer
- - Container image: `tp33/django`
- - Container name: `entity`
- - API design (only exposed to container `data_service`)
-    - `api/v1/users/create`: create a new user. `POST` request only. Request body: 
-        ```
-        {
-            "username": "Tiger2016",
-            "first_name": "Tiger",
-            "last_name": "Wu",
-            "email_address": "tiger2016@gmail.com",     # must be well-formed email address
-            "age": 21,
-            "gender": "Male",
-            "zipcode": 22904,
-            "password": "123456"
-        }
-        ```
-    - `api/v1/users/(\d+)/get_by_id`: get user by `user_id`. `GET `request only. Request parameter:
-        ```
-        user_id=29
-        ```
-    - `api/v1/pets/get_by_user`: get pets by `username`. `POST` only. Request body:
-        ```
-        {
-            "username": "hao"
-        }
-        ```
-    - `api/v1/users/(\d+)/update`: update a user by its `user_id`. `POST` request only. Request body (`/(\d+)/` is `user_id`):
-        ```
-        {
-            "username": "Tiger2016",    # optional
-            "first_name": "Tiger",      # optional
-            "last_name": "Wu",          # optional
-            "email_address": "tiger2016@gmail.com",     # optional
-            "age": 21,                  # optional
-            "gender": "Male",           # optional
-            "zipcode": 22904,           # optional
-            "password": "123456"          # optional
-        }
-        ```
-    - `api/v1/users/(\d+)/delete`: delete user by its `user_id`. `GET` request only.
-    - `api/v1/pets/create`: create a new pet. `POST` only. Request body:
-        ```
-        {
-            "name": "cute dog",
-            "pet_type": "dog",
-            "description": "dog is human's best animal friend",
-            "price": 299,
-            "authenticator": "IFm1qp3t6SwR17VAk8tvWw==",
-            "username": "hao"
-        }
-        ```
-        *Note: will return `pet_id` in `res` field of return body*
-    - `api/v1/pets/get_all_pets`: get a list of all pets
-    - `api/v1/pets/(\d+)/get_by_id`: get pet by `pet_id`
-    - `api/v1/pets/(\d+)/update`: update pet by its `pet_id`. `POST` only. Request body:
-        ```
-        {
-            "name": "cute samoyed", # optional
-            "pet_type": "dog",  # optional   
-            "description": "samoyed is cute", # optional
-            "price": 299,   # optional
-            "date_posted": TIMESTAMP,   #optional
-            "authenticator": "IFm1qp3t6SwR17VAk8tvWw==",
-            "username": "hao"
-        }
-        ```
-    - `api/v1/pets/(\d+)/delete`: delete pet by its `pet_id`. `POST` only. Request body:
-        ```
-        {
-            "pet_id": 3,
-            "username": "hao",
-            "authenticator": "IFm1qp3t6SwR17VAk8tvWw=="
-        }
-        ```
-
-    - `api/v1/login`: login a user. `POST` request only. If login is successful returns an `UTF-8` encoded 128-bit authenticator. Request body:
-        ```
-        {
-            "username": hao,
-            "password": "123456"
-        }
-        ```
-        Returns:
-        ```
-        {
-            "ok": true, 
-            "res": "sAc0gFXexFLPdL4RKuUXBw=="
-        }
-        ```
-    - `api/v1/logout`: logout a user by deleting its authenticator. `POST` request only. Request body:
-        ```
-        {
-            "authenticator": "IFm1qp3t6SwR17VAk8tvWw=="
-        }
-        ```
-    - `api/v1/reset_password`: reset password for a user. `POST` only. The password resetting process consists of two sequential `POST` requests:
-        ```
-        {
-            "reset": "no",
-            "username": "hao"
-        }
-        ```
-        This request will trigger an email being sent to user's registered email address containing an `authenticator`
-
-        followed by:
-        ```
-        {
-            "reset": "yes",
-            "authenticator": "fh84o8/MtiFiwUF05J2gRA==",
-            "new_password": 123456789
-        }
-        ```
-
-
-### data layer
- - Container image: `mysql:latest`
- - Container name: `mysql`
- - Django app name: `main`
- - Run command: `sudo docker run --name mysql -d -e MYSQL_ROOT_PASSWORD='$3cureUS' -v /mnt/documents-local/CS4260/internet-scale-app/db:/var/lib/mysql  mysql:latest`
- - SSH into container `mysql`: `docker exec -it mysql /bin/bash`
- - Get in SQL shell: `mysql -uroot -p'$3cureUS'`
- - Network command: `sudo docker network connect internet-scale-app_backend mysql`
-
-
-## Common gotchas
- ### DB container configuration
- - Container `web` and requires a mysql container with username `'www'@'%'` and password `$cureUS` and a database named `cs4260` set up. Otherwise, docker compose will not bring up any containers. 
