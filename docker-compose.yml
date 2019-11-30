@@ -66,6 +66,7 @@ services:
     image: tp33/django
     volumes:
       - ./batch:/app
+      - ./data:/app
     networks:
       - search
     depends_on:
