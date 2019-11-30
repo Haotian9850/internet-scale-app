@@ -129,7 +129,6 @@ services:
     command: -n -t /etc/test.jmx -l /etc/JmeterTestResult.log 
   spark-master:
     image: gettyimages/spark
-    command: bin/spark-class org.apache.spark.deploy.master.Master -h spark-master
     container_name: spark-master
     hostname: spark-master
     environment:
@@ -151,9 +150,10 @@ services:
       - 8080:8080
     volumes:
       - ./data:/tmp/data
+    command: bash -c /tmp/data/init_spark_master.sh
   spark-worker:
     image: gettyimages/spark
-    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    command: bash -c /tmp/data/init_spark_worker.sh
     container_name: spark-worker
     hostname: spark-worker
     environment:
