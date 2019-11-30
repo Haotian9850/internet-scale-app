@@ -21,8 +21,7 @@ def parse_pet_log():
     with open("/app/pet_view_log.txt") as log:
         lines = log.readlines()
     for line in lines:
-        result[line.split(":")[1]] = result.get(line.split(":")[1], 0) + 1
-    #print(result)
+        result[line.split(":")[1].rstrip()] = result.get(line.split(":")[1].rstrip(), 0) + 1
     return result
 
 
@@ -33,3 +32,5 @@ view = {
     "pet_id": 1
 }
 '''
+
+parse_pet_log()

@@ -417,7 +417,7 @@ def get_recommendations(request):
     if request.method == "POST":
         result = []
         for pet_id in models.Recommendations.objects.get(pk=request.POST.get("pet_id")).co_views.split("&"):
-            '''
+            
             pet = models.Pet.objects.get(pk=int(pet_id))
             result.append({
                 'pet_id': pet.id,
@@ -428,8 +428,8 @@ def get_recommendations(request):
                 'date_posted': pet.date_posted,
                 'user': pet.user.username
             })
-            '''
-            result.append(pet_id)
+            
+            #result.append(pet_id)
         return JsonResponse({
             "ok": True,
             "res": result

@@ -1,13 +1,2 @@
-haotian:3
-haotian:3
-haotian:3
-haotian:2
 haotian:1
-haotian:5
-haotian:5
-tiger:5
-tiger:5
-tiger:6
-tiger:5
-tiger:1
-tiger:2
+haotian:1
