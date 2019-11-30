@@ -32,5 +32,3 @@ view = {
     "pet_id": 1
 }
 '''
-
-parse_pet_log()

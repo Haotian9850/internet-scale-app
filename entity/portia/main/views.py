@@ -160,17 +160,21 @@ def get_pet_by_id(request):
     if request.method != 'POST':
         return res_err(assemble_err_msg(-1, "WRONG_REQUEST_METHOD", "POST"))
     try:
-        pet = models.Pet.objects.get(pk=request.POST["id"])
+        pet = models.Pet.objects.get(pk=request.POST.get("id"))
     except models.Pet.DoesNotExist:
-        return res_err(assemble_err_msg(request.POST["id"], "NOT_FOUND", "Pet"))
-    return res_success({
-        'pet_id': pet.id,
-        'name': pet.name,
-        'pet_type': pet.pet_type,
-        'description': pet.description,
-        'price': pet.price,
-        'date_posted': pet.date_posted,
-        'user': pet.user.username
+        return res_err(assemble_err_msg(request.POST.get("id"), "NOT_FOUND", "Pet"))
+    return JsonResponse({
+        "ok": True,
+        "res": {
+            'pet_id': pet.id,
+            'name': pet.name,
+            'pet_type': pet.pet_type,
+            'description': pet.description,
+            'price': pet.price,
+            'date_posted': pet.date_posted,
+            'user': pet.user.username
+        },
+        "recommendations": get_recommendations(request.POST.get("id"))
     })
 
 
@@ -413,24 +417,18 @@ def update_recommendations(request):
         
         
 
-def get_recommendations(request):
-    if request.method == "POST":
-        result = []
-        for pet_id in models.Recommendations.objects.get(pk=request.POST.get("pet_id")).co_views.split("&"):
-            
-            pet = models.Pet.objects.get(pk=int(pet_id))
-            result.append({
-                'pet_id': pet.id,
-                'name': pet.name,
-                'pet_type': pet.pet_type,
-                'description': pet.description,
-                'price': pet.price,
-                'date_posted': pet.date_posted,
-                'user': pet.user.username
-            })
-            
-            #result.append(pet_id)
-        return JsonResponse({
-            "ok": True,
-            "res": result
+def get_recommendations(pet_id):
+    result = []
+    for pet_id in models.Recommendations.objects.get(pk=pet_id).co_views.split("&"):   
+        pet = models.Pet.objects.get(pk=int(pet_id))
+        result.append({
+            'pet_id': pet.id,
+            'name': pet.name,
+            'pet_type': pet.pet_type,
+            'description': pet.description,
+            'price': pet.price,
+            'date_posted': pet.date_posted,
+            'user': pet.user.username
         })
+        #result.append(pet_id)
+    return result

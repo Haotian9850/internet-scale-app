@@ -34,6 +34,5 @@ urlpatterns = [
     url("api/v1/login", views.log_in),
     url("api/v1/logout", views.log_out),
     url("api/v1/reset_password", views.reset_password),
-    url("api/v1/update_recommendations", views.update_recommendations),
-    url("api/v1/get_recommendations", views.get_recommendations)
+    url("api/v1/update_recommendations", views.update_recommendations)
 ]

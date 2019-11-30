@@ -35,12 +35,10 @@ def check_existing_index(es, index_name):
 
 def update_pet_view(es, index_name, views):
     for pet_id in views.keys():
-        os.system("touch updating{}".format(pet_id))
         update_view(es, index_name, pet_id, views[pet_id])
 
 
 def update_view(es, index_name, pet_id, new_view):
-    os.system("touch updating{}".format(pet_id))
     es.update(
         index=index_name,
         id=pet_id,
