@@ -39,6 +39,10 @@ N/A
     ```
     $ sudo docker run --name mysql -d -e MYSQL_ROOT_PASSWORD='$3cureUS' -v /media/haotian/documents-local/CS4260/internet-scale-app/db:/var/lib/mysql  mysql:latest
     ```
+
+    ```
+    # mysql -uroot -p'$3cureUS'
+    ```
 2. Add `mysql` container to docker networks `backend` by running the following command:
     ```
     $ sudo docker network connect internet-scale-app_backend mysql

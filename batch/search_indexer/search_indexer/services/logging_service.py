@@ -12,8 +12,8 @@ def log_pet_views(view):
 
 def assemble_log_entry(view):
     return "{}:{}\n".format(
-        view["pet_id"],
-        view["username"]
+        view["username"],
+        view["pet_id"]
     )
 
 def parse_pet_log():
@@ -21,7 +21,7 @@ def parse_pet_log():
     with open("/app/pet_view_log.txt") as log:
         lines = log.readlines()
     for line in lines:
-        result[line.split(":")[0]] = result.get(line.split(":")[0], 0) + 1
+        result[line.split(":")[1]] = result.get(line.split(":")[1], 0) + 1
     #print(result)
     return result
 
