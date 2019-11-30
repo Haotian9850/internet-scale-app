@@ -415,7 +415,22 @@ def update_recommendations(request):
 
 def get_recommendations(request):
     if request.method == "POST":
+        result = []
+        for pet_id in models.Recommendations.objects.get(pk=request.POST.get("pet_id")).co_views.split("&"):
+            '''
+            pet = models.Pet.objects.get(pk=int(pet_id))
+            result.append({
+                'pet_id': pet.id,
+                'name': pet.name,
+                'pet_type': pet.pet_type,
+                'description': pet.description,
+                'price': pet.price,
+                'date_posted': pet.date_posted,
+                'user': pet.user.username
+            })
+            '''
+            result.append(pet_id)
         return JsonResponse({
             "ok": True,
-            "res": models.Recommendations.objects.get(pk=request.POST.get("pet_id")).co_views.split("&")
+            "res": result
         })
