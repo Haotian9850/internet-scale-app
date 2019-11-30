@@ -1,9 +1,12 @@
 
 
 def log_pet_views(view):
-    log_file = open("/app/pet_view_log.txt", "a+")
-    log_file.write(assemble_log_entry(view))
-    log_file.close()
+    log_file1 = open("/app/pet_view_log.txt", "a+")
+    log_file1.write(assemble_log_entry(view))
+    log_file1.close()
+    log_file2 = open("/home/whiskey/pet_view_log.txt", "a+")
+    log_file2.write(assemble_log_entry(view))
+    log_file2.close()
     
     
 
