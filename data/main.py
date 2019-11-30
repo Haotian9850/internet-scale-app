@@ -1,4 +1,6 @@
 from pyspark import SparkContext 
+import requests
+import json
 
 
 def check_counts(counts, id):
@@ -16,13 +18,31 @@ def make_recommendations(co_view_list, counts):
             if id in recommendations:
                 recommendations.remove(id)
             result[id] = result.get(id, set()).union(recommendations)
+    for id in result:
+        result[id] = list(result[id])
     return result
+
+
+
+def update_recommendations(recommendations):
+    try:
+        print(json.dumps(recommendations))
+        res = requests.post(
+            "http://entity:8000/api/v1/update_recommendations",
+            data={
+                "recommendations":json.dumps(recommendations)
+            }
+        )
+    except requests.exceptions.Timeout:
+        print("request timed out")
+    except requests.exceptions.HTTPError as err:
+        print("request failed with HTTPError {}".format(err.response.text))
+    print(res.text)
 
 
 
 if __name__ == "__main__":
     view_counts = dict()
-
     sc = SparkContext("spark://spark-master:7077", "PopularPets")
     data = sc.textFile("/tmp/data/pet_view_log.txt", 2)
     pairs = data.map(lambda line: line.split(":"))
@@ -38,9 +58,9 @@ if __name__ == "__main__":
     co_view_list = []
     for username, views in co_views.collect():
         co_view_list.append(set([pet_id for pet_id in views]))
-           
     sc.stop()
-    print(co_view_list)
-    print(view_counts)
-    print(make_recommendations(co_view_list, view_counts))
+    recommendations = make_recommendations(co_view_list, view_counts)
+    print(recommendations)
+    print("sending updated recommendations to entity...")
+    update_recommendations(recommendations)
 

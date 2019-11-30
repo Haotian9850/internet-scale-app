@@ -134,6 +134,8 @@ services:
     environment:
       MASTER: spark://spark-master:7077
       SPARK_CONF_DIR: /conf
+    networks:
+      - backend
     expose:
       - 7001
       - 7002
@@ -164,6 +166,8 @@ services:
       SPARK_WORKER_WEBUI_PORT: 8081
     links:
       - spark-master
+    networks:
+      - backend
     expose:
       - 7012
       - 7013

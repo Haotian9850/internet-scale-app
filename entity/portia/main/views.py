@@ -5,6 +5,7 @@ from django.db.utils import DatabaseError
 from main import models 
 from datetime import datetime
 import json
+from django.http import JsonResponse
 from django.contrib.auth.hashers import make_password, check_password
 from utils.err_msg_assembler import assemble_err_msg
 from utils.res_handler import res_err, res_success
@@ -341,9 +342,6 @@ def reset_password(request):
         except db.Error:    
             return res_err(str(db.Error))
         
-        
-
-        
 
 
 
@@ -391,3 +389,33 @@ def is_authenticated(token, username, isCreate):
             return False 
         return authenticator.user_id == user.id
     return True 
+
+
+#################### Recommendation entity APIs ####################
+def update_recommendations(request):
+    if request.method == "POST":
+        recommendations = json.loads(request.POST.get("recommendations"))
+        log = []
+        for pet_id in recommendations:
+            recommendation, created = models.Recommendations.objects.get_or_create(pk=pet_id)
+            if created:
+                recommendation.co_views = "&".join(recommendations[pet_id])
+                recommendation.save()
+            else:
+                new_recommendation = models.Recommendations(pet_id=pet_id, co_views="&".join(recommendations[pet_id]))
+                new_recommendation.save()
+                log.append("&".join(recommendations[pet_id]))
+        return JsonResponse({
+            "ok": True,
+            "res": "Recommendations successfully updated!",
+            "log": log
+        })
+        
+        
+
+def get_recommendations(request):
+    if request.method == "POST":
+        return JsonResponse({
+            "ok": True,
+            "res": models.Recommendations.objects.get(pk=request.POST.get("pet_id")).co_views.split("&")
+        })
