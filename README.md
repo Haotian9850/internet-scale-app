@@ -36,6 +36,9 @@ N/A
     $ sudo chmod -R 777 internet-scale-app_00X
     ```
 1. Ensure that a `mysql` container with a database named `cs4260` and a user `'www'@'%'` who is granted all privileges to `cs4260` and `test_cs4260` (the test database Django test `Client` will create later). Otherwise, `docker-compose up` will not bring up any container
+    ```
+    $ sudo docker run --name mysql -d -e MYSQL_ROOT_PASSWORD='$3cureUS' -v /media/haotian/documents-local/CS4260/internet-scale-app/db:/var/lib/mysql  mysql:latest
+    ```
 2. Add `mysql` container to docker networks `backend` by running the following command:
     ```
     $ sudo docker network connect internet-scale-app_backend mysql
