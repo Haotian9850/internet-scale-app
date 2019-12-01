@@ -1,6 +1,6 @@
 from services.pet_service import get_all_pets, search_pets, sort_pets, create_pet_service, get_pets_by_user_service, get_pet_by_id_service
 from services.user_service import log_in_service, log_out_service, register_service, password_reset_service, reset_service
-from services.redis_service import get_redis_client, insert_cache, look_up_cache
+from services.redis_service import get_redis_client, insert_cache, look_up_cache, invalidate_cache
 
 
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -275,6 +275,7 @@ def login(request):
 
 def logout(request):
     # internal, no need to check request.method
+    invalidate_cache(get_redis_client())
     res, status = log_out_service(request.session["authenticator"])
     if status == 0:
         return JsonResponse({

@@ -20,3 +20,6 @@ def look_up_cache(client, pet_id):
     if client.exists(pet_id):
         return True, client.get(pet_id)
     return False, "empty"
+
+def invalidate_cache(client):
+    client.flushdb()

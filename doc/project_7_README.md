@@ -44,13 +44,17 @@ N/A
     $ sudo docker network connect internet-scale-app_backend mysql
     ```
 3. Run `sudo docker-compose up` in project root folder to bring up docker containers
+
+    *Note: it is possible that `spark-worker` will try to connect to `spark-master` multiple times before it forms a cluster with it. This is OK since spark (and most other distributed computing frameworks) will always attempt connecting until it forms a cluster.*
 4. Head to `localhost:8006/homepage` to access the project:
-    - Since no data is loaded from fixture, there will be a red `[No pets available]` status message on top homepage
-    - To create a new pet, click `[Register]` to register as a new user
+    - Since no data is loaded from fixture (there is **no fixture**), there will be a red `[No pets available]` status message on top homepage
+    - To create a new pet, click `[Register]` to register as a new user first
     - After registeration, user will be redirected to login page. Click `[Log in]` after filling in user credentials. A user who is already logged in will be redirected to homepage
     - After logging in, click `[Create a new pet!]` to create a new pet
     - After a new pet is created, user will be redirected to homepage
     - Click `[Check it out!]` on each pet created to view its detailed information
-    - Type in the search bar and then click `[Search]` to search pets. Search result page will contain a list of pets matching search phrase entered and will be sorted by views. Pets that have more than 5 views will be listed as `hot listing`. Only user logged contributes to a pet's view count
-    - Click `[Log out]` to log out
+    - Since pet details are cached in `redis` container (cache will be invalidated every 20 minutes / when a user logs out). When a pet is cached, accessing it detail page **will not be logged**. Therefore, to test out the recommendation service, it is recommended to create multiple users / log out and re-log in again between viewing each pet. **Only co-viewed pet with 3 or more views will be considered as a recommendation.** The recommendation feed look like as follows:
+
+    ![result](../imgs/recommendations.png)
+
 
