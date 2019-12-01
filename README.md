@@ -2,11 +2,11 @@
 [![Build Status](https://travis-ci.com/Haotian9850/internet-scale-app.png)](https://travis-ci.com/Haotian9850/internet-scale-app)
 
 ## New features since release `0.0.7`
-### The following features are made available in project 6:
+### The following features are made available in project 7:
 1. Added spark-based pet recommendation system
 
 
-### The following features are deprecated in project 6:
+### The following features are deprecated in project 7:
 N/A
 
 
