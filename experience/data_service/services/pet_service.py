@@ -48,7 +48,6 @@ def get_pet_by_id_service(request):
 
 
 
-
 def get_pets_by_user_service(request):
     try: 
         res = requests.post(

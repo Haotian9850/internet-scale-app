@@ -1,13 +1,9 @@
-# Project 6 Changes and Updates
+# Project 7 Changes and Updates
 [![Build Status](https://travis-ci.com/Haotian9850/internet-scale-app.png)](https://travis-ci.com/Haotian9850/internet-scale-app)
 
-## New features since release `0.0.6`
+## New features since release `0.0.7`
 ### The following features are made available in project 6:
-1. Added Travis CI to the project
-2. Added full-page redis caching to `presentation` layer
-3. Added a load balancer based on `haproxy`
-4. Added front-end integration testing with `selenium`
-5. Added `jmeter` performance testing
+1. Added spark-based pet recommendation system
 
 
 ### The following features are deprecated in project 6:
@@ -48,58 +44,17 @@ N/A
     $ sudo docker network connect internet-scale-app_backend mysql
     ```
 3. Run `sudo docker-compose up` in project root folder to bring up docker containers
+
+    *Note: it is possible that `spark-worker` will try to connect to `spark-master` multiple times before it forms a cluster with it. This is OK since spark (and most other distributed computing frameworks) will always attempt connecting until it forms a cluster.*
 4. Head to `localhost:8006/homepage` to access the project:
-    - Since no data is loaded from fixture, there will be a red `[No pets available]` status message on top homepage
-    - To create a new pet, click `[Register]` to register as a new user
+    - Since no data is loaded from fixture (there is **no fixture**), there will be a red `[No pets available]` status message on top homepage
+    - To create a new pet, click `[Register]` to register as a new user first
     - After registeration, user will be redirected to login page. Click `[Log in]` after filling in user credentials. A user who is already logged in will be redirected to homepage
     - After logging in, click `[Create a new pet!]` to create a new pet
     - After a new pet is created, user will be redirected to homepage
     - Click `[Check it out!]` on each pet created to view its detailed information
-    - Type in the search bar and then click `[Search]` to search pets. Search result page will contain a list of pets matching search phrase entered and will be sorted by views. Pets that have more than 5 views will be listed as `hot listing`. Only user logged contributes to a pet's view count
-    - Click `[Log out]` to log out
+    - Since pet details are cached in `redis` container (cache will be invalidated every 20 minutes / when a user logs out). When a pet is cached, accessing it detail page **will not be logged**. Therefore, to test out the recommendation service, it is recommended to create multiple users / log out and re-log in again between viewing each pet. **Only co-viewed pet with 3 or more views will be considered as a recommendation.** The recommendation feed look like as follows:
 
-#### Selenium integration testing
-1. SSH into `selenium-test` container:
-    ```
-    $ sudo docker exec -it selenium-test /bin/bash
-    ```
-2. Run the following command to run selenium tests:
-    ```
-    $ python3 test.py
-    ```
-
-    Here is a sample screenshot of selenium test results:
-
-    ![result](imgs/se.png)
-
-    *Note: selenium test can only be run with a **empty** database.*
-
-#### Performance testing
-1. `jmeter` performance tests will be performed automatically when `docker-compose` starts. Test result is stored in `jmeter/JmeterTestResult.log`
-
-    Here is a sample testing result:
-
-    ![result](imgs/performance.png)
-
-#### Load balancing
-1. `haproxy` load balancer utilize two backend servers, `presentation-0` and `presentation-1` to distribute traffics (roundrobin algorithm). As a result, the project entrypoint has changed to `load-balancer`'s export point at `localhost:8006/homepage`
-2. Logging: head to `https://papertrailapp.com/dashboard` to view `haproxy` logs with the following credentials:
-    ```
-    Email: hl7gr@virginia.edu
-    Password: 123456789
-    ```
-    Here is a sample screenshot of a `haproxy` session:
-
-    ![papertrail](imgs/papertrail.png)
-
-#### Caching
-1. Full-page redis caching on pet_detail page is implemented in `presentation-x` and `redis` container. To verify caching insertion, SSH into the `redis` container and run the following command:
-    ```
-    $ sudo docker exec -it redis /bin/bash
-    root@0fasrbfds6ef1:redis-cli
-    root@0fasrbfds6ef1:SELECT 0
-    root@0fasrbfds6ef1:KEYS * 
-    ```
-2. Caching invalidation strategy: redis cache is invalidated every 20 minutes (same invalidation time as a user's `session` to ensure efficient cache usage)
+    ![result](../imgs/recommendations.png)
 
 

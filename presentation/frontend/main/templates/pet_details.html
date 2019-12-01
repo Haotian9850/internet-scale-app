@@ -44,6 +44,32 @@
                     </tbody>
             </table>
     </div>
+    <div class="row mb-2">
+      <h2>People who looked at this pet also looked at:</h2>
+    </div>
+
+      <div class="row">
+          {% for pet in recommendations %}
+          <div class="col md-4">
+              <div class="card pet-card">
+                  <h5 class="card-header">
+                      {{ pet.name }}
+                      <br/>
+                      <small>{{ pet.pet_type }}</small>
+                      <br/>
+                      <small>{{ pet.pet_id }}</small>
+                  </h5>
+                  <div class="card-body">
+                    <p class="card-text">{{ pet.description }}</p>
+                    <p class="card-text">$ {{ pet.price }}</p>
+                    <a href="{% url 'pet_details' pet.pet_id %}" class="btn btn-primary">Check it out!</a>
+                  </div>
+          </div>
+          </div>
+          {% endfor %}
+      </div>
+
+
     <div class="row homepage-button">
             <a href="{% url 'homepage' %}" class="btn btn-primary">Back to Homepage</a>
     </div>

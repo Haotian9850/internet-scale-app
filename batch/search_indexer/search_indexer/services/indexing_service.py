@@ -51,7 +51,9 @@ def index_pet(es, index_name):
                 )
             if msg.topic == "pet-view":
                 log_pet_views(json.loads(msg.value.decode("utf-8")))
+                os.system("touch start_updating")
                 update_pet_view(es, index_name, parse_pet_log())
+                os.system("touch update_finished")
                 
     
 

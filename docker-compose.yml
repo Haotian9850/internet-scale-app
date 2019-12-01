@@ -66,6 +66,7 @@ services:
     image: tp33/django
     volumes:
       - ./batch:/app
+      - ./data:/home/whiskey
     networks:
       - search
     depends_on:
@@ -128,12 +129,13 @@ services:
     command: -n -t /etc/test.jmx -l /etc/JmeterTestResult.log 
   spark-master:
     image: gettyimages/spark
-    command: bin/spark-class org.apache.spark.deploy.master.Master -h spark-master
     container_name: spark-master
     hostname: spark-master
     environment:
       MASTER: spark://spark-master:7077
       SPARK_CONF_DIR: /conf
+    networks:
+      - backend
     expose:
       - 7001
       - 7002
@@ -150,9 +152,10 @@ services:
       - 8080:8080
     volumes:
       - ./data:/tmp/data
+    command: bash -c /tmp/data/init_spark_master.sh
   spark-worker:
     image: gettyimages/spark
-    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    command: bash -c /tmp/data/init_spark_worker.sh
     container_name: spark-worker
     hostname: spark-worker
     environment:
@@ -163,6 +166,8 @@ services:
       SPARK_WORKER_WEBUI_PORT: 8081
     links:
       - spark-master
+    networks:
+      - backend
     expose:
       - 7012
       - 7013
