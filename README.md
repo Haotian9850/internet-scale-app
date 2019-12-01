@@ -47,6 +47,12 @@ N/A
 
     *Note: it is possible that `spark-worker` will try to connect to `spark-master` multiple times before it forms a cluster with it. This is OK since spark (and most other distributed computing frameworks) will always attempt connecting until it forms a cluster.*
 4. Head to `localhost:8006/homepage` to access the project:
+    - After `docker-compose` is fully started, start a spark script to start recommendation service by running the following command (in a separate terminal):
+    ```
+    $ sudo chmod 777 data/update_recommendation.sh
+    $ ./data/update_recommendation.sh
+    ```
+    *Recommendations will be updated every 60 seconds*
     - Since no data is loaded from fixture (there is **no fixture**), there will be a red `[No pets available]` status message on top homepage
     - To create a new pet, click `[Register]` to register as a new user first
     - After registeration, user will be redirected to login page. Click `[Log in]` after filling in user credentials. A user who is already logged in will be redirected to homepage

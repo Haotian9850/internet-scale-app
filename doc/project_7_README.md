@@ -2,11 +2,11 @@
 [![Build Status](https://travis-ci.com/Haotian9850/internet-scale-app.png)](https://travis-ci.com/Haotian9850/internet-scale-app)
 
 ## New features since release `0.0.7`
-### The following features are made available in project 6:
+### The following features are made available in project 7:
 1. Added spark-based pet recommendation system
 
 
-### The following features are deprecated in project 6:
+### The following features are deprecated in project 7:
 N/A
 
 
@@ -52,6 +52,7 @@ N/A
     $ sudo chmod 777 data/update_recommendation.sh
     $ ./data/update_recommendation.sh
     ```
+    *Recommendations will be updated every 60 seconds*
     - Since no data is loaded from fixture (there is **no fixture**), there will be a red `[No pets available]` status message on top homepage
     - To create a new pet, click `[Register]` to register as a new user first
     - After registeration, user will be redirected to login page. Click `[Log in]` after filling in user credentials. A user who is already logged in will be redirected to homepage
