@@ -419,16 +419,19 @@ def update_recommendations(request):
 
 def get_recommendations(pet_id):
     result = []
-    for pet_id in models.Recommendations.objects.get(pk=pet_id).co_views.split("&"):   
-        pet = models.Pet.objects.get(pk=int(pet_id))
-        result.append({
-            'pet_id': pet.id,
-            'name': pet.name,
-            'pet_type': pet.pet_type,
-            'description': pet.description,
-            'price': pet.price,
-            'date_posted': pet.date_posted,
-            'user': pet.user.username
-        })
-        #result.append(pet_id)
+    try:
+        recommendations = models.Recommendations.objects.get(pk=pet_id)
+        for pet_id in recommendations.co_views.split("&"):   
+            pet = models.Pet.objects.get(pk=int(pet_id))
+            result.append({
+                'pet_id': pet.id,
+                'name': pet.name,
+                'pet_type': pet.pet_type,
+                'description': pet.description,
+                'price': pet.price,
+                'date_posted': pet.date_posted,
+                'user': pet.user.username
+            })
+    except models.Recommendations.DoesNotExist:
+        pass # do nothing
     return result

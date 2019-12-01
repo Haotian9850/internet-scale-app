@@ -1,7 +1,2 @@
 haotian:1
 haotian:2
-haotian:3
-haotian:4
-None:1
-None:1
-haotian:1

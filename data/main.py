@@ -44,7 +44,7 @@ def update_recommendations(recommendations):
 if __name__ == "__main__":
     view_counts = dict()
     sc = SparkContext("spark://spark-master:7077", "PopularPets")
-    data = sc.textFile("/tmp/data/log_dump.txt", 2)
+    data = sc.textFile("/tmp/data/pet_view_log.txt", 2)
     pairs = data.map(lambda line: line.split(":"))
     pages = pairs.map(lambda pair: (pair[1], 1))
     count = pages.reduceByKey(lambda x, y: int(x) + int(y))
