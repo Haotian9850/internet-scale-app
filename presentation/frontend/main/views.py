@@ -123,6 +123,7 @@ def show_individual_pet_by_id(request, id):
         "pet_details.html", 
         {
             "result": res,
+            "recommendations": res["recommendations"],
             "authenticated": request.session.get("authenticated"),
             "username": request.session.get("username")   
         }
