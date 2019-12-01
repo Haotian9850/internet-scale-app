@@ -1,4 +1,4 @@
-# Project 6 Changes and Updates
+# Project 7 Changes and Updates
 [![Build Status](https://travis-ci.com/Haotian9850/internet-scale-app.png)](https://travis-ci.com/Haotian9850/internet-scale-app)
 
 ## New features since release `0.0.7`
