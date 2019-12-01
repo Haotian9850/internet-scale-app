@@ -31,6 +31,13 @@ class Authenticator(models.Model):
     user_id = models.IntegerField()
     date_created = models.DateTimeField()
 
+    
+
+class Recommendations(models.Model):
+    pet_id = models.CharField(primary_key=True, max_length=255)
+    co_views = models.TextField()
+
+
 
 
 

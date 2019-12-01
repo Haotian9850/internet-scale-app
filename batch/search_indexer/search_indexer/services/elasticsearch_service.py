@@ -4,6 +4,8 @@ from kafka.errors import KafkaError
 import json
 import time
 
+import os
+
 #from logging_service import parse_pet_log
 
 
