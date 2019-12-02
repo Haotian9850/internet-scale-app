@@ -173,7 +173,7 @@ def get_pet_by_id(request):
             'price': pet.price,
             'date_posted': pet.date_posted,
             'user': pet.user.username,
-            "recommendations": get_recommendations(request.POST.get("id"))
+            "recommendations": get_recommendations(int(request.POST.get("id")))
         }
     })
 
@@ -420,18 +420,19 @@ def update_recommendations(request):
 def get_recommendations(pet_id):
     result = []
     try:
-        recommendations = models.Recommendations.objects.get(pk=pet_id)
-        for pet_id in recommendations.co_views.split("&"):   
-            pet = models.Pet.objects.get(pk=int(pet_id))
-            result.append({
-                'pet_id': pet.id,
-                'name': pet.name,
-                'pet_type': pet.pet_type,
-                'description': pet.description,
-                'price': pet.price,
-                'date_posted': pet.date_posted,
-                'user': pet.user.username
-            })
+        recommendations = models.Recommendations.objects.get(pk=int(pet_id))
+        if recommendations.co_views.split("&")[0]:
+            for pet_id in recommendations.co_views.split("&"): 
+                pet = models.Pet.objects.get(pk=int(pet_id))
+                result.append({
+                    'pet_id': pet.id,
+                    'name': pet.name,
+                    'pet_type': pet.pet_type,
+                    'description': pet.description,
+                    'price': pet.price,
+                    'date_posted': pet.date_posted,
+                    'user': pet.user.username
+                })
     except models.Recommendations.DoesNotExist:
         pass # do nothing
     return result

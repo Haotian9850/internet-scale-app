@@ -21,7 +21,7 @@ def list_all_pets(request):
     res, status = get_all_pets()
     if request.session.get("authenticated") is None:
         request.session["authenticated"] = False
-        request.session["username"] = ""
+        request.session["username"] = "visitor"
     if status == 0:
         return render(
             request,
@@ -103,7 +103,7 @@ def show_individual_pet_by_id(request, id):
         res = json.loads(json.loads(cache_res.decode("utf-8")))
         status = 1
     else:
-        if request.session.get("username", None) is not None and request.session.get("username") != "":
+        if request.session.get("username") != "visitor":
             res, status = get_pet_by_id_service(id, request.session.get("username"))
         else:
             res, status = get_pet_by_id_service(id, "visitor")
