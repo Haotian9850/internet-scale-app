@@ -7,7 +7,7 @@
 
 
 ### The following features are deprecated in project 7:
-N/A
+1. Removed `jmeter` performance testing to avoid `503` error upon `dock-compose up` on low-grade hardware
 
 
  
@@ -43,6 +43,7 @@ N/A
     ```
     $ sudo docker network connect internet-scale-app_backend mysql
     ```
+    *Depending on your `docker` version, network may be named to `internetscaleapp_backend`*
 3. Run `sudo docker-compose up` in project root folder to bring up docker containers
 
     *Note: it is possible that `spark-worker` will try to connect to `spark-master` multiple times before it forms a cluster with it. This is OK since spark (and most other distributed computing frameworks) will always attempt connecting until it forms a cluster.*
@@ -59,7 +60,7 @@ N/A
     - After logging in, click `[Create a new pet!]` to create a new pet
     - After a new pet is created, user will be redirected to homepage
     - Click `[Check it out!]` on each pet created to view its detailed information
-    - Since pet details are cached in `redis` container (cache will be invalidated every 20 minutes / when a user logs out). When a pet is cached, accessing it detail page **will not be logged**. Therefore, to test out the recommendation service, it is recommended to create multiple users / log out and re-log in again between viewing each pet. **Only co-viewed pet with 3 or more views will be considered as a recommendation.** The recommendation feed look like as follows:
+    - Since pet details are cached in `redis` container (cache will be invalidated every 20 minutes / when a user logs out). When a pet is cached, accessing it detail page **will not be logged (as a result, its recommendation feed will not be updated either)**. Therefore, to test out the recommendation service, it is recommended to create multiple users / log out and re-log in again between viewing each pet. **Only co-viewed pet with 3 or more views will be considered as a recommendation. Recommendations are updated every 60 seconds by running `update_recommendation.sh`** The recommendation feed look like as follows:
 
     ![result](imgs/recommendations.png)
 
