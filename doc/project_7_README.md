@@ -7,7 +7,7 @@
 
 
 ### The following features are deprecated in project 7:
-N/A
+1. Removed `jmeter` performance testing to avoid `503` error upon `dock-compose up` on low-grade hardware
 
 
  
@@ -60,7 +60,7 @@ N/A
     - After logging in, click `[Create a new pet!]` to create a new pet
     - After a new pet is created, user will be redirected to homepage
     - Click `[Check it out!]` on each pet created to view its detailed information
-    - Since pet details are cached in `redis` container (cache will be invalidated every 20 minutes / when a user logs out). When a pet is cached, accessing it detail page **will not be logged**. Therefore, to test out the recommendation service, it is recommended to create multiple users / log out and re-log in again between viewing each pet. **Only co-viewed pet with 3 or more views will be considered as a recommendation.** The recommendation feed look like as follows:
+    - Since pet details are cached in `redis` container (cache will be invalidated every 20 minutes / when a user logs out). When a pet is cached, accessing it detail page **will not be logged (as a result, its recommendation feed will not be updated either)**. Therefore, to test out the recommendation service, it is recommended to create multiple users / log out and re-log in again between viewing each pet. **Only co-viewed pet with 3 or more views will be considered as a recommendation. Recommendations are updated every 60 seconds by running `update_recommendation.sh`** The recommendation feed look like as follows:
 
     ![result](../imgs/recommendations.png)
 
