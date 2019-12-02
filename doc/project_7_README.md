@@ -7,7 +7,7 @@
 
 
 ### The following features are deprecated in project 7:
-N/A
+1. Removed `jmeter` performance testing to avoid `503` error upon `dock-compose up` on low-grade hardware
 
 
  
