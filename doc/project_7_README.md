@@ -43,6 +43,7 @@ N/A
     ```
     $ sudo docker network connect internet-scale-app_backend mysql
     ```
+    *Depending on your `docker` version, network may be named to `internetscaleapp_backend`*
 3. Run `sudo docker-compose up` in project root folder to bring up docker containers
 
     *Note: it is possible that `spark-worker` will try to connect to `spark-master` multiple times before it forms a cluster with it. This is OK since spark (and most other distributed computing frameworks) will always attempt connecting until it forms a cluster.*
