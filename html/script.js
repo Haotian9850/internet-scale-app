@@ -27,9 +27,7 @@ function displayMatches(){
     const matchedEntries = findMatch(this.value, history);
     console.log("matchedEntries", matchedEntries);
     const html = matchedEntries.map(entry => {
-        //highlight matching search phrase
-        const regex = new RegExp(this.value, 'gi');
-        const name = entry.name.replace(regex, `<span class="h1">${this.value}</span>`);
+        const name = entry.name.replace(new RegExp(this.value, 'gi'), `<span class="h1">${this.value}</span>`);
         return `
             <li>
                 <a href="#">
@@ -38,7 +36,7 @@ function displayMatches(){
                 </a>
             </li>
         `;
-    }).join('');
+    }).join("");
     suggestions.innerHTML = html;
 }
 
