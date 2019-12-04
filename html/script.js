@@ -42,6 +42,7 @@ function displayMatches(){
     suggestions.innerHTML = html;
 }
 
+
 const searchInput = document.querySelector('.searchBar');
 const suggestions = document.querySelector('.suggestions');
 
