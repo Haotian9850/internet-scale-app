@@ -1,23 +1,22 @@
-var cities = [
+let history = [
     {
-        "city": "samoyed",
-        "population": 123,
-        "state": "VA"
+        "name": "samoyed",
+        "views": 123,
     },
     {
-        "city": "golden retriever",
-        "population": 123
+        "name": "golden retriever",
+        "views": 123
     },
     {
-        "city": "dog",
-        "population": 123
+        "name": "lab",
+        "views": 123
     }
 ];
 
 
 function findMatch(keyword, history){
     return history.filter(entry => {
-        if (entry.city.includes(keyword)){
+        if (entry.name.includes(keyword)){
             return keyword;
         }
     })
@@ -25,30 +24,28 @@ function findMatch(keyword, history){
 
 
 function displayMatches(){
-    const matchedEntries = findMatch(this.value, cities);
+    const matchedEntries = findMatch(this.value, history);
     console.log("matchedEntries", matchedEntries);
-    const html = matchedEntries.map(place => {
+    const html = matchedEntries.map(entry => {
         //highlight matching search phrase
         const regex = new RegExp(this.value, 'gi');
-        const cityName = place.city.replace(regex, `<span class="h1">${this.value}</span>`);
+        const name = entry.name.replace(regex, `<span class="h1">${this.value}</span>`);
         return `
             <li>
                 <a href="#">
-                <span class="name">${cityName}</span>
-                <span class="population">${place.population}</span>
+                <span class="name">${name}</span>
+                <span class="population">${entry.views}</span>
                 </a>
             </li>
         `;
-    }).join(''); //make it return a big string instead of an multi-element array
-    suggestions.innerHTML = html; //display suggestion list
+    }).join('');
+    suggestions.innerHTML = html;
 }
-
 
 const searchInput = document.querySelector('.searchBar');
 const suggestions = document.querySelector('.suggestions');
 
 searchInput.addEventListener('change', displayMatches);
-//keyup: when user releases a key, basically gets every input character entered
 searchInput.addEventListener('keyup', displayMatches);  
 
 
