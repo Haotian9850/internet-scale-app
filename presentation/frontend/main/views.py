@@ -1,6 +1,7 @@
 from services.pet_service import get_all_pets, search_pets, sort_pets, create_pet_service, get_pets_by_user_service, get_pet_by_id_service
 from services.user_service import log_in_service, log_out_service, register_service, password_reset_service, reset_service
 from services.redis_service import get_redis_client, insert_cache, look_up_cache, invalidate_cache
+from services.logging_service import log_search_entry
 
 
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -133,6 +134,7 @@ def show_individual_pet_by_id(request, id):
 
 def search(request):
     if request.method == "POST":
+        log_search_entry(request.POST["keyword"])
         if request.POST["keyword"] == "":
             return render(
                 request,
