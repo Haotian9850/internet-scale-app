@@ -5,7 +5,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta charset="utf-8">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
         <style>
             .footer {
                 text-align: center;
@@ -86,6 +85,17 @@
                margin-right: 500px;
                height:30px;
             }
+            
+            .searchBar {
+                position: relative;
+            }
+
+            .suggestions {
+                margin: 0;
+                padding: 0;
+                position: relative;
+                /*perspective: 20px;*/
+            }
         </style>
     </head>
     <body>
@@ -95,9 +105,11 @@
             <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                 <form class="form-inline my-2 my-lg-0" name="search_form", method="post" action="{% url 'search' %}">
                     {% csrf_token %}
-                    <input class="form-control mr-sm-2" type="search" name="keyword" placeholder="What do you like to pet?">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                </form>
+                    <input class="form-control mr-sm-2 searchBar" type="text" name="keyword" placeholder="What do you like to pet?">
+                    <ul class="suggestions">
+                    </ul>
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> 
+                </form> 
             </div>
 
             {% if authenticated %}
@@ -121,7 +133,7 @@
             {% block content %}
             {% endblock %}
         </div>
-
+        {{ history }}
     <footer class="footer">
         <div class="container">
             <span class="text-muted">Copyright @ 2019 Portia Team</span>
@@ -130,6 +142,42 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+            let history = "{{ history }}";
+    </script>
+    <script>
+            String.prototype.replaceAll = function(search, replacement) {
+                var target = this;
+                return target.replace(new RegExp(search, 'g'), replacement);
+            };
+            console.log(history);
+            console.log(JSON.parse(history.replaceAll('&#39;', '"')));
+            history = JSON.parse(history.replaceAll('&#39;', '"'));
+
+            function findMatch(keyword, history){
+                return history.filter(entry => {
+                    if (entry.name.includes(keyword.toLowerCase().trim())){
+                        return entry.name;
+                    }
+                })
+            }
+            function displayMatches(){
+                const matchedEntries = findMatch(this.value, history);
+                console.log("matchedEntries", matchedEntries);
+                const html = matchedEntries.map(entry => {
+                    const name = entry.name.replace(new RegExp(this.value, 'gi'), `<span>${this.value}</span>`);
+                    return `
+                            <li><a href="#">${name}, ${entry.views}</a></li>
+                        `;
+                }).join("");
+                suggestions.innerHTML = html;
+            }
+            const searchInput = document.querySelector('.searchBar');
+            const suggestions = document.querySelector('.suggestions');
+
+            searchInput.addEventListener('change', displayMatches);
+            searchInput.addEventListener('keyup', displayMatches);  
+     </script>
 
     </body>
 </html>
