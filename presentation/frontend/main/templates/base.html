@@ -91,10 +91,25 @@
             }
 
             .suggestions {
-                margin: 0;
                 padding: 0;
-                position: relative;
-                /*perspective: 20px;*/
+                position: absolute;
+                z-index: 1;
+                width: 100%;
+            }
+            .active-cyan input[type=text] {
+                border: none;
+                border-bottom: 1px solid #3b5998;
+                box-shadow: 0 1px 0 0 #3b5998;
+            }
+
+            .suggestions li {
+                background: white;
+                list-style: none;
+                border-bottom: 1px solid #D8D8D8;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.14);
+                margin: 0;
+                padding: 0.5rem;
+                transition: background 0.2s;
             }
         </style>
     </head>
@@ -103,13 +118,14 @@
             <a class="navbar-brand" href="{% url 'homepage' %}">Portia: An Exotic Pet Store</a>
             
             <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <!--
                 <form class="form-inline my-2 my-lg-0" name="search_form", method="post" action="{% url 'search' %}">
                     {% csrf_token %}
                     <input class="form-control mr-sm-2 searchBar" type="text" name="keyword" placeholder="What do you like to pet?">
                     <ul class="suggestions">
                     </ul>
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> 
-                </form> 
+                </form> -->
             </div>
 
             {% if authenticated %}
@@ -129,11 +145,22 @@
 
         </nav>
 
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                    <form class="md-form form-sm active-cyan active-cyan-2 mt-2" name="search_form", method="post" action="{% url 'search' %}">
+                            {% csrf_token %}
+                            <input class="form-control form-control-sm searchBar" type="text" name="keyword" placeholder="What would u like to pet today?">
+                            <ul class="suggestions"></ul>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+
+
         <div class="main-content">
             {% block content %}
             {% endblock %}
         </div>
-        {{ history }}
     <footer class="footer">
         <div class="container">
             <span class="text-muted">Copyright @ 2019 Portia Team</span>
@@ -142,6 +169,7 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/43e1b224e3.js" crossorigin="anonymous"></script>
     <script>
             let history = "{{ history }}";
     </script>
@@ -167,14 +195,44 @@
                 const html = matchedEntries.map(entry => {
                     const name = entry.name.replace(new RegExp(this.value, 'gi'), `<span>${this.value}</span>`);
                     return `
-                            <li><a href="#">${name}, ${entry.views}</a></li>
+                            <li>
+                                <form name="search_form", method="post" action="{% url 'search' %}">
+                                <div class="col-md-4">
+                                    <a>${name}</a>
+                                    <input type="hidden" name="keyword" value="${entry.name.trim()}">
+                                </div> 
+                                <div class="col-md-8">
+                                    <span class="badge badge-info">last searched: ${entry.last_searched}</span>
+                                    <span class="badge badge-primary">${entry.views} searches today</span>
+                                    <button class="btn btn-outline-success btn-sm" type="submit" value="search">search "${entry.name}"</a>
+                                </div>
+                                </form>
+                            </li>
                         `;
                 }).join("");
-                suggestions.innerHTML = html;
+                const searchInput = document.querySelector('.searchBar');
+                if(searchInput.value){
+                    placeholder = `
+                            <li>
+                                <form name="search_form", method="post" action="{% url 'search' %}">
+                                    <div class="col-md-4">
+                                        <a>${searchInput.value}</a>
+                                    </div> 
+                                    <input type="hidden" name="keyword" value="${searchInput.value}">
+                                    <div class="col-md-8">
+                                        <button class="btn btn-outline-primary btn-sm" type="submit">Search "${searchInput.value}"</button>  
+                                    </div>
+                                </form>
+                            </li>
+                            `;
+                    suggestions.innerHTML = placeholder + html;
+                }else{
+                    suggestions.innerHTML = html;
+                }
             }
+
             const searchInput = document.querySelector('.searchBar');
             const suggestions = document.querySelector('.suggestions');
-
             searchInput.addEventListener('change', displayMatches);
             searchInput.addEventListener('keyup', displayMatches);  
      </script>
