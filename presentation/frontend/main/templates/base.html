@@ -229,8 +229,8 @@
 
             const searchInput = document.querySelector(".searchBar");
             const suggestions = document.querySelector(".suggestions");
-            const clearSearchClickArea = document.querySelector(":not(.suggestions)");
-            console.log(clearSearchClickArea);
+            const clearSearchClickArea = document.querySelector(".main-content");
+            console.log("clearing area", clearSearchClickArea);
             searchInput.addEventListener("change", displayMatches);
             searchInput.addEventListener("keyup", displayMatches);  
             clearSearchClickArea.addEventListener("mousedown", () => {
