@@ -23,12 +23,17 @@
         <form method="post" action="/login" class="form form-group form-row">
             {% csrf_token %}
             {% for field in form %}
+            <div class="container">
                 <label class="form-label col-sm-2" for="{{ field.name }}">{{ field.label }}</label>
                 {{ field }}
+            </div>
             {% endfor %}
-            <a class="btn btn-primary" href="/reset_password">Forget your password?</a>
-            &nbsp &nbsp
-            <input type="submit" value="Submit" class="btn btn-primary" id="id_login_submit">
+
+            <div class="container">
+                <a class="btn btn-primary mt-5" href="/reset_password">Forget your password?</a>
+                &nbsp &nbsp
+                <input type="submit" value="Submit" class="btn btn-primary mt-5" id="id_login_submit">
+            </div>
         </form>
 </div>
 

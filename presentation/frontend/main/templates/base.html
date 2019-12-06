@@ -80,11 +80,6 @@
                 width: 700px;
                 margin-top: 50px; 
             }
-
-            .form-dropdown {
-               margin-right: 500px;
-               height:30px;
-            }
             
             .searchBar {
                 position: relative;
@@ -96,6 +91,7 @@
                 z-index: 1;
                 width: 100%;
             }
+
             .active-cyan input[type=text] {
                 border: none;
                 border-bottom: 1px solid #3b5998;
@@ -115,11 +111,11 @@
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="{% url 'homepage' %}">Portia: An Exotic Pet Store</a>
+            <a class="navbar-brand" href="{% url "homepage" %}">Portia: An Exotic Pet Store</a>
             
             <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                 <!--
-                <form class="form-inline my-2 my-lg-0" name="search_form", method="post" action="{% url 'search' %}">
+                <form class="form-inline my-2 my-lg-0" name="search_form", method="post" action="{% url "search" %}">
                     {% csrf_token %}
                     <input class="form-control mr-sm-2 searchBar" type="text" name="keyword" placeholder="What do you like to pet?">
                     <ul class="suggestions">
@@ -129,18 +125,18 @@
             </div>
 
             {% if authenticated %}
-            <a href="{% url 'create_new_pet' %}" class="btn btn-light" id="id_create_pet_button">
+            <a href="{% url "create_new_pet" %}" class="btn btn-light" id="id_create_pet_button">
                 Create a new pet!
             </a>
             &nbsp;&nbsp;&nbsp;
             <div class="btn btn-light" role="alert">
                 Logged in as {{ username }} &nbsp;
-                <a href="{% url 'logout' %}">Log out</a>
+                <a href="{% url "logout" %}">Log out</a>
             </div>
             {% else %}
-            <a id="registerButton" href="{% url 'register' %}" class="btn btn-light">Register</a>
+            <a id="registerButton" href="{% url "register" %}" class="btn btn-light">Register</a>
             &nbsp;&nbsp;&nbsp;
-            <a href="{% url 'login' %}" class="btn btn-light" id="id_login_button">Log in</a>
+            <a href="{% url "login" %}" class="btn btn-light" id="id_login_button">Log in</a>
             {% endif %}
 
         </nav>
@@ -148,10 +144,11 @@
         <div class="row">
             <div class="col-md-4"></div>
             <div class="col-md-4">
-                    <form class="md-form form-sm active-cyan active-cyan-2 mt-2" name="search_form", method="post" action="{% url 'search' %}">
+                    <form class="md-form form-sm active-cyan active-cyan-2 mt-2" name="search_form", method="post" action="{% url "search" %}">
                             {% csrf_token %}
                             <input class="form-control form-control-sm searchBar" type="text" name="keyword" placeholder="What would u like to pet today?">
                             <ul class="suggestions"></ul>
+                    </form>
             </div>
             <div class="col-md-4"></div>
         </div>
@@ -169,18 +166,17 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/43e1b224e3.js" crossorigin="anonymous"></script>
     <script>
             let history = "{{ history }}";
     </script>
     <script>
             String.prototype.replaceAll = function(search, replacement) {
                 var target = this;
-                return target.replace(new RegExp(search, 'g'), replacement);
+                return target.replace(new RegExp(search, "g"), replacement);
             };
             console.log(history);
-            console.log(JSON.parse(history.replaceAll('&#39;', '"')));
-            history = JSON.parse(history.replaceAll('&#39;', '"'));
+            console.log(JSON.parse(history.replaceAll("&#39;", '"')));
+            history = JSON.parse(history.replaceAll("&#39;", '"'));
 
             function findMatch(keyword, history){
                 return history.filter(entry => {
@@ -193,10 +189,10 @@
                 const matchedEntries = findMatch(this.value, history);
                 console.log("matchedEntries", matchedEntries);
                 const html = matchedEntries.map(entry => {
-                    const name = entry.name.replace(new RegExp(this.value, 'gi'), `<span>${this.value}</span>`);
+                    const name = entry.name.replace(new RegExp(this.value, "gi"), `<span>${this.value}</span>`);
                     return `
                             <li>
-                                <form name="search_form", method="post" action="{% url 'search' %}">
+                                <form name="search_form", method="post" action="{% url "search" %}">
                                 <div class="col-md-4">
                                     <a>${name}</a>
                                     <input type="hidden" name="keyword" value="${entry.name.trim()}">
@@ -210,11 +206,11 @@
                             </li>
                         `;
                 }).join("");
-                const searchInput = document.querySelector('.searchBar');
+                const searchInput = document.querySelector(".searchBar");
                 if(searchInput.value){
                     placeholder = `
                             <li>
-                                <form name="search_form", method="post" action="{% url 'search' %}">
+                                <form name="search_form", method="post" action="{% url "search" %}">
                                     <div class="col-md-4">
                                         <a>${searchInput.value}</a>
                                     </div> 
@@ -231,10 +227,16 @@
                 }
             }
 
-            const searchInput = document.querySelector('.searchBar');
-            const suggestions = document.querySelector('.suggestions');
-            searchInput.addEventListener('change', displayMatches);
-            searchInput.addEventListener('keyup', displayMatches);  
+            const searchInput = document.querySelector(".searchBar");
+            const suggestions = document.querySelector(".suggestions");
+            const clearSearchClickArea = document.querySelector(":not(.suggestions)");
+            console.log(clearSearchClickArea);
+            searchInput.addEventListener("change", displayMatches);
+            searchInput.addEventListener("keyup", displayMatches);  
+            clearSearchClickArea.addEventListener("mousedown", () => {
+                console.log("clearing suggestion field!");
+                suggestions.innerHTML = "";
+            });
      </script>
 
     </body>

@@ -179,7 +179,6 @@ def search(request):
                 "username": request.session.get("username")
             }
         )
-
     return render(
         request, 
         "search.html",

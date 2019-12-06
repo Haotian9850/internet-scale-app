@@ -23,11 +23,14 @@
         <form method="post" action="/register" class="form form-group form-row"> 
             {% csrf_token %}
             {% for field in form %}
-                <label class="form-label col-sm-2" for="{{ field.name }}">{{ field.label }}</label>
-                {{ field }}
-                
+                <div class="container">
+                        <label for="{{ field.name }}">{{ field.label }}</label>
+                        {{ field }}
+                </div>
             {% endfor %}
-            <input type="submit" value="Submit" class="btn btn-primary" id="id_register_submit">
+            <div class="container">
+                <input type="submit" value="Submit" class="btn btn-primary" id="id_register_submit">
+            </div>
         </form>
 </div>
 
