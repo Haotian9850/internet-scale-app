@@ -13,7 +13,7 @@
 
  
 ### Portia: user stories (continuously updated)
-1. As the seller, I want to inform the customer what type of animal does the pet belongs to
+1. As the seller, I want to inform the customer of what types of pets I'm selling
 2. As the seller, I want to update the information of the pet to let the customer know the most up-to-date condition of the pet
 3. As the seller, I want to request to cancel sales when the pet is no longer available
 4. As the customer, I want to see all the pets listed by all the sellers
