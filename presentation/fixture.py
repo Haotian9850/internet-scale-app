@@ -122,7 +122,19 @@ def main():
 
     register(user_data)
 
-    for i in range(3):
+    authenticator = login(username, user_data["password"])
+
+    create_pet(pet1_data, username, authenticator)
+    create_pet(pet2_data, username, authenticator)
+    create_pet(pet3_data, username, authenticator)
+
+    view_pet_by_id(username, 1)
+    view_pet_by_id(username, 2)
+    view_pet_by_id(username, 3)
+    
+    logout(authenticator)
+
+    for i in range(2):
         authenticator = login(username, user_data["password"])
 
         create_pet(pet1_data, username, authenticator)
