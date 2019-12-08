@@ -99,9 +99,6 @@ def main():
         "password": "DanielSmells1962"
     }
 
-    register(user_data)
-    authenticator = login(username, user_data["password"])
-
     pet1_data = {
         "name": "dog1",
         "pet_type": "dog",
@@ -123,15 +120,19 @@ def main():
         "price": 15.00,
     }
 
-    pet1_id = create_pet(pet1_data, username, authenticator)
-    pet2_id = create_pet(pet2_data, username, authenticator)
-    pet3_id = create_pet(pet3_data, username, authenticator)
+    register(user_data)
 
-    view_pet_by_id(username, 1)
-    view_pet_by_id(username, 2)
-    view_pet_by_id(username, 3)
+    for i in range(3):
+        authenticator = login(username, user_data["password"])
 
-    logout(authenticator)
+        create_pet(pet1_data, username, authenticator)
+        create_pet(pet2_data, username, authenticator)
+        create_pet(pet3_data, username, authenticator)
 
+        view_pet_by_id(username, 1)
+        view_pet_by_id(username, 2)
+        view_pet_by_id(username, 3)
+        
+        logout(authenticator)
 
 main()
