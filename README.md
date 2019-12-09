@@ -51,11 +51,11 @@
     $ sudo docker exec -it presentation /bin/bash
     $ python fixture.py
     ```
-    If successful, running the fixture will produce the following outcome:
+    If successful, running the fixture will produce the following output:
 
     ![fixture](/imgs/fixture.png)
 
-    *The fixture will register a user with username `test_user` and password `ABC123456789` and will then creat3 pets. After that, it will view each pet 5 times (cache-free)*
+    *The fixture will register a user with username `test_user` and password `ABC123456789` and will then create 3 pets. After that, it will view each pet 5 times (cache-free)*
 
     - Run spark script to start recommendation service by running the following command (in a separate terminal):
     
