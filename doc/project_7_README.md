@@ -51,11 +51,11 @@
     $ sudo docker exec -it presentation /bin/bash
     $ python fixture.py
     ```
-    If successful, running the fixture will produce the following outcome:
+    If successful, running the fixture will produce the following output:
 
-    ![fixture](../imgs/fixture.png)
+    ![fixture](/imgs/fixture.png)
 
-    *The fixture will register a user with username `test_user` and password `ABC123456789` and will then creat3 pets. After that, it will view each pet 5 times (cache-free)*
+    *The fixture will register a user with username `test_user` and password `ABC123456789` and will then create 3 pets. After that, it will view each pet 5 times (cache-free)*
 
     - Run spark script to start recommendation service by running the following command (in a separate terminal):
     
@@ -72,11 +72,11 @@
     - Click `[Check it out!]` on each pet created to view its detailed information
     - Since pet details are cached in `redis` container (cache will be invalidated every 20 minutes / when a user logs out). When a pet is cached, accessing it detail page **will not be logged (as a result, its recommendation feed will not be updated either)**. Therefore, to test out the recommendation service, it is recommended to create multiple users / log out and re-log in again between viewing each pet. **Only co-viewed pet with 3 or more views will be considered as a recommendation. Recommendations are updated every 60 seconds by running `update_recommendation.sh`** An example of recommendation feed from pre-loaded fixture data looks like as follows:
 
-    ![result](../imgs/recommendations.png)
+    ![result](/imgs/recommendations.png)
 
     - To test out the updated search bar, simply type in it: suggestions from search history will appear (if the user has one) as follows:
 
-    ![autocomplete](../imgs/autocomplete.png)
+    ![autocomplete](/imgs/autocomplete.png)
     *Note: the suggestion panel will not show if input does not match any item from search history or when it is the first time a user searches (i.e. when there is no search history)*
 
     - If the suggestion panel is blocking any content on the page (for example: the login and register page), simply click **outside** of the suggestion panel to clear it
