@@ -10,7 +10,7 @@
 
 ### The following features are deprecated in project 7:
 1. Removed `jmeter` performance testing to avoid `503` error on low-grade hardware
-2. Since performance testing is removed, load balancing module based on `haproxy` is also removed from `docker-compose` to avoid `503` error on low-grade hardware
+2. Since performance testing is removed, load balancing module based on `haproxy` was also removed from `docker-compose` to avoid `503` error on low-grade hardware
 
 
  
@@ -35,14 +35,8 @@
     $ sudo chmod -R 777 internet-scale-app_00X
     ```
 1. Ensure that a `mysql` container with a database named `cs4260` and a user `'www'@'%'` who is granted all privileges to `cs4260` and `test_cs4260` (the test database Django test `Client` will create later). Otherwise, `docker-compose up` will not bring up any container
-    ```
-    $ sudo docker run --name mysql -d -e MYSQL_ROOT_PASSWORD='$3cureUS' -v /media/haotian/documents-local/CS4260/internet-scale-app/db:/var/lib/mysql  mysql:latest
-    ```
-
-    ```
-    # mysql -uroot -p'$3cureUS'
-    ```
 2. Add `mysql` container to docker networks `backend` by running the following command:
+
     ```
     $ sudo docker network connect internet-scale-app_backend mysql
     ```
@@ -52,6 +46,7 @@
     *Note: it is possible that `spark-worker` will try to connect to `spark-master` multiple times before it forms a cluster with it. This is OK since spark (and most other distributed computing frameworks) will always attempt connecting until it forms a cluster.*
 4. Head to `localhost:8006/homepage` to access the project:
     - After `docker-compose` is fully started, run the advanced fixture with the following command:
+
     ```
     $ sudo docker exec -it presentation /bin/bash
     $ python fixture.py
@@ -63,6 +58,7 @@
     *The fixture will register a user with username `test_user` and password `ABC123456789` and will then creat3 pets. After that, it will view each pet 5 times (cache-free)*
 
     - Run spark script to start recommendation service by running the following command (in a separate terminal):
+    
     ```
     $ sudo chmod 777 data/update_recommendation.sh
     $ ./data/update_recommendation.sh
