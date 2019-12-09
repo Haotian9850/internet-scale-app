@@ -16,7 +16,7 @@ before_script:
   - docker-compose up -d
   - sleep 120
 script:
-  - docker exec -it selenium-test python test.py
+  - docker exec -it presentation python fixture.py
 after_script:
   - docker-compose stop
   - docker-compose rm y

@@ -5,15 +5,17 @@
 ### The following features are made available in project 7:
 1. Added spark-based pet recommendation system
 2. Added an autocomplete search bar with search history metrics
+3. Added an advanced fixture to automate SQL population / Elasticsearch indexing of placeholder pets / views
 
 
 ### The following features are deprecated in project 7:
-1. Removed `jmeter` performance testing to avoid `503` error upon `dock-compose up` on low-grade hardware
+1. Removed `jmeter` performance testing to avoid `503` error on low-grade hardware
+2. Since performance testing is removed, load balancing module based on `haproxy` is also removed from `docker-compose` to avoid `503` error on low-grade hardware
 
 
  
 ### Portia: user stories (continuously updated)
-1. As the seller, I want to inform the customer of what types of pets I'm selling
+1. As the seller, I want to inform the customer what type of animal does the pet belongs to
 2. As the seller, I want to update the information of the pet to let the customer know the most up-to-date condition of the pet
 3. As the seller, I want to request to cancel sales when the pet is no longer available
 4. As the customer, I want to see all the pets listed by all the sellers
@@ -49,19 +51,30 @@
 
     *Note: it is possible that `spark-worker` will try to connect to `spark-master` multiple times before it forms a cluster with it. This is OK since spark (and most other distributed computing frameworks) will always attempt connecting until it forms a cluster.*
 4. Head to `localhost:8006/homepage` to access the project:
-    - After `docker-compose` is fully started, start a spark script to start recommendation service by running the following command (in a separate terminal):
+    - After `docker-compose` is fully started, run the advanced fixture with the following command:
+    ```
+    $ sudo docker exec -it presentation /bin/bash
+    $ python fixture.py
+    ```
+    If successful, running the fixture will produce the following outcome:
+
+    ![fixture](imgs/fixture.png)
+
+    *The fixture will register a user with username `test_user` and password `ABC123456789` and will then creat3 pets. After that, it will view each pet 5 times (cache-free)*
+
+    - Run spark script to start recommendation service by running the following command (in a separate terminal):
     ```
     $ sudo chmod 777 data/update_recommendation.sh
     $ ./data/update_recommendation.sh
     ```
     *Recommendations will be updated every 60 seconds*
-    - Since no data is loaded from fixture (there is **no fixture**), there will be a red `[No pets available]` status message on top homepage
+
     - To create a new pet, click `[Register]` to register as a new user first
     - After registeration, user will be redirected to login page. Click `[Log in]` after filling in user credentials. A user who is already logged in will be redirected to homepage
     - After logging in, click `[Create a new pet!]` to create a new pet
     - After a new pet is created, user will be redirected to homepage
     - Click `[Check it out!]` on each pet created to view its detailed information
-    - Since pet details are cached in `redis` container (cache will be invalidated every 20 minutes / when a user logs out). When a pet is cached, accessing it detail page **will not be logged (as a result, its recommendation feed will not be updated either)**. Therefore, to test out the recommendation service, it is recommended to create multiple users / log out and re-log in again between viewing each pet. **Only co-viewed pet with 3 or more views will be considered as a recommendation. Recommendations are updated every 60 seconds by running `update_recommendation.sh`** The recommendation feed look like as follows:
+    - Since pet details are cached in `redis` container (cache will be invalidated every 20 minutes / when a user logs out). When a pet is cached, accessing it detail page **will not be logged (as a result, its recommendation feed will not be updated either)**. Therefore, to test out the recommendation service, it is recommended to create multiple users / log out and re-log in again between viewing each pet. **Only co-viewed pet with 3 or more views will be considered as a recommendation. Recommendations are updated every 60 seconds by running `update_recommendation.sh`** An example of recommendation feed from pre-loaded fixture data looks like as follows:
 
     ![result](imgs/recommendations.png)
 
