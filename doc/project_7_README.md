@@ -8,7 +8,8 @@
 
 
 ### The following features are deprecated in project 7:
-1. Removed `jmeter` performance testing to avoid `503` error upon `dock-compose up` on low-grade hardware
+1. Removed `jmeter` performance testing to avoid `503` error on low-grade hardware
+2. Since performance testing is removed, load balancing module based on `haproxy` is also removed from `docker-compose` to avoid `503` error on low-grade hardware
 
 
  
